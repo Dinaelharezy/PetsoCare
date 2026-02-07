@@ -34,7 +34,7 @@ export default function PersonProfile() {
                     margin: '0 auto 1rem'
                                         }}>
               <Image 
-                   src="/woman.png" 
+                   src="/woman 2.png" 
                   alt="Profile Picture" 
                     width={120} 
                     height={120}

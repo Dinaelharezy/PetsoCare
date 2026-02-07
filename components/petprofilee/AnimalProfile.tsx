@@ -18,23 +18,23 @@ export default function AnimalProfile() {
           {/* Profile Section */}
 <div className="row g-5 spaceBetweenSections position-relative">
   {/* Left side - Profile Image */}
-  <div className="col-md-4  d-flex justify-content-center align-items-center">
-    <div className="position-relative ">
-      <img 
-        src="/dog.png" 
-        className="rounded-circle" 
-        alt="Buddy" 
-        style={{
-            marginTop: '20%',
-            marginRight: '1em',
-          width: '200px', 
-          height: '200px', 
-          objectFit: 'cover',
-          border: '5px solid rgb(199, 242, 167)'
-        }}
-      />
-    </div>
+<div className="col-md-4 d-flex justify-content-start align-items-start me-5">
+  <div className="position-relative">
+    <img 
+      src="/dog.png" 
+      className="rounded-circle" 
+      alt="Buddy" 
+      style={{
+        marginTop: '20%',
+        marginLeft: '1em',  // غيرت من marginRight
+        width: '200px', 
+        height: '200px', 
+        objectFit: 'cover',
+        border: '5px solid rgb(199, 242, 167)'
+      }}
+    />
   </div>
+</div>
 
   {/* Right side - Pet Details */}
 <PetDetails species='Dog' breed='Golden Retriever' age='3 years' licenseNo='GB-2021-001' diseases={['Allergies', 'Anxiety']} />

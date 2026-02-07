@@ -4,6 +4,7 @@ import { Geist, Geist_Mono,Comfortaa } from "next/font/google";
 import "./globals.css";
 import  NavBar  from '../components/NavBar'
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

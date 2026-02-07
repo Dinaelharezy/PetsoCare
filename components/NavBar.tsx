@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Navbar() {
@@ -23,7 +24,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <a className="navbar-brand me-5" href="#">Navbar</a>
+        <Link className="navbar-brand me-5" href="/">Navbar</Link>
         
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -32,24 +33,24 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item me-4">
-              <a className="nav-link active" aria-current="page" href="#">Home</a>
+              <Link className="nav-link active" aria-current="page" href="/main/Home">Home</Link>
             </li>
             <li className="nav-item me-4">
-              <a className="nav-link" href="#">Articles</a>
+              <Link className="nav-link" href="/articles">Articles</Link>
             </li>
             <li className="nav-item me-4">
-              <a className="nav-link" href="#">Reports</a>
+              <Link className="nav-link" href="/reports">Reports</Link>
             </li>
             <li className="nav-item me-4">
-              <a className="nav-link" href="#">Vaccines</a>
+              <Link className="nav-link" href="/vaccines">Vaccines</Link>
             </li>
             <li className="nav-item me-4">
-              <a className="nav-link " href="#">Map</a>
+              <Link className="nav-link" href="/map">Map</Link>
             </li>
           </ul>
         </div>
 
-        {/* Search, Theme, Profile - يختفوا في الموبايل */}
+        {/* Search, Theme, Profile */}
         <div className="d-none d-lg-flex align-items-center gap-3 ms-auto">
           {/* Search Form */}
           <form className="d-flex" style={{marginRight:'250px'}} role="search">
@@ -80,15 +81,47 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Profile Picture */}
-          <img 
-            src="/woman.png" 
-            alt="Profile" 
-            width="35" 
-            height="35" 
-            className="rounded-circle d-flex gap-4 me-4"
-            style={{objectFit: 'cover', borderRadius:'50%'}}
-          />
+          {/* Profile Dropdown */}
+          <div className="dropdown">
+            <img 
+              src="/woman 2.png" 
+              alt="Profile" 
+              width="35" 
+              height="35" 
+              className="rounded-circle dropdown-toggle me-4"
+              style={{objectFit: 'cover', cursor: 'pointer'}}
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              role="button"
+            />
+            <ul className="dropdown-menu dropdown-menu-end">
+              <li>
+                <Link className="dropdown-item" href="/main/PersonProfile">
+                  <i className="bi bi-person me-2"></i>
+                  My Profile
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" href="/main/Animalprofile">
+                  <i className="bi bi-heart me-2"></i>
+                  Pet Profile
+                </Link>
+              </li>
+              <li><hr className="dropdown-divider" /></li>
+              <li>
+                <Link className="dropdown-item" href="/settings">
+                  <i className="bi bi-gear me-2"></i>
+                  Settings
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item text-danger" href="/logout">
+                  <i className="bi bi-box-arrow-right me-2"></i>
+                  Logout
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
