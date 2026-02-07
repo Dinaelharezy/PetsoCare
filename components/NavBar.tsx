@@ -109,7 +109,7 @@ export default function Navbar() {
               </li>
               <li><hr className="dropdown-divider" /></li>
               <li>
-                <Link className="dropdown-item" href="/settings">
+                <Link className="dropdown-item" href="/main/signup">
                   <i className="bi bi-gear me-2"></i>
                   Settings
                 </Link>

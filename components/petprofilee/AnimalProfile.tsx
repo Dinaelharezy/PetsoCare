@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import VaccineItem from './VaccineItem';
 import MedicalRecord from './MedicalRecord';
 import PetDetails from './PetDetails';
+import Link from 'next/link';
 
 export default function AnimalProfile() {
   return (
@@ -12,7 +13,7 @@ export default function AnimalProfile() {
           {/* Header with title and Edit button */}
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h3 className="mb-0">Buddy's Profile</h3>
-            <button className="btn btn-outline btn-sm edit-animal px-4">Edit Pet Details</button>
+            <Link className="btn btn-outline btn-sm edit-animal px-4" href="/main/registerpet">Edit Pet Details</Link>
           </div>
 
           {/* Profile Section */}
