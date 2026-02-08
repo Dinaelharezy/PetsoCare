@@ -337,7 +337,7 @@ export default function UserProfile() {
               {/* Action Buttons */}
               <div className="d-flex justify-content-end gap-2 mb-4">
                 <button type="button" className="btn btn-outline-secondary">Cancel</button>
-                <button type="submit" className="btn text-dark" style={{backgroundColor: 'rgb(199, 242, 167)'}}>
+                <button type="submit" className="btn text-dark fw-semibold" style={{backgroundColor: 'rgb(199, 242, 167)'}}>
                   Save/Update Profile
                 </button>
               </div>

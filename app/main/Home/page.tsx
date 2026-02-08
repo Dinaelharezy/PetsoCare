@@ -1,12 +1,54 @@
-'use client'
 
+'use client'
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
-import { useState } from 'react'
 import Image from 'next/image'
+import { useState, useEffect } from 'react';
+
+interface Slide {
+  image: string;
+  title: string;
+  subtitle: string;
+}
 
 export default function VetFinder() {
   const [location, setLocation] = useState('')
   const [specialty, setSpecialty] = useState('')
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+ 
+  const slides: Slide[] = [
+    {
+      image: '/carousel cute.png', // حطي صورة الكلب هنا
+      title: 'Find the Best Care for Your Beloved Pet',
+      subtitle: 'Being a vet has changed my perception of things. I see how fragile life is. You can\'t take anything for granted'
+    },
+    {
+      image: '/carousel cute cat.png',
+      title: 'Professional Pet Healthcare',
+      subtitle: 'Expert veterinary care for your furry family members'
+    },
+    {
+      image: '/bird.png',
+      title: 'Trusted Veterinary Services',
+      subtitle: 'Compassionate care when your pet needs it most'
+    }
+  ];
+
+  // Auto play
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   const vets = [
     {
@@ -15,8 +57,8 @@ export default function VetFinder() {
       specialty: 'Veterinary Medicine',
       rating: 4.9,
       reviews: 234,
-      image: '/vet-man 3.JPG',
-      location: 'Ismalia,Egypt'
+      image: '/vet-man.png',
+      location: 'Ismalia, Egypt'
     },
     {
       id: 2,
@@ -25,7 +67,7 @@ export default function VetFinder() {
       rating: 5.0,
       reviews: 189,
       image: '/vet-woman 7.png',
-      location: 'Portsaid,Egypt'
+      location: 'Portsaid, Egypt'
     },
     {
       id: 3,
@@ -33,8 +75,8 @@ export default function VetFinder() {
       specialty: 'Internal Medicine',
       rating: 4.8,
       reviews: 156,
-      location: 'Ismalia,Egypt',
-      image: '/vet-man.jpg'
+      location: 'Ismalia, Egypt',
+      image: '/vet-man2.jpg'
     },
     {
       id: 4,
@@ -42,7 +84,7 @@ export default function VetFinder() {
       specialty: 'Veterinary Internal Medicine',
       rating: 4.9,
       reviews: 203,
-      location: 'Portsaid,Egypt',
+      location: 'Portsaid, Egypt',
       image: '/vet-man 3.JPG'
     },
     {
@@ -51,8 +93,8 @@ export default function VetFinder() {
       specialty: 'Emergency & Critical Care',
       rating: 4.7,
       reviews: 178,
-      image: '/vet-woamn.jpg',
-      location: 'Ismalia,Egypt'
+      image: '/vet-woman.png',
+      location: 'Ismalia, Egypt'
     },
     {
       id: 6,
@@ -61,109 +103,343 @@ export default function VetFinder() {
       rating: 5.0,
       reviews: 145,
       image: '/vet-woman3.jpg',
-      location: 'Portsaid,Egypt'
+      location: 'Portsaid, Egypt'
     }
   ]
 
   return (
     <div className="vet-finder-page">
-      {/* Hero Section with Carousel */}
-      <section className="hero-section mx-5 mt-3">
-        <div className="hero-overlay"></div>
-        <div id="carouselExampleIndicators" className="carousel slide">
-          <div className="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          </div>
-          <div className="carousel-inner">
-            <div className="carousel-item active">
-              <Image src="/carousel 6.jpg" className="d-block w-100" alt="Veterinary Services" width={800} height={400} />
+      {/* Hero Carousel - Simple like the screenshot */}
+      <div className="hero-carousel-wrapper" style={{ 
+        maxWidth: '1200px', 
+        margin: '40px auto',
+        padding: '0 20px'
+      }}>
+        <div className="position-relative" style={{ 
+          height: '400px',
+          borderRadius: '20px',
+          overflow: 'hidden',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+        }}>
+          {/* Slides */}
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`position-absolute w-100 h-100 transition-opacity`}
+              style={{
+                opacity: index === currentSlide ? 1 : 0,
+                transition: 'opacity 0.5s ease-in-out'
+              }}
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center 30%' 
+                }}
+              />
+              
+              {/* Overlay */}
+              <div 
+                className="position-absolute w-100 h-100" 
+                style={{
+                  top: 0,
+                  left: 0,
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5))'
+                }}
+              />
+
+              {/* Text Content */}
+              <div 
+                className="position-absolute w-100 text-center"
+                style={{
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: 'white',
+                  padding: '0 40px'
+                }}
+              >
+                <h1 style={{ 
+                  fontSize: '2.5rem',
+                  fontWeight: '600',
+                  marginBottom: '20px',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                }}>
+                  {slide.title}
+                </h1>
+                <p style={{ 
+                  fontSize: '1rem',
+                  maxWidth: '600px',
+                  margin: '0 auto',
+                  lineHeight: '1.6',
+                  opacity: '0.95'
+                }}>
+                  {slide.subtitle}
+                </p>
+              </div>
             </div>
-            <div className="carousel-item">
-              <Image src="/carousel 2.jpg" className="d-block w-100" alt="Veterinary Services" width={800} height={400} />
-            </div>
-            <div className="carousel-item">
-              <Image src="/carousel 1.jpg" className="d-block w-100" alt="Veterinary Services" width={800} height={400} />
-            </div>
-          </div>
-          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
+          ))}
+
+          {/* Previous Button */}
+          <button
+            onClick={prevSlide}
+            className="position-absolute"
+            style={{
+              left: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              border: 'none',
+              background: 'rgba(255, 255, 255, 0.9)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s',
+              zIndex: 10
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15 19l-7-7 7-7" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
-          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
+
+          {/* Next Button */}
+          <button
+            onClick={nextSlide}
+            className="position-absolute"
+            style={{
+              right: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              border: 'none',
+              background: 'rgba(255, 255, 255, 0.9)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s',
+              zIndex: 10
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M9 5l7 7-7 7" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
+
+          {/* Dots Indicator */}
+          <div 
+            className="position-absolute d-flex gap-2"
+            style={{
+              bottom: '20px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 10
+            }}
+          >
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                style={{
+                  width: index === currentSlide ? '30px' : '10px',
+                  height: '10px',
+                  borderRadius: '5px',
+                  border: 'none',
+                  background: index === currentSlide 
+                    ? 'rgba(255, 255, 255, 0.9)' 
+                    : 'rgba(255, 255, 255, 0.5)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s'
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Search Section */}
+      <Container className="search-section" style={{ marginTop: '60px' }}>
+        <h2 className="section-title text-center" style={{
+          fontSize: '2rem',
+          fontWeight: '600',
+          marginBottom: '40px',
+          color: '#333'
+        }}>
+          Find Your Perfect Vet
+        </h2>
+        
+        <div className="search-bar-container mx-auto" style={{ maxWidth: '800px' }}>
+          <div className="search-filters d-flex gap-3">
+            <Form.Select 
+              className="filter-select flex-fill" 
+              value={specialty} 
+              onChange={(e) => setSpecialty(e.target.value)}
+              style={{
+                padding: '12px 20px',
+                borderRadius: '10px',
+                border: '1px solid #ddd',
+                fontSize: '1rem'
+              }}
+            >
+              <option value="">All Specialties</option>
+              <option value="Internal Medicine">Internal Medicine</option>
+              <option value="Emergency & Critical Care">Emergency & Critical Care</option>
+              <option value="Exotic Pets">Exotic Pets</option>
+              <option value="Small Animal Surgery">Small Animal Surgery</option>
+              <option value="Veterinary Medicine">Veterinary Medicine</option>
+            </Form.Select>
 
-<Container className="search-section">
-  <h2 className="section-title text-center">Find Your Perfect Vet</h2>
-  
-  <div className="search-bar-container mx-auto" style={{ maxWidth: '800px' }}>
-  
+            <Form.Select 
+              className="filter-select flex-fill"
+              style={{
+                padding: '12px 20px',
+                borderRadius: '10px',
+                border: '1px solid #ddd',
+                fontSize: '1rem'
+              }}
+            >
+              <option>All Locations</option>
+              <option>Ismalia</option>
+              <option>Portsaid</option>
+            </Form.Select>
+          </div>
+        </div>
+      </Container>
 
-    <div className="search-filters">
-      <Form.Select 
-        className="filter-select" 
-        value={specialty} 
-        onChange={(e) => setSpecialty(e.target.value)}
-      >
-        <option value="">All Specialties</option>
-        <option value="Internal Medicine">Internal Medicine</option>
-        <option value="Emergency & Critical Care">Emergency & Critical Care</option>
-        <option value="Exotic Pets">Exotic Pets</option>
-        <option value="Small Animal Surgery">Small Animal Surgery</option>
-        <option value="Veterinary Medicine">Veterinary Medicine</option>
-      </Form.Select>
 
-      <Form.Select className="filter-select">
-        <option>All Locations</option>
-        <option>Ismalia</option>
-        <option>Portsaid</option>
-      </Form.Select>
-    </div>
-  </div>
-</Container>
-
-      {/* Vets Grid */}
-      <Container className="vets-section">
-        <Row className='g-5'>
+      <Container className="vets-section" style={{ marginTop: '60px', marginBottom: '60px' }}>
+        <Row className='g-5'> 
           {vets.map((vet) => (
-            // <Col lg={4} md={6} sm={12} key={vet.id} className="mb-4 ">
-            <Col lg={4} md={6} sm={12} key={vet.id} className="mb-4 ">
-              <Card className="vet-card">
-                <div className="vet-image-wrapper">
+            <Col lg={4} md={6} sm={12} key={vet.id}>
+              <Card className="vet-card" style={{
+                borderRadius: '15px',
+                border: 'none',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+                overflow: 'hidden',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)';
+              }}
+              >
+                <div className="vet-image-wrapper" style={{ 
+                  height: '220px', // صغرت من 400px
+                  overflow: 'hidden',
+                  position: 'relative'
+
+                }}>
                   <Image 
                     src={vet.image} 
                     alt={vet.name}
                     width={400}
                     height={400}
                     className="vet-profile-image"
-                    
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center top' 
+                    }}
                   />
                 </div>
-                <Card.Body>
-                  <h5 className="vet-name">{vet.name}</h5>
-                  <p className="vet-specialty">{vet.specialty}</p>
+                <Card.Body style={{ padding: '20px' }}> {/* صغرت الـ padding */}
+                  <h5 className="vet-name" style={{
+                    fontSize: '1.25rem', // صغرت من الحجم الافتراضي
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    color: '#333'
+                  }}>
+                    {vet.name}
+                  </h5>
+                  <p className="vet-specialty" style={{
+                    color: '#666',
+                    fontSize: '0.9rem',
+                    marginBottom: '15px'
+                  }}>
+                    {vet.specialty}
+                  </p>
                   
-                  <div className="vet-stats">
-                    <div className="stat-item">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="me-1">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFD700" strokeWidth="2"/>
+                  <div className="vet-stats" style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                    marginBottom: '15px'
+                  }}>
+                    <div className="stat-item" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '0.85rem'
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
+                          fill="#FFD700" stroke="#FFD700" strokeWidth="2"/>
                       </svg>
-                      <span>{vet.rating} ({vet.reviews} reviews)</span>
+                      <span style={{ color: '#666' }}>
+                        <strong style={{ color: '#333' }}>{vet.rating}</strong> ({vet.reviews} reviews)
+                      </span>
                     </div>
-                    <div className="stat-item">
-                      <i className="bi bi-geo-alt #4CAF50"></i>
+                    <div className="stat-item" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '0.85rem',
+                      color: '#666'
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" 
+                          fill="#4CAF50"/>
+                        <circle cx="12" cy="9" r="2.5" fill="white"/>
+                      </svg>
                       <span>{vet.location}</span>
                     </div>
                   </div>
 
-                  <Button className="view-profile-btn">View Profile</Button>
+                  <Button 
+                    className="view-profile-btn"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 179, 66, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    View Profile
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -172,7 +448,33 @@ export default function VetFinder() {
       </Container>
 
       {/* Chat Button */}
-      <button className="chat-fab">
+      <button 
+        className="chat-fab"
+        style={{
+          position: 'fixed',
+          bottom: '30px',
+          right: '30px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          background: 'rgb(199, 242, 167) !important',
+          border: 'none',
+          fontSize: '1.8rem',
+          cursor: 'pointer',
+          boxShadow: '0 4px 20px rgba(124, 179, 66, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'transform 0.3s',
+          zIndex: 1000
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.1) rotate(10deg)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+        }}
+      >
         💬
       </button>
     </div>

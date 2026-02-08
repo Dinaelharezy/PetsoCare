@@ -363,7 +363,6 @@ body {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   text-align: center;
 }
 
@@ -434,7 +433,7 @@ body {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */
   margin-bottom: 2rem;
 }
 
@@ -451,7 +450,7 @@ body {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.08); */
 }
 
 .settings-item {
@@ -784,7 +783,7 @@ body {
 
 .view-profile-btn {
   width: 100%;
-  background-color: #a8e6a3;
+  background-color: rgb(199, 242, 167) !important;
   border: none;
   color: #2c3e50;
   font-weight: 600;
@@ -898,6 +897,13 @@ body {
   object-position: center top; 
 }
 
+.carousel-top {
+   width: 80%;
+  height: 50%;
+  object-fit: cover;
+  object-position: top;
+}
+
 .form-check-input:checked {
   background-color: rgb(199, 242, 167);
   border-color: rgb(199, 242, 167);
@@ -931,4 +937,71 @@ body {
 
 .btn:hover {
   opacity: 0.9;
+}
+
+/* styles/carousel-animations.css */
+/* أو حطيها في app/globals.css */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Pulse animation للـ indicators */
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Slide in from right */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide in from left */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Ken Burns effect (zoom animation على الصورة) */
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 10s ease-in-out infinite alternate;
 }

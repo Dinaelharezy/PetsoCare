@@ -17,7 +17,7 @@ export default function AnimalProfile() {
           </div>
 
           {/* Profile Section */}
-<div className="row g-5 spaceBetweenSections position-relative">
+<div className="row g-3 spaceBetweenSections position-relative">
   {/* Left side - Profile Image */}
 <div className="col-md-4 d-flex justify-content-start align-items-start me-5">
   <div className="position-relative">
@@ -26,8 +26,8 @@ export default function AnimalProfile() {
       className="rounded-circle" 
       alt="Buddy" 
       style={{
-        marginTop: '20%',
-        marginLeft: '1em',  // غيرت من marginRight
+        marginTop: '10%',
+        marginLeft: '0em',
         width: '200px', 
         height: '200px', 
         objectFit: 'cover',
@@ -77,19 +77,13 @@ export default function AnimalProfile() {
 
           {/* Need to see a Vet Section */}
           <div className="text-center py-4">
-            <h5 className="mb-2">Need to see a Vet?</h5>
+            <h5 className="mb-2 specializedFont">Need to see a Vet?</h5>
             <p className="text-muted mb-3">Easily book a new appointment with our trusted veterinarians.</p>
-            <button className="btn" style={{backgroundColor: 'rgb(199, 242, 167)', border: 'none', padding: '10px 30px'}}>
+            <button className="btn" style={{backgroundColor: 'rgb(199, 242, 167)', border: 'none', padding: '10px 30px' ,marginBottom: '5em' ,borderRadius:'15px'}}>
               Book New Appointment
             </button>
           </div>
 
-     
-
-          {/* Footer */}
-          <div className="text-center mt-5">
-            <p className="text-muted mb-0" style={{fontSize: '12px'}}>© 2025 Pawsitive Health. All rights reserved.</p>
-          </div>
         </div>
       </div>
 
