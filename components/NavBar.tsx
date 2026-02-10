@@ -1,25 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import useTheme from '../hooks/usetheme';
 import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Navbar() {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    require('bootstrap/dist/js/bootstrap.bundle.min.js');
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-bs-theme', savedTheme);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-bs-theme', newTheme);
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -36,13 +22,13 @@ export default function Navbar() {
               <Link className="nav-link active" aria-current="page" href="/main/Home">Home</Link>
             </li>
             <li className="nav-item me-4">
-              <Link className="nav-link" href="/articles">Articles</Link>
+              <Link className="nav-link" href="/main/Articles">Articles</Link>
             </li>
             <li className="nav-item me-4">
-              <Link className="nav-link" href="/reports">Reports</Link>
+              <Link className="nav-link" href="../dashboard">Reports</Link>
             </li>
             <li className="nav-item me-4">
-              <Link className="nav-link" href="/vaccines">Vaccines</Link>
+              <Link className="nav-link" href="../main/VaccineSchedule">Vaccines</Link>
             </li>
             <li className="nav-item me-4">
               <Link className="nav-link" href="/map">Map</Link>

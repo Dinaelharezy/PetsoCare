@@ -3,7 +3,7 @@ import AnimalProfile from "@/components/petprofilee/AnimalProfile";
 import Image from "next/image";  
 import PersonProfile from "./main/PersonProfile/page";
 import HomePage from "./main/Home/page";
-import Login from "./main/login/page";
+import Login from "./auth/login/page";
 import ChooseRole from "./main/choose-role/page";
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js';   
 

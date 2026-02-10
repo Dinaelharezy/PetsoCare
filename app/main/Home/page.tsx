@@ -3,18 +3,35 @@
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
 import Image from 'next/image'
 import { useState, useEffect } from 'react';
+import Chatbot from '@/components/chatbot';
+import {Slide} from '../../../types/Slide';
 
-interface Slide {
-  image: string;
-  title: string;
-  subtitle: string;
-}
 
 export default function VetFinder() {
   const [location, setLocation] = useState('')
   const [specialty, setSpecialty] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0);
-  
+  const articles = [
+  {
+    id: 1,
+    title: "Caring for Your Dog's Health",
+    subtitle: "Tips and advice for keeping your furry friend healthy and happy.",
+    image: "/article-dog.png"
+  },
+  {
+    id: 2,
+    title: "Understanding Cat Behavior",
+    subtitle: "Learn how to interpret your cat's actions and moods.",
+    image: "/article-cat.png"
+  },
+  {
+    id: 3,
+    title: "Bird Care Essentials",
+    subtitle: "Everything you need to know to keep your feathered friends safe and healthy.",
+    image: "/article-bird.png"
+  }
+];
+
  
   const slides: Slide[] = [
     {
@@ -291,7 +308,7 @@ export default function VetFinder() {
           marginBottom: '40px',
           color: '#333'
         }}>
-          Find Your Perfect Vet
+          Find Your Perfect Vet & Educate Yourself with Our Articles
         </h2>
         
         <div className="search-bar-container mx-auto" style={{ maxWidth: '800px' }}>
@@ -331,6 +348,9 @@ export default function VetFinder() {
           </div>
         </div>
       </Container>
+
+
+
 
 
       <Container className="vets-section" style={{ marginTop: '60px', marginBottom: '60px' }}>
@@ -448,35 +468,7 @@ export default function VetFinder() {
       </Container>
 
       {/* Chat Button */}
-      <button 
-        className="chat-fab"
-        style={{
-          position: 'fixed',
-          bottom: '30px',
-          right: '30px',
-          width: '60px',
-          height: '60px',
-          borderRadius: '50%',
-          background: 'rgb(199, 242, 167) !important',
-          border: 'none',
-          fontSize: '1.8rem',
-          cursor: 'pointer',
-          boxShadow: '0 4px 20px rgba(124, 179, 66, 0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'transform 0.3s',
-          zIndex: 1000
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.1) rotate(10deg)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-        }}
-      >
-        💬
-      </button>
+     <Chatbot />
     </div>
   )
 }
