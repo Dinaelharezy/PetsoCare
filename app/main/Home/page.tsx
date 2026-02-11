@@ -5,32 +5,13 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react';
 import Chatbot from '@/components/chatbot';
 import {Slide} from '../../../types/Slide';
-
+import Link from 'next/link';
+import { vets } from '../../../data/vets';
 
 export default function VetFinder() {
   const [location, setLocation] = useState('')
   const [specialty, setSpecialty] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0);
-  const articles = [
-  {
-    id: 1,
-    title: "Caring for Your Dog's Health",
-    subtitle: "Tips and advice for keeping your furry friend healthy and happy.",
-    image: "/article-dog.png"
-  },
-  {
-    id: 2,
-    title: "Understanding Cat Behavior",
-    subtitle: "Learn how to interpret your cat's actions and moods.",
-    image: "/article-cat.png"
-  },
-  {
-    id: 3,
-    title: "Bird Care Essentials",
-    subtitle: "Everything you need to know to keep your feathered friends safe and healthy.",
-    image: "/article-bird.png"
-  }
-];
 
  
   const slides: Slide[] = [
@@ -67,62 +48,6 @@ export default function VetFinder() {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const vets = [
-    {
-      id: 1,
-      name: 'Dr. Omar Hassan',
-      specialty: 'Veterinary Medicine',
-      rating: 4.9,
-      reviews: 234,
-      image: '/vet-man.png',
-      location: 'Ismalia, Egypt'
-    },
-    {
-      id: 2,
-      name: 'Dr. Rawda Mamdouh',
-      specialty: 'Small Animal Surgery',
-      rating: 5.0,
-      reviews: 189,
-      image: '/vet-woman 7.png',
-      location: 'Portsaid, Egypt'
-    },
-    {
-      id: 3,
-      name: 'Dr. Marcus Hanna',
-      specialty: 'Internal Medicine',
-      rating: 4.8,
-      reviews: 156,
-      location: 'Ismalia, Egypt',
-      image: '/vet-man2.jpg'
-    },
-    {
-      id: 4,
-      name: 'Dr. Moataz Sayed',
-      specialty: 'Veterinary Internal Medicine',
-      rating: 4.9,
-      reviews: 203,
-      location: 'Portsaid, Egypt',
-      image: '/vet-man 3.JPG'
-    },
-    {
-      id: 5,
-      name: 'Dr. Sarah Waleed',
-      specialty: 'Emergency & Critical Care',
-      rating: 4.7,
-      reviews: 178,
-      image: '/vet-woman.png',
-      location: 'Ismalia, Egypt'
-    },
-    {
-      id: 6,
-      name: 'Dr. Jessica Antinuous',
-      specialty: 'Exotic Pets',
-      rating: 5.0,
-      reviews: 145,
-      image: '/vet-woman3.jpg',
-      location: 'Portsaid, Egypt'
-    }
-  ]
 
   return (
     <div className="vet-finder-page">
@@ -446,20 +371,26 @@ export default function VetFinder() {
                       <span>{vet.location}</span>
                     </div>
                   </div>
-
-                  <Button 
-                    className="view-profile-btn"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 179, 66, 0.4)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    View Profile
-                  </Button>
+<Link 
+  href={`/main/Vet-profile/${vet.id}`} 
+  passHref
+  className="view-profile-btn"
+  style={{ 
+    display: 'block',
+    width: '100%',
+    textAlign: 'center'
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = 'scale(1.02)';
+    e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 179, 66, 0.4)';
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.boxShadow = 'none';
+  }}
+>
+  View Profile
+</Link>
                 </Card.Body>
               </Card>
             </Col>
