@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap'
-
+import { Container, Row, Col, Card, Button, Form, Image } from 'react-bootstrap'
+import image from 'next/image'
 export default function DoctorProfile({vet} :{name: string, specialty: string, rating: number, reviews: number, location: string}) {
     if (!vet) return null
   const [selectedDate, setSelectedDate] = useState(9)
@@ -55,7 +55,7 @@ export default function DoctorProfile({vet} :{name: string, specialty: string, r
     
     overflow: 'hidden'
   }}>
-    <img src={vet.image} alt={vet.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <Image src={vet.image} alt={vet.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
   </div>
 </Col>
           <Col md={10}>

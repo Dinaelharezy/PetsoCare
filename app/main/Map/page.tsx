@@ -1,7 +1,7 @@
-import MapClient from '@/components/map/MapClient'
+import PetMap from "@/components/Map/PetMap";
 
 export default function MapPage() {
   return (
-  <MapClient  />
+  <PetMap  />
   )
 }

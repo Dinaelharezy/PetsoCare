@@ -1,23 +1,14 @@
 'use client'
-
-interface Article {
-  id: number
-  title: string
-  excerpt: string
-  image: string
-  tags: string[]
-  category: string
-  color: string
-}
-
+import { Article } from '../../types/article'
+import Link from 'next/link'
 interface ArticleCardProps {
   article: Article
-  index: number
 }
 
-export default function ArticleCard({ article, index }: ArticleCardProps) {
+
+export default function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <div className="article-card animate-card">
+    <Link href={`/main/Articles/${article.id}`} className="article-card animate-card">
       <div
         className="article-image"
         style={{
@@ -38,7 +29,7 @@ export default function ArticleCard({ article, index }: ArticleCardProps) {
           ))}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

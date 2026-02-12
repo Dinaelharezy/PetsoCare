@@ -11,14 +11,12 @@ export default function Navbar() {
   const pathname = usePath();
   
   return (
-    <BSNavbar expand="lg" className="bg-body-tertiary">
+    <BSNavbar expand="lg" className="bg-body">
       <Container fluid>
         <BSNavbar.Brand as={Link} href="/" className="me-5">
           Navbar
         </BSNavbar.Brand>
-        
-        <BSNavbar.Toggle aria-controls="navbarNav" />
-
+  
         <BSNavbar.Collapse id="navbarNav">
           <Nav className="me-auto">
             <Nav.Link 
@@ -62,8 +60,8 @@ export default function Navbar() {
             
             <Nav.Link 
               as={Link} 
-              href="/main/map" 
-              active={pathname === '/main/map'}
+              href="/main/Map" 
+              active={pathname === '/main/Map'}
               className="me-4"
             >
               Map

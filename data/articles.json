@@ -1,0 +1,460 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Understanding Pet Vaccinations: A Comprehensive Guide",
+      "author": "Dr. Emily Green",
+      "date": "October 26, 2025",
+      "category": "Health",
+      "tags": ["Vaccines", "Pet Health", "Prevention", "Dogs", "Cats", "Veterinary Care"],
+      "readTime": "8 min read",
+      "image": "/cat-checkup.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Vaccinations play a crucial role in protecting your pet from various infectious diseases. Just like in humans, vaccines stimulate the immune system to produce antibodies, providing immunity against harmful pathogens. This guide will walk you through the importance of pet vaccinations, common types, and scheduling recommendations."
+        },
+        {
+          "type": "paragraph",
+          "text": "Core vaccines are those recommended for all pets, regardless of their lifestyle or exposure risk, due to the severe nature and prevalence of the diseases they prevent against. For dogs, core vaccines typically include distemper, adenovirus (hepatitis), parvovirus, and rabies. For cats, feline panleukopenia (distemper), feline herpesvirus, feline calicivirus, and rabies are standard."
+        },
+        {
+          "type": "paragraph",
+          "text": "Non-core vaccines are administered based on a pet's exposure risk, geographic location, and lifestyle. For example, dogs that frequently visit kennels or dog parks may benefit from the Bordetella bronchiseptica vaccine. Similarly, outdoor cats or those in multi-cat households might need the feline leukemia virus (FeLV) vaccine. Always consult your veterinarian to determine the most appropriate vaccination plan for your pet."
+        },
+        {
+          "type": "paragraph",
+          "text": "The vaccination schedule can vary depending on your pet's age and previous vaccination history. Puppies and kittens typically receive a series of vaccinations every 3-4 weeks until they are 16 weeks old, followed by boosters. Adult pets usually require annual or triennial booster shots depending on the vaccine. Timely boosters are crucial to maintain immunization effectiveness."
+        },
+        {
+          "type": "paragraph",
+          "text": "Beyond individual protection, a very sick pet, vaccinations contribute to community immunity, also known as herd immunity. When a high percentage of the pet population is vaccinated, it reduces the spread of diseases, protecting vulnerable animals who cannot be vaccinated (e.g., very young, immunocompromised pets)."
+        },
+        {
+          "type": "paragraph",
+          "text": "Side effects from vaccinations are generally mild and temporary, such as slight fever, soreness at the injection site, or decreased appetite. Serious allergic reactions are rare but possible. Always monitor your pet closely after vaccination and contact your vet if you notice any concerning symptoms."
+        },
+        {
+          "type": "paragraph",
+          "text": "In conclusion, a robust vaccination program is an cornerstone of preventive pet care. By working closely with your veterinarian, you can ensure your beloved companion receives the protection they need to live a long, healthy, and happy life."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/vet-examining-pet.jpg",
+            "alt": "Veterinarian examining a dog"
+          },
+          {
+            "url": "/images/vaccine-vials.jpg",
+            "alt": "Various vaccine vials and syringes"
+          }
+        ],
+        "video": {
+          "url": "/videos/vaccination-guide.mp4",
+          "thumbnail": "/images/video-thumb-vaccination.jpg",
+          "title": "Pet Vaccination Guide"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Complete Guide to Dog Nutrition: What Your Canine Really Needs",
+      "author": "Dr. Sarah Mitchell",
+      "date": "November 15, 2025",
+      "category": "Nutrition",
+      "tags": ["Dogs", "Nutrition", "Diet", "Health", "Feeding"],
+      "readTime": "10 min read",
+      "image": "/images/dog-nutrition.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Proper nutrition is the foundation of your dog's health and wellbeing. Understanding what nutrients your canine companion needs, in what quantities, and from which sources can significantly impact their quality of life, energy levels, and longevity. This comprehensive guide breaks down everything you need to know about dog nutrition."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dogs require six essential nutrient groups: proteins, fats, carbohydrates, vitamins, minerals, and water. Proteins are crucial for muscle development, tissue repair, and immune function. High-quality animal proteins from chicken, beef, fish, or lamb should form the backbone of your dog's diet. Aim for foods where meat is listed as the first ingredient."
+        },
+        {
+          "type": "paragraph",
+          "text": "Fats are another vital component, providing energy and helping absorb fat-soluble vitamins (A, D, E, and K). Essential fatty acids like omega-3 and omega-6 support skin health, coat shine, and brain function. Fish oil, flaxseed, and chicken fat are excellent sources. However, balance is key—too much fat can lead to obesity and pancreatitis."
+        },
+        {
+          "type": "paragraph",
+          "text": "While dogs don't strictly need carbohydrates, they provide readily available energy and fiber for digestive health. Whole grains like brown rice, oats, and quinoa are nutritious options. Some dogs may benefit from grain-free diets, particularly those with allergies, but consult your veterinarian before making significant dietary changes."
+        },
+        {
+          "type": "paragraph",
+          "text": "Age, size, activity level, and health status all influence nutritional requirements. Puppies need more calories and protein for growth, while senior dogs may require fewer calories but more joint-supporting nutrients like glucosamine. Working dogs and highly active breeds need higher caloric intake compared to sedentary pets."
+        },
+        {
+          "type": "paragraph",
+          "text": "Portion control is crucial for maintaining healthy weight. Obesity in dogs can lead to diabetes, joint problems, heart disease, and shortened lifespan. Follow feeding guidelines on quality dog food packages, but adjust based on your dog's individual needs. Regular weigh-ins help monitor whether adjustments are necessary."
+        },
+        {
+          "type": "paragraph",
+          "text": "Avoid feeding dogs toxic foods like chocolate, grapes, raisins, onions, garlic, xylitol, and excessive salt. When introducing new foods, do so gradually over 7-10 days to prevent digestive upset. Always provide fresh, clean water, and consult your veterinarian for personalized dietary recommendations tailored to your dog's specific needs."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/dog-food-bowl.jpg",
+            "alt": "Healthy dog food in bowl"
+          },
+          {
+            "url": "/images/nutrition-chart.jpg",
+            "alt": "Dog nutrition pyramid chart"
+          }
+        ],
+        "video": {
+          "url": "/videos/dog-nutrition.mp4",
+          "thumbnail": "/images/video-thumb-nutrition.jpg",
+          "title": "Understanding Dog Nutrition"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Cat Behavior Explained: Decoding Your Feline's Actions",
+      "author": "Dr. Michael Chen",
+      "date": "December 3, 2025",
+      "category": "Behavior",
+      "tags": ["Cats", "Behavior", "Training", "Communication", "Pet Psychology"],
+      "readTime": "7 min read",
+      "image": "/images/cat-behavior.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Cats are fascinating creatures with complex behaviors that often puzzle their human companions. Understanding feline body language, vocalizations, and habits helps strengthen the bond between you and your cat while ensuring their emotional wellbeing. This guide decodes common cat behaviors and what they really mean."
+        },
+        {
+          "type": "paragraph",
+          "text": "Tail position is one of the most expressive aspects of cat communication. A tail held high indicates confidence and contentment, while a puffed-up tail signals fear or aggression. A tail tucked between the legs shows submission or anxiety. Gentle tail swishing often means your cat is focused, but rapid thrashing indicates agitation or irritation."
+        },
+        {
+          "type": "paragraph",
+          "text": "Purring is commonly associated with contentment, but cats also purr when stressed, injured, or giving birth. The vibrations may have self-soothing and healing properties. Kneading (making biscuits) is a leftover behavior from kittenhood when kittens kneaded their mother's belly to stimulate milk flow. Adult cats knead when feeling safe and happy."
+        },
+        {
+          "type": "paragraph",
+          "text": "The slow blink is a cat's way of showing trust and affection. When your cat slowly closes and opens their eyes while looking at you, they're essentially giving you a kitty kiss. You can return this gesture to communicate love and trust. Head bunting (rubbing their head against you) marks you with their scent, claiming you as part of their family."
+        },
+        {
+          "type": "paragraph",
+          "text": "Scratching serves multiple purposes: maintaining claw health, stretching muscles, and marking territory through scent glands in their paws. Provide appropriate scratching posts in various materials and locations. Redirect unwanted scratching rather than punishing, which can damage your bond and increase stress."
+        },
+        {
+          "type": "paragraph",
+          "text": "Cats are crepuscular, meaning they're most active during dawn and dusk. This explains 3 AM zoomies and evening playfulness. Interactive play sessions before bedtime can help align your cat's schedule with yours. Use wand toys to simulate hunting, allowing your cat to stalk, pounce, and catch."
+        },
+        {
+          "type": "paragraph",
+          "text": "Understanding and respecting cat behavior leads to a harmonious household. Recognize when your cat needs space, provide environmental enrichment, and never force interactions. Cats choose when to engage, and respecting these boundaries builds trust. If you notice sudden behavioral changes, consult your veterinarian as these may indicate underlying health issues."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/cat-tail-language.jpg",
+            "alt": "Cat tail positions and meanings"
+          },
+          {
+            "url": "/images/cat-expressions.jpg",
+            "alt": "Different cat facial expressions"
+          }
+        ],
+        "video": {
+          "url": "/videos/cat-behavior.mp4",
+          "thumbnail": "/images/video-thumb-cat.jpg",
+          "title": "Cat Body Language Guide"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Senior Pet Care: Keeping Your Aging Companion Comfortable",
+      "author": "Dr. Jennifer Martinez",
+      "date": "January 12, 2026",
+      "category": "Senior Care",
+      "tags": ["Senior Pets", "Aging", "Health", "Care", "Dogs", "Cats"],
+      "readTime": "9 min read",
+      "image": "/images/senior-pet.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "As our beloved pets age, their needs change significantly. Senior pets require special attention to maintain quality of life and manage age-related conditions. Understanding what to expect and how to adapt care routines ensures your aging companion enjoys their golden years in comfort and dignity."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dogs are generally considered senior around 7 years for large breeds and 10-11 years for smaller breeds. Cats are considered senior around 11 years. However, individual variation exists based on genetics, lifestyle, and overall health. Regular veterinary check-ups become even more critical—semi-annual visits help catch age-related issues early."
+        },
+        {
+          "type": "paragraph",
+          "text": "Common age-related conditions include arthritis, dental disease, kidney disease, heart disease, cognitive dysfunction, and cancer. Watch for warning signs: decreased activity, difficulty climbing stairs, changes in eating or drinking habits, weight fluctuations, confusion, increased sleeping, or house-soiling accidents. Early detection allows for better management."
+        },
+        {
+          "type": "paragraph",
+          "text": "Adjust your home environment to accommodate decreased mobility. Provide ramps or steps for furniture access, use non-slip mats on slippery floors, keep food and water bowls easily accessible, and consider raising bowls to reduce neck strain. Orthopedic beds provide joint support and comfort for arthritic pets."
+        },
+        {
+          "type": "paragraph",
+          "text": "Nutritional needs shift as metabolism slows. Senior pet foods typically contain fewer calories but higher protein quality to maintain muscle mass. Joint supplements like glucosamine and chondroitin may help with arthritis. Some seniors need softer food if dental issues make chewing difficult. Consult your vet about appropriate diet modifications."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mental stimulation remains important for cognitive health. Gentle play, puzzle feeders, and new experiences keep minds sharp. However, respect decreased energy levels—shorter, more frequent activities work better than extended sessions. Maintain routines as much as possible, as predictability provides comfort to aging pets."
+        },
+        {
+          "type": "paragraph",
+          "text": "Quality of life is the ultimate measure of senior care success. Pain management, mobility support, proper nutrition, gentle exercise, and lots of love help senior pets thrive. While saying goodbye is never easy, ensuring comfort and happiness in their final years is the greatest gift we can give our loyal companions."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/senior-dog-care.jpg",
+            "alt": "Elderly dog resting comfortably"
+          },
+          {
+            "url": "/images/senior-cat.jpg",
+            "alt": "Senior cat on orthopedic bed"
+          }
+        ],
+        "video": {
+          "url": "/videos/senior-pet-care.mp4",
+          "thumbnail": "/images/video-thumb-senior.jpg",
+          "title": "Caring for Your Senior Pet"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Dental Health in Pets: Why It Matters More Than You Think",
+      "author": "Dr. Robert Taylor",
+      "date": "February 5, 2026",
+      "category": "Dental Care",
+      "tags": ["Dental Health", "Prevention", "Dogs", "Cats", "Hygiene"],
+      "readTime": "6 min read",
+      "image": "/images/dental-care.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Dental health is often overlooked in pet care, yet it's crucial for overall wellbeing. Poor oral hygiene can lead to painful infections, tooth loss, and serious systemic health problems affecting the heart, liver, and kidneys. Understanding proper dental care and recognizing warning signs prevents unnecessary suffering and costly treatments."
+        },
+        {
+          "type": "paragraph",
+          "text": "By age three, 80% of dogs and 70% of cats show signs of dental disease. Plaque accumulates daily, hardening into tartar within 24-48 hours. This buildup harbors bacteria that inflame gums (gingivitis), eventually progressing to periodontitis where infection damages tissues supporting teeth, leading to tooth loss and bone deterioration."
+        },
+        {
+          "type": "paragraph",
+          "text": "Warning signs of dental problems include bad breath, yellow or brown teeth, red or bleeding gums, difficulty eating, pawing at the mouth, excessive drooling, and behavioral changes like irritability. Don't ignore these symptoms—dental pain significantly impacts quality of life. Schedule a veterinary dental examination if you notice any concerning signs."
+        },
+        {
+          "type": "paragraph",
+          "text": "Daily tooth brushing is the gold standard for preventing dental disease. Use pet-specific toothpaste (never human toothpaste, which contains toxic xylitol) and a soft-bristled brush. Start slowly, gradually increasing duration as your pet becomes comfortable. Even a few times weekly provides significant benefits if daily brushing isn't feasible."
+        },
+        {
+          "type": "paragraph",
+          "text": "Dental treats, chews, and specially formulated foods help reduce plaque and tartar. Look for products with the Veterinary Oral Health Council (VOHC) seal of approval. However, these supplements—not replace—brushing. Water additives containing enzymes that fight bacteria are another helpful tool in your dental care arsenal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Professional dental cleanings under anesthesia allow thorough cleaning below the gum line, where most disease occurs. Your vet will recommend cleaning frequency based on your pet's needs—some require annual cleanings while others need them more frequently. Modern anesthesia is very safe, and proper pre-anesthetic screening minimizes risks."
+        },
+        {
+          "type": "paragraph",
+          "text": "Investing in dental care saves money long-term by preventing expensive extractions and treating complications. More importantly, it keeps your pet comfortable and healthy. Make dental health a priority from the start, establishing good habits early. Your pet's bright smile and fresh breath will thank you!"
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/dog-teeth-brushing.jpg",
+            "alt": "Dog getting teeth brushed"
+          },
+          {
+            "url": "/images/dental-disease-stages.jpg",
+            "alt": "Stages of dental disease in pets"
+          }
+        ],
+        "video": {
+          "url": "/videos/dental-care.mp4",
+          "thumbnail": "/images/video-thumb-dental.jpg",
+          "title": "How to Brush Your Pet's Teeth"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Parasite Prevention: Protecting Your Pet Year-Round",
+      "author": "Dr. Amanda White",
+      "date": "March 18, 2026",
+      "category": "Prevention",
+      "tags": ["Parasites", "Prevention", "Fleas", "Ticks", "Worms", "Health"],
+      "readTime": "8 min read",
+      "image": "/images/parasite-prevention.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Parasites pose serious health risks to pets, causing discomfort, disease, and in severe cases, death. External parasites like fleas and ticks, along with internal parasites such as heartworms and intestinal worms, require year-round prevention. Understanding these threats and implementing comprehensive protection keeps your pet healthy and your family safe from zoonotic diseases."
+        },
+        {
+          "type": "paragraph",
+          "text": "Fleas are more than annoying—they cause allergic dermatitis, anemia in severe infestations, and transmit tapeworms. A single flea can lay 50 eggs daily, rapidly creating an infestation. Modern flea preventatives kill adult fleas and disrupt the life cycle, preventing reproduction. Monthly topical or oral treatments provide effective control when used consistently."
+        },
+        {
+          "type": "paragraph",
+          "text": "Ticks transmit serious diseases including Lyme disease, ehrlichiosis, anaplasmosis, and Rocky Mountain spotted fever. Check your pet after outdoor activities, especially in wooded or grassy areas. Remove attached ticks promptly using fine-tipped tweezers, grasping close to the skin and pulling straight out. Many flea preventatives also repel and kill ticks."
+        },
+        {
+          "type": "paragraph",
+          "text": "Heartworms are transmitted through mosquito bites and mature in the heart and lungs, causing severe damage before symptoms appear. Prevention is far easier and cheaper than treatment. Monthly heartworm preventatives, administered year-round in most climates, provide complete protection. Annual testing ensures no gaps in prevention occurred."
+        },
+        {
+          "type": "paragraph",
+          "text": "Intestinal parasites like roundworms, hookworms, whipworms, and tapeworms affect pets of all ages. Puppies and kittens are particularly vulnerable. Symptoms include diarrhea, vomiting, weight loss, and visible worms in stool. Some intestinal parasites can infect humans, especially children. Regular fecal exams and deworming protocols protect both pets and families."
+        },
+        {
+          "type": "paragraph",
+          "text": "Environmental management complements preventative medications. Vacuum frequently, wash pet bedding weekly in hot water, maintain a clean yard by removing feces promptly, and avoid areas known for heavy tick populations during peak seasons. Indoor pets still need prevention—mosquitoes enter homes, and parasites can be tracked in on clothing or shoes."
+        },
+        {
+          "type": "paragraph",
+          "text": "Work with your veterinarian to develop a comprehensive parasite prevention program tailored to your pet's lifestyle, location, and risk factors. Year-round prevention is more effective and often more economical than treating infestations or infections. Consistent protection ensures your pet stays healthy and parasite-free throughout their life."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/flea-lifecycle.jpg",
+            "alt": "Flea life cycle diagram"
+          },
+          {
+            "url": "/images/tick-removal.jpg",
+            "alt": "Proper tick removal technique"
+          }
+        ],
+        "video": {
+          "url": "/videos/parasite-prevention.mp4",
+          "thumbnail": "/images/video-thumb-parasite.jpg",
+          "title": "Complete Parasite Prevention Guide"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Emergency First Aid for Pets: What Every Owner Should Know",
+      "author": "Dr. Lisa Anderson",
+      "date": "April 7, 2026",
+      "category": "Emergency Care",
+      "tags": ["First Aid", "Emergency", "Safety", "Health", "CPR"],
+      "readTime": "11 min read",
+      "image": "/images/pet-first-aid.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Emergencies happen without warning, and knowing basic first aid can save your pet's life while en route to veterinary care. This guide covers essential emergency response techniques every pet owner should know, from recognizing emergencies to providing immediate care. Remember: first aid supports, not replaces, professional veterinary treatment."
+        },
+        {
+          "type": "paragraph",
+          "text": "Recognize true emergencies requiring immediate veterinary attention: difficulty breathing, unconsciousness, seizures lasting over 5 minutes, profuse bleeding, suspected poisoning, bloated abdomen (especially in large-breed dogs), inability to urinate, hit by vehicle, severe injury, heatstroke, or hypothermia. Time is critical—call ahead while transporting to prepare the clinic for your arrival."
+        },
+        {
+          "type": "paragraph",
+          "text": "For bleeding, apply direct pressure with clean cloth or gauze for 5-10 minutes. Don't peek—lifting the cloth disrupts clot formation. If blood soaks through, add more material on top without removing the first layer. Elevate the wound above heart level if possible. For severe arterial bleeding (bright red, spurting blood), maintain pressure and seek immediate veterinary care."
+        },
+        {
+          "type": "paragraph",
+          "text": "Choking pets paw at their mouth, make gagging sounds, and show blue-tinged gums from oxygen deprivation. For conscious pets, open the mouth and look for the object. If visible and accessible, carefully remove it. For unconscious pets, attempt the Heimlich maneuver: hold the pet upside down (small pets) or stand behind (large dogs) and give 5 sharp thrusts just below the ribcage."
+        },
+        {
+          "type": "paragraph",
+          "text": "CPR may be necessary if your pet stops breathing or has no heartbeat. Check for breathing by watching chest movement and feeling for air from nostrils. Check pulse on the inner thigh. For CPR, lay the pet on their right side. Close the mouth and breathe into the nose (2 breaths every 30 compressions). Compress chest at 100-120 compressions per minute. Continue until the pet breathes independently or you reach veterinary care."
+        },
+        {
+          "type": "paragraph",
+          "text": "Common toxins include chocolate, grapes/raisins, xylitol (artificial sweetener), antifreeze, rodenticides, medications, and certain plants. If poisoning is suspected, immediately call your vet or Pet Poison Helpline. Have the product package ready. Don't induce vomiting unless specifically instructed—some substances cause more damage coming back up."
+        },
+        {
+          "type": "paragraph",
+          "text": "Assemble a pet first aid kit including: gauze pads and rolls, adhesive tape, scissors, tweezers, digital thermometer, hydrogen peroxide 3% (for inducing vomiting only when directed), saline eye solution, ice pack, emergency blanket, muzzle (even gentle pets may bite when hurt), leash, and your veterinarian's contact information plus nearest emergency clinic. Keep it accessible and check supplies regularly."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/pet-cpr.jpg",
+            "alt": "Pet CPR technique demonstration"
+          },
+          {
+            "url": "/images/first-aid-kit.jpg",
+            "alt": "Complete pet first aid kit"
+          }
+        ],
+        "video": {
+          "url": "/videos/pet-first-aid.mp4",
+          "thumbnail": "/images/video-thumb-firstaid.jpg",
+          "title": "Pet First Aid & CPR Tutorial"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Creating an Enriching Environment for Indoor Cats",
+      "author": "Dr. Patricia Lee",
+      "date": "May 22, 2026",
+      "category": "Environment",
+      "tags": ["Cats", "Indoor Living", "Enrichment", "Behavior", "Wellness"],
+      "readTime": "7 min read",
+      "image": "/images/indoor-cat.jpg",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Indoor cats live longer, healthier lives protected from outdoor dangers like cars, predators, diseases, and getting lost. However, indoor living can become monotonous without proper enrichment. Creating a stimulating environment that satisfies natural feline instincts—hunting, climbing, scratching, and exploring—keeps indoor cats physically and mentally healthy."
+        },
+        {
+          "type": "paragraph",
+          "text": "Vertical space is essential for cats. Install cat trees, wall-mounted shelves, or window perches at varying heights, creating a 3D environment. Cats feel secure in elevated positions where they can survey their territory. Position perches near windows for bird-watching entertainment—many cats spend hours enjoying this 'cat TV.'"
+        },
+        {
+          "type": "paragraph",
+          "text": "Interactive play sessions simulate hunting, providing crucial physical exercise and mental stimulation. Use wand toys with feathers or small prey-like attachments. Move the toy like real prey—quick darts, pauses, hiding behind furniture. Allow your cat to 'catch' the prey periodically, maintaining interest. Two 10-15 minute play sessions daily prevent boredom and obesity."
+        },
+        {
+          "type": "paragraph",
+          "text": "Puzzle feeders and food-dispensing toys make cats work for meals, engaging problem-solving skills and slowing eating pace. Start with easier puzzles, gradually increasing difficulty. Rotate toys weekly to maintain novelty. Hide small portions of food around the house, encouraging natural foraging behavior. This mental stimulation is especially important for food-motivated cats."
+        },
+        {
+          "type": "paragraph",
+          "text": "Scratching outlets are non-negotiable. Provide multiple scratching posts in different materials (sisal, cardboard, carpet) and orientations (vertical posts, horizontal pads, angled). Place them near sleeping areas (cats love morning stretches) and high-traffic zones. Regularly refresh catnip on posts to maintain appeal. Never declaw—it's painful and causes behavioral problems."
+        },
+        {
+          "type": "paragraph",
+          "text": "Safe outdoor access can be achieved through 'catios' (cat patios)—enclosed outdoor spaces. Even a small window box with screening provides fresh air and outdoor sights/sounds. Some cats enjoy leash training for supervised outdoor adventures. Always use a harness, never a collar, which cats can slip. Start training indoors before venturing outside."
+        },
+        {
+          "type": "paragraph",
+          "text": "Consider adding a feline companion if your cat seems lonely, though some cats prefer being the only pet. Introduce new cats gradually using the 'scent swapping' method. Environmental enrichment isn't optional—it's essential for preventing behavior problems like aggression, destructive scratching, or inappropriate elimination. An enriched environment equals a happy, well-adjusted cat."
+        }
+      ],
+      "media": {
+        "images": [
+          {
+            "url": "/images/cat-tree.jpg",
+            "alt": "Cat on multi-level cat tree"
+          },
+          {
+            "url": "/images/catio.jpg",
+            "alt": "Enclosed outdoor catio space"
+          }
+        ],
+        "video": {
+          "url": "/videos/cat-enrichment.mp4",
+          "thumbnail": "/images/video-thumb-enrichment.jpg",
+          "title": "Indoor Cat Enrichment Ideas"
+        }
+      }
+    }
+  ]
+}

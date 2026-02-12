@@ -1,101 +1,72 @@
+
+
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import SearchBar from './SearchBar'
 import CategoryFilters from './CategoryFilters'
 import ArticleCard from './ArticleCard'
 import Pagination from './Pagination'
+import { articlesApi } from '../../data/api/articles'
+import { Article } from '@/types/article'
 
+const categories = ['Overview', 'Health', 'Nutrition', 'Behavior', 'Prevention', 'Emergency Care', 'Senior Care', 'Dental Care']
 
-const articles = [
-  {
-    id: 1,
-    title: 'The Importance of a Balanced Diet',
-    excerpt: 'Discover the nutritional essentials your pet needs to thrive. Learn how to create an ideal diet that keeps your furry friend healthy.',
-    image: '/images/balanced-diet.jpg',
-    tags: ['Nutrition', 'Health', 'Diet'],
-    category: 'Nutrition',
-    color: 'yellow'
-  },
-  {
-    id: 2,
-    title: 'Decoding Your Pet\'s Vaccination Schedule',
-    excerpt: 'Learn about important vaccines and when to get them. Navigate the world of immunizations with this guide and protect your pet.',
-    image: '/images/vaccination.jpg',
-    tags: ['Vaccines', 'Prevention'],
-    category: 'Vaccines',
-    color: 'green'
-  },
-  {
-    id: 3,
-    title: 'Understanding Common Pet Behaviors',
-    excerpt: 'Decode your pet\'s actions and strengthen your connection with them. Learn to read the signs and respond with confidence to their body language.',
-    image: '/images/pet-behaviors.jpg',
-    tags: ['Behavior', 'Training', 'Bonding'],
-    category: 'Behavior',
-    color: 'blue'
-  },
-  {
-    id: 4,
-    title: 'Zoonotic Diseases: What Every Pet Owner...',
-    excerpt: 'Stay informed about zoonotic diseases that can transfer between pets and humans. Learn prevention tips to keep your family safe.',
-    image: '/images/zoonotic.jpg',
-    tags: ['Diseases', 'Public Health'],
-    category: 'Diseases',
-    color: 'purple'
-  },
-  {
-    id: 5,
-    title: 'Essential First Aid Tips for Pet Emergencies',
-    excerpt: 'Be prepared to act quickly in emergencies with these crucial first aid tips. Learn life-saving techniques and build a pet emergency kit.',
-    image: '/images/first-aid.jpg',
-    tags: ['First Aid', 'Emergencies', 'Safety'],
-    category: 'First Aid',
-    color: 'yellow'
-  },
-  {
-    id: 6,
-    title: 'Caring for Your Senior Pet: A Guide for Their...',
-    excerpt: 'Help your pet age gracefully with tips on nutrition, exercise, and care. Discover how to keep them comfortable and happy in their golden years.',
-    image: '/images/senior-pet.jpg',
-    tags: ['Senior Care', 'Health', 'Aging'],
-    category: 'Senior Care',
-    color: 'green'
-  },
-  {
-    id: 7,
-    title: 'The Critical Role of Dental Health in Pets',
-    excerpt: 'Learn why dental care is vital for your pet\'s overall health. Discover tips to maintain their teeth and prevent common dental problems.',
-    image: '/images/dental-health.jpg',
-    tags: ['Dental Care', 'Health'],
-    category: 'Dental Care',
-    color: 'blue'
-  },
-  {
-    id: 8,
-    title: 'Identifying and Treating Common Pet Parasites',
-    excerpt: 'Protect your pet from harmful parasites like fleas, ticks, and worms. Learn identification and treatment options to keep them healthy.',
-    image: '/images/parasites.jpg',
-    tags: ['Parasites', 'Prevention', 'Treatment'],
-    category: 'Parasites',
-    color: 'purple'
-  }
-]
+const ARTICLES_PER_PAGE = 8
 
-const categories = ['Overview', 'Exact Health', 'Vaccines', 'Behavior', 'Nutrition', 'Prevention', 'First Aid']
-
-export default function Home() {
+export default function ArticlesPage() {
+  const [articles, setArticles] = useState<Article[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('Overview')
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Fetch articles on mount
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setLoading(true)
+        const data = await articlesApi.getAll()
+        setArticles(data)
+      } catch (error) {
+        console.error('Failed to fetch articles:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [])
+
+  // Filter articles based on category and search
   const filteredArticles = articles.filter(article => {
     const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
     const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+                         article.content[0]?.text.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
+  const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
+  const endIndex = startIndex + ARTICLES_PER_PAGE
+  const currentArticles = filteredArticles.slice(startIndex, endIndex)
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [activeCategory, searchQuery])
+
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </Container>
+    )
+  }
 
   return (
     <>
@@ -121,20 +92,33 @@ export default function Home() {
 
       {/* Articles Grid */}
       <Container className="py-4">
-        <Row className="g-4">
-          {filteredArticles.map((article, index) => (
-            <Col key={article.id} lg={3} md={6} sm={12}>
-              <ArticleCard article={article} index={index} />
-            </Col>
-          ))}
-        </Row>
+        {currentArticles.length > 0 ? (
+          <>
+            <Row className="g-4">
+              {currentArticles.map((article, index) => (
+                <Col key={article.id} lg={3} md={6} sm={12}>
+                  <ArticleCard article={article} />
+                </Col>
+              ))}
+            </Row>
 
-        {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={3}
-          onPageChange={setCurrentPage}
-        />
+            {/* Pagination - only show if more than 8 articles */}
+            {filteredArticles.length > ARTICLES_PER_PAGE && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredArticles.length}
+                itemsPerPage={ARTICLES_PER_PAGE}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
+        ) : (
+          <div className="text-center py-5">
+            <h4 className="text-muted">No articles found</h4>
+            <p className="text-muted">Try adjusting your search or filter</p>
+          </div>
+        )}
       </Container>
     </>
   )
