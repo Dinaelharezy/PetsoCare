@@ -1,5 +1,4 @@
 
-// // data/api/articles.ts
 
 // import { Article } from '@/types/article'
 
@@ -107,13 +106,27 @@
 //     return articles.find(article => article.id.toString() === id.toString())
 //   }
 
-//   async create(article: Omit<Article, 'id' | 'createdAt' | 'updatedAt'>): Promise<Article> {
+//   async create(articleData: Partial<Article>): Promise<Article> {
 //     await new Promise(resolve => setTimeout(resolve, 300))
     
 //     const articles = this.getArticles()
+    
+//     // Generate ID if not provided
+//     const id = articleData.id || `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    
 //     const newArticle: Article = {
-//       ...article,
-//       id: Date.now().toString(),
+//       title: '',
+//       author: '',
+//       date: '',
+//       category: '',
+//       excerpt: '',
+//       color: 'green',
+//       tags: [],
+//       content: [],
+//       media: { images: [] },
+//       published: false,
+//       ...articleData,
+//       id,
 //       createdAt: new Date().toISOString(),
 //       updatedAt: new Date().toISOString()
 //     }
@@ -135,7 +148,8 @@
 //     const updatedArticle: Article = {
 //       ...articles[index],
 //       ...updates,
-//       id: articles[index].id,
+//       id: articles[index].id, // Preserve original ID
+//       createdAt: articles[index].createdAt, // Preserve creation date
 //       updatedAt: new Date().toISOString()
 //     }
     
@@ -168,7 +182,6 @@
 // }
 
 // export const articlesApi = new ArticlesAPI()
-
 
 import { Article } from '@/types/article'
 
@@ -245,6 +258,22 @@ const INITIAL_ARTICLES: Article[] = [
 ]
 
 class ArticlesAPI {
+  // Counter for generating sequential IDs
+  private getNextId(): string {
+    const articles = this.getArticles()
+    if (articles.length === 0) return '1'
+    
+    // Find the highest numeric ID
+    const numericIds = articles
+      .map(a => parseInt(a.id.toString()))
+      .filter(id => !isNaN(id))
+    
+    if (numericIds.length === 0) return '1'
+    
+    const maxId = Math.max(...numericIds)
+    return (maxId + 1).toString()
+  }
+
   private getArticles(): Article[] {
     if (typeof window === 'undefined') return INITIAL_ARTICLES
     
@@ -281,8 +310,8 @@ class ArticlesAPI {
     
     const articles = this.getArticles()
     
-    // Generate ID if not provided
-    const id = articleData.id || `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    // Generate a sequential ID automatically
+    const id = this.getNextId()
     
     const newArticle: Article = {
       title: '',
@@ -296,7 +325,7 @@ class ArticlesAPI {
       media: { images: [] },
       published: false,
       ...articleData,
-      id,
+      id, // Use the generated ID
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }

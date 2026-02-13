@@ -1,4 +1,5 @@
 
+
 // 'use client'
 
 // import { useState, useEffect } from 'react'
@@ -150,7 +151,9 @@
 //         await articlesApi.update(editingArticle.id, articleData)
 //         setSuccessMessage('Article updated successfully!')
 //       } else {
-//         await articlesApi.create(articleData)
+//         // Generate a unique ID for new articles
+//         const newId = `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+//         await articlesApi.create({ ...articleData, id: newId })
 //         setSuccessMessage('Article created successfully!')
 //       }
       
@@ -159,6 +162,9 @@
       
 //       // Clear success message after 3 seconds
 //       setTimeout(() => setSuccessMessage(''), 3000)
+      
+//       // Notify other components that articles have been updated
+//       window.dispatchEvent(new Event('articlesUpdated'))
 //     } catch (error) {
 //       console.error('Error saving article:', error)
 //       alert('Failed to save article. Please try again.')
@@ -172,6 +178,9 @@
 //         setSuccessMessage('Article deleted successfully!')
 //         await loadArticles()
 //         setTimeout(() => setSuccessMessage(''), 3000)
+        
+//         // Notify other components that articles have been updated
+//         window.dispatchEvent(new Event('articlesUpdated'))
 //       } catch (error) {
 //         console.error('Error deleting article:', error)
 //         alert('Failed to delete article. Please try again.')
@@ -185,6 +194,9 @@
 //       await loadArticles()
 //       setSuccessMessage('Article status updated!')
 //       setTimeout(() => setSuccessMessage(''), 3000)
+      
+//       // Notify other components that articles have been updated
+//       window.dispatchEvent(new Event('articlesUpdated'))
 //     } catch (error) {
 //       console.error('Error toggling publish status:', error)
 //       alert('Failed to update article status. Please try again.')
@@ -544,6 +556,7 @@
 //   return gradients[color] || '#f0f0f0, #f8f8f8'
 // }
 
+
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -692,13 +705,14 @@ export default function ArticleManagementPage() {
       }
 
       if (editingArticle) {
+        // Update existing article
         await articlesApi.update(editingArticle.id, articleData)
         setSuccessMessage('Article updated successfully!')
       } else {
-        // Generate a unique ID for new articles
-        const newId = `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-        await articlesApi.create({ ...articleData, id: newId })
-        setSuccessMessage('Article created successfully!')
+        // Create new article - API will auto-generate ID
+        const newArticle = await articlesApi.create(articleData)
+        console.log('✅ New article created with ID:', newArticle.id)
+        setSuccessMessage(`Article created successfully with ID: ${newArticle.id}`)
       }
       
       await loadArticles()
@@ -782,7 +796,10 @@ export default function ArticleManagementPage() {
                   <Badge bg={article.published ? 'success' : 'secondary'}>
                     {article.published ? 'Published' : 'Draft'}
                   </Badge>
-                  <Badge bg="info">{article.category}</Badge>
+                  <div className="d-flex gap-2">
+                    <Badge bg="info">{article.category}</Badge>
+                    <Badge bg="dark">ID: {article.id}</Badge>
+                  </div>
                 </div>
                 
                 {/* Color indicator */}
@@ -877,7 +894,7 @@ export default function ArticleManagementPage() {
       <Modal show={showModal} onHide={handleCloseModal} size="lg" scrollable>
         <Modal.Header closeButton>
           <Modal.Title>
-            {editingArticle ? 'Edit Article' : 'Add New Article'}
+            {editingArticle ? `Edit Article (ID: ${editingArticle.id})` : 'Add New Article'}
           </Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
