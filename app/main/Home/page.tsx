@@ -378,7 +378,7 @@ export default function VetFinder() {
   style={{ 
     display: 'block',
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',textDecoration: 'none',
   }}
   onMouseEnter={(e) => {
     e.currentTarget.style.transform = 'scale(1.02)';

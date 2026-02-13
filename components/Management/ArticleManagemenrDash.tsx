@@ -1,14 +1,19 @@
 'use client'
 
 import { Card, Button } from 'react-bootstrap'
+import { useRouter } from 'next/navigation'
 
 export default function ArticleManagement() {
+  const router = useRouter()
+
   const handleAddArticle = () => {
-    console.log('Add new article')
+    // Navigate to article management page
+    router.push('/admin/articles')
   }
 
   const handleViewArticles = () => {
-    console.log('View all articles')
+    // Navigate to article management page
+    router.push('/admin/articles')
   }
 
   return (

@@ -1,14 +1,19 @@
 'use client'
 
 import { Card, Button } from 'react-bootstrap'
+import { useRouter } from 'next/navigation'
 
 export default function DoctorManagement() {
+  const router = useRouter()
+
   const handleAddDoctor = () => {
-    console.log('Add new doctor')
+    // Navigate to doctor management page
+    router.push('/admin/doctors')
   }
 
   const handleViewDoctors = () => {
-    console.log('View all doctors')
+    // Navigate to doctor management page
+    router.push('/admin/doctors')
   }
 
   return (

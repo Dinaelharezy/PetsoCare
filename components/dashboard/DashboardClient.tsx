@@ -3,8 +3,8 @@
 import { Container, Row, Col } from 'react-bootstrap'
 import NotificationsCard from './NotificationCard'
 import StatisticsCard from './StatisticsCard'
-import ArticleManagement from './ArticleManagement'
-import DoctorManagement from './DoctorManagement'
+import ArticleManagementDash from '../Management/ArticleManagemenrDash'
+import DoctorManagementDash from '../Management/DoctorManagementDash'
 import ReportAnimal from './ReportAnimal'
 
 export default function DashboardClient() {
@@ -29,10 +29,10 @@ export default function DashboardClient() {
         {/* Bottom Row: Action Sections */}
         <Row className="g-4">
           <Col lg={4}>
-            <ArticleManagement />
+            <ArticleManagementDash />
           </Col>
           <Col lg={4}>
-            <DoctorManagement />
+            <DoctorManagementDash />
           </Col>
           <Col lg={4}>
             <ReportAnimal />

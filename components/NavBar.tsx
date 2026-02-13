@@ -123,7 +123,7 @@ export default function Navbar() {
                 Pet Profile
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} href="/main/signup">
+              <NavDropdown.Item as={Link} href="/admin/dashboard">
                 <i className="bi bi-gear me-2"></i>
                 Settings
               </NavDropdown.Item>

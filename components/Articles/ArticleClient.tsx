@@ -8,42 +8,59 @@ import SearchBar from './SearchBar'
 import CategoryFilters from './CategoryFilters'
 import ArticleCard from './ArticleCard'
 import Pagination from './Pagination'
-import { articlesApi } from '../../data/api/articles'
+import { articlesApi } from '@/data/api/articles'
 import { Article } from '@/types/article'
 
 const categories = ['Overview', 'Health', 'Nutrition', 'Behavior', 'Prevention', 'Emergency Care', 'Senior Care', 'Dental Care']
 
 const ARTICLES_PER_PAGE = 8
 
-export default function ArticlesPage() {
+export default function ArticlesClient() {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('Overview')
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Fetch articles on mount
+  // Fetch articles on mount and listen for updates
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        setLoading(true)
-        const data = await articlesApi.getAll()
-        setArticles(data)
-      } catch (error) {
-        console.error('Failed to fetch articles:', error)
-      } finally {
-        setLoading(false)
-      }
+    fetchArticles()
+
+    // Listen for article updates from admin panel
+    const handleArticlesUpdated = () => {
+      console.log('Articles updated - refreshing...')
+      fetchArticles()
     }
 
-    fetchArticles()
+    window.addEventListener('articlesUpdated', handleArticlesUpdated)
+
+    return () => {
+      window.removeEventListener('articlesUpdated', handleArticlesUpdated)
+    }
   }, [])
+
+  const fetchArticles = async () => {
+    try {
+      setLoading(true)
+      const data = await articlesApi.getAll()
+      // Only show published articles to regular users
+      const publishedArticles = data.filter(article => article.published)
+      setArticles(publishedArticles)
+    } catch (error) {
+      console.error('Failed to fetch articles:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Filter articles based on category and search
   const filteredArticles = articles.filter(article => {
     const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.content[0]?.text.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.content.some(p => p.text.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     return matchesCategory && matchesSearch
   })
 
@@ -95,7 +112,7 @@ export default function ArticlesPage() {
         {currentArticles.length > 0 ? (
           <>
             <Row className="g-4">
-              {currentArticles.map((article, index) => (
+              {currentArticles.map((article) => (
                 <Col key={article.id} lg={3} md={6} sm={12}>
                   <ArticleCard article={article} />
                 </Col>
