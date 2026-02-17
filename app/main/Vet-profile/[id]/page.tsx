@@ -1,12 +1,5 @@
-import DoctorProfile from '../../../../components/DoctorProfile/DoctorProfileClient';
-import { vets } from '../../../../data/vets';
+import DoctorProfileClient from '@/components/DoctorProfile/DoctorProfileClient'
 
-
-export default async function VetProfilePage({ params } :any) {
-  const { id } = await params;
-  const vet = vets.find(v => v.id === Number(id));
-
-  if (!vet) return <div>Doctor not found</div>;
-
-  return <DoctorProfile vet={vet} />;
+export default function VetProfilePage() {
+  return <DoctorProfileClient />
 }

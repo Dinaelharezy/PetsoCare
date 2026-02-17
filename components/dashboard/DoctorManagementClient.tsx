@@ -775,7 +775,6 @@
 //     </Container>
 //   )
 // }
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -819,7 +818,6 @@ export default function DoctorManagementPage() {
 
   const locations = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
-  // ✅ Image validation
   const isValidImage = (src?: string) => {
     if (!src) return false
     return src.startsWith('/') || src.startsWith('http')
@@ -965,14 +963,17 @@ export default function DoctorManagementPage() {
   return (
     <Container fluid className="px-4 py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Doctor Management</h1>
-        <Button onClick={() => handleShowModal()}>
+        <h1 className="page-title">Doctor Management</h1>
+        <Button className="btn-primary-green" onClick={() => handleShowModal()}>
+          <i className="bi bi-person-plus me-2"></i>
           Add New Doctor
         </Button>
       </div>
 
       {successMessage && (
-        <Alert variant="success">{successMessage}</Alert>
+        <Alert variant="success" dismissible onClose={() => setSuccessMessage('')}>
+          {successMessage}
+        </Alert>
       )}
 
       <Row className="g-4">
@@ -993,7 +994,6 @@ export default function DoctorManagementPage() {
                     <i className="bi bi-person-fill text-secondary" style={{ fontSize: '4rem' }}></i>
                   </div>
                 )}
-
                 <Badge
                   bg={vet.published !== false ? 'success' : 'secondary'}
                   className="position-absolute top-0 end-0 m-2"
@@ -1004,24 +1004,229 @@ export default function DoctorManagementPage() {
 
               <Card.Body>
                 <h5>{vet.name}</h5>
-                <p className="text-muted">{vet.specialty}</p>
+                <p className="text-muted mb-1">{vet.specialty}</p>
+                <p className="text-muted mb-3" style={{ fontSize: '0.85rem' }}>{vet.location}</p>
 
                 <div className="d-flex gap-2 flex-wrap">
-                  <Button size="sm" onClick={() => handleShowModal(vet)}>
-                    Edit
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={() => handleShowModal(vet)}
+                  >
+                    <i className="bi bi-pencil me-1"></i>Edit
                   </Button>
-                  <Button size="sm" onClick={() => handleTogglePublish(vet.id)}>
-                    Toggle
+                  <Button
+                    variant={vet.published !== false ? 'outline-warning' : 'outline-success'}
+                    size="sm"
+                    onClick={() => handleTogglePublish(vet.id)}
+                  >
+                    <i className={`bi bi-${vet.published !== false ? 'eye-slash' : 'eye'} me-1`}></i>
+                    {vet.published !== false ? 'Hide' : 'Show'}
                   </Button>
-                  <Button size="sm" variant="danger" onClick={() => handleDelete(vet.id)}>
-                    Delete
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => handleDelete(vet.id)}
+                  >
+                    <i className="bi bi-trash me-1"></i>Delete
                   </Button>
                 </div>
               </Card.Body>
             </Card>
           </Col>
         ))}
+
+        {vets.length === 0 && (
+          <Col>
+            <Card>
+              <Card.Body className="text-center text-muted py-5">
+                <i className="bi bi-person-x" style={{ fontSize: '48px' }}></i>
+                <p className="mt-3">No doctors found. Add your first doctor!</p>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
       </Row>
+
+      {/* ✅ Add / Edit Modal - ده اللي كان ناقص */}
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" scrollable>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {editingVet ? 'Edit Doctor' : 'Add New Doctor'}
+          </Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleSubmit}>
+          <Modal.Body>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Full Name *</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Dr. John Doe"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Specialty *</Form.Label>
+                  <Form.Select
+                    name="specialty"
+                    value={formData.specialty}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select specialty</option>
+                    {specialties.map(spec => (
+                      <option key={spec} value={spec}>{spec}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Email *</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="doctor@example.com"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Phone *</Form.Label>
+                  <Form.Control
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+20 XXX XXX XXXX"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Location *</Form.Label>
+                  <Form.Select
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select location</option>
+                    {locations.map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Years of Experience *</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleInputChange}
+                    placeholder="10"
+                    min="0"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Rating (1-5)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleInputChange}
+                    step="0.1"
+                    min="1"
+                    max="5"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Number of Reviews</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="reviews"
+                    value={formData.reviews}
+                    onChange={handleInputChange}
+                    placeholder="0"
+                    min="0"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Profile Image URL</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    placeholder="/vet1.jpg or https://..."
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Biography *</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+                placeholder="Brief description of the doctor's expertise..."
+                rows={4}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                name="published"
+                label="Publish doctor profile (visible to users)"
+                checked={formData.published}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Cancel
+            </Button>
+            <Button type="submit" className="btn-primary-green">
+              {editingVet ? 'Update Doctor' : 'Add Doctor'}
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </Container>
   )
 }
