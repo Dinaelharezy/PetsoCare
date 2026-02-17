@@ -1,4 +1,4 @@
-import DoctorProfile from '../../../../components/DoctorProfile/DoctorProfile';
+import DoctorProfile from '../../../../components/DoctorProfile/DoctorProfileClient';
 import { vets } from '../../../../data/vets';
 
 
