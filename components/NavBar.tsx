@@ -13,17 +13,17 @@ export default function Navbar() {
   return (
     <BSNavbar expand="lg" className="bg-body">
       <Container fluid>
-        <BSNavbar.Brand as={Link} href="/" className="me-5">
-          Navbar
+        <BSNavbar.Brand as={Link} href="/" className=" mx-4 py-2 my-1 fs-4">
+          PetsoCare
         </BSNavbar.Brand>
   
         <BSNavbar.Collapse id="navbarNav">
-          <Nav className="me-auto">
+          <Nav className="d-flex align-items-center gap-4">
             <Nav.Link 
               as={Link} 
               href="/main/Home" 
               active={pathname === '/main/Home'}
-              className="me-4"
+              className="ms-4 me-4 fs-5"
             >
               Home
             </Nav.Link>
@@ -32,12 +32,12 @@ export default function Navbar() {
               as={Link} 
               href="/main/Articles" 
               active={pathname === '/main/Articles'}
-              className="me-4"
+              className="me-4 fs-5"
             >
               Articles
             </Nav.Link>
             
-            <NavDropdown title="Reports" id="reports-dropdown" className="me-4">
+            <NavDropdown title="Reports" id="reports-dropdown" className="me-4 fs-5">
               <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">
                 Emergency Report
               </NavDropdown.Item>
@@ -53,7 +53,7 @@ export default function Navbar() {
               as={Link} 
               href="/main/VaccineSchedule" 
               active={pathname === '/main/VaccineSchedule'}
-              className="me-4"
+              className="me-4 fs-5"
             >
               Vaccines
             </Nav.Link>
@@ -62,18 +62,18 @@ export default function Navbar() {
               as={Link} 
               href="/main/Map" 
               active={pathname === '/main/Map'}
-              className="me-4"
+              className="me-4 fs-5 me-5"
             >
               Map
             </Nav.Link>
           </Nav>
 
           {/* Search, Theme, Profile */}
-          <div className="d-none d-lg-flex align-items-center gap-3 ms-auto">
+          <div className="d-none d-lg-flex align-items-center gap-2 ms-auto">
             {/* Search Form */}
-            <form className="d-flex" style={{marginRight:'250px'}} role="search">
+            <form className="d-flex me-1" style={{marginRight:'250px'}} role="search">
               <input 
-                className="form-control me-2" 
+                className="form-control  rounded-pill" 
                 style={{width: '500px', height:'35px'}} 
                 type="search" 
                 placeholder="Search" 
@@ -84,7 +84,7 @@ export default function Navbar() {
             {/* Theme Toggle */}
             <button 
               onClick={toggleTheme}
-              className="btn d-flex gap-4 border-0"
+              className="btn d-flex me-1 border-0 "
               title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
               id="themee"
             >
@@ -113,6 +113,8 @@ export default function Navbar() {
               }
               id="profile-dropdown"
               align="end"
+              // className='ms-2'
+              
             >
               <NavDropdown.Item as={Link} href="/main/PersonProfile">
                 <i className="bi bi-person me-2"></i>
@@ -138,3 +140,4 @@ export default function Navbar() {
     </BSNavbar>
   );
 }
+

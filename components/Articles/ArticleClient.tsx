@@ -9,14 +9,14 @@ import CategoryFilters from './CategoryFilters'
 import ArticleCard from './ArticleCard'
 import Pagination from './Pagination'
 import { articlesApi } from '@/data/api/articles'
-import { Article } from '@/types/article'
+import { article } from '@/types/article'
 
 const categories = ['Overview', 'Health', 'Nutrition', 'Behavior', 'Prevention', 'Emergency Care', 'Senior Care', 'Dental Care']
 
 const ARTICLES_PER_PAGE = 8
 
 export default function ArticlesClient() {
-  const [articles, setArticles] = useState<Article[]>([])
+  const [articles, setArticles] = useState<article[]>([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('Overview')
   const [currentPage, setCurrentPage] = useState(1)
@@ -39,30 +39,27 @@ export default function ArticlesClient() {
     }
   }, [])
 
-  const fetchArticles = async () => {
-    try {
-      setLoading(true)
-      const data = await articlesApi.getAll()
-      // Only show published articles to regular users
-      const publishedArticles = data.filter(article => article.published)
-      setArticles(publishedArticles)
-    } catch (error) {
-      console.error('Failed to fetch articles:', error)
-    } finally {
-      setLoading(false)
-    }
+const fetchArticles = async () => {
+  try {
+    setLoading(true)
+    const data = await articlesApi.getAll()
+    setArticles(data) // ✅ بدون أي filter
+  } catch (error) {
+    console.error('Failed to fetch articles:', error)
+  } finally {
+    setLoading(false)
   }
+}
 
   // Filter articles based on category and search
-  const filteredArticles = articles.filter(article => {
-    const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
-    const matchesSearch = 
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.content.some(p => p.text.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-    return matchesCategory && matchesSearch
-  })
+ const filteredArticles = articles.filter(article => {
+  const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
+  const matchesSearch =
+    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    article.content.toLowerCase().includes(searchQuery.toLowerCase()) // ✅ string.includes مش some
+  return matchesCategory && matchesSearch
+})
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
@@ -90,8 +87,8 @@ export default function ArticlesClient() {
       {/* Header */}
       <div className="header-section">
         <Container>
-          <h1 className="main-title">
-            Nurturing Knowledge for Your Beloved Companion
+          <h1 className="main-title font-for-app">
+            Nurturing Knowledge for  your own safety and your pet's well-being
           </h1>
           <p className="subtitle">
             Explore our curated collection of articles on pet health, behavior, and well-being. From essential preventative care, find expert advice to keep your furry friend happy, healthy, and thriving.
