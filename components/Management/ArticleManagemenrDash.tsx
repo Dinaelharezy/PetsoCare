@@ -3,7 +3,7 @@
 import { Card, Button } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 
-export default function ArticleManagement() {
+export default function ArticleManagementDash() {
   const router = useRouter()
 
   const handleAddArticle = () => {

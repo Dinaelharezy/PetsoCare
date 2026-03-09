@@ -3,7 +3,7 @@
 import { Card, Button } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 
-export default function DoctorManagement() {
+export default function DoctorManagementDash() {
   const router = useRouter()
 
   const handleAddDoctor = () => {

@@ -1659,7 +1659,9 @@ textarea.form-control {
   justify-content: center;
   padding: 0.5rem 1rem;
 }
-
+.article-modal {
+  max-width: 520px !important;
+}
 .page-btn:hover:not(:disabled) {
   border-color: var(--text-dark);
   background: var(--bg-light);

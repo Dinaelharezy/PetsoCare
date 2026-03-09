@@ -4,14 +4,15 @@
 import { Container, Row, Col, Badge } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 import { article } from '@/types/article'
-
+import Image from 'next/image'
 interface ArticleContentProps {
   article: article
 }
 
 export default function ArticleContent({ article }: ArticleContentProps) {
   const router = useRouter()
-
+console.log(article.imageUrl)
+console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
       <Container className="py-5">
@@ -43,7 +44,7 @@ export default function ArticleContent({ article }: ArticleContentProps) {
               </div>
 
               {/* Image */}
-              {article.imageUrl && (
+              {/* {article.imageUrl && (
                 <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
                   <img
                     src={article.imageUrl}
@@ -51,7 +52,19 @@ export default function ArticleContent({ article }: ArticleContentProps) {
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
-              )}
+              )} */}
+
+              {article.imageUrl && (
+  <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
+    <Image
+  src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
+  alt={article.title}
+  width={800}
+  height={400}
+  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+/>
+  </div>
+)}
 
               {/* Summary */}
               {article.summary && (

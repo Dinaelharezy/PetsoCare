@@ -1,56 +1,50 @@
+
+
 // 'use client'
 // import { Article } from '../../types/article'
 // import Link from 'next/link'
+// import Image from 'next/image'
+
 // interface ArticleCardProps {
 //   article: Article
 // }
 
-
 // export default function ArticleCard({ article }: ArticleCardProps) {
 //   return (
 //     <Link href={`/main/Articles/${article.id}`} className="article-card animate-card">
-//       <div
-//         className="article-image"
-//         style={{
-//           background: `linear-gradient(135deg, ${getGradientColors(article.color)})`
-//         }}
-//       ></div>
+//       <div className="article-image">
+//         {article.imageUrl ? (
+//           <img
+//             src={article.imageUrl}
+//             alt={article.title}
+//             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+//           />
+//         ) : (
+//           <div style={{ background: 'linear-gradient(135deg, #f0f0f0, #f8f8f8)', width: '100%', height: '100%' }} />
+//         )}
+//       </div>
 //       <div className="article-content">
+//         <span className="article-category">{article.category}</span>
 //         <h3 className="article-title">{article.title}</h3>
-//         <p className="article-excerpt">{article.excerpt}</p>
-//         <div className="article-tags">
-//           {article.tags.map((tag, idx) => (
-//             <span
-//               key={idx}
-//               className={`article-tag ${idx === 0 ? article.color : ''}`}
-//             >
-//               {tag}
-//             </span>
-//           ))}
+//         <p className="article-excerpt">{article.summary}</p>
+//         <div className="article-meta">
+//           <small className="text-muted">
+//             {new Date(article.publishDate).toLocaleDateString()}
+//           </small>
 //         </div>
 //       </div>
 //     </Link>
 //   )
 // }
 
-// function getGradientColors(color: string): string {
-//   const gradients: { [key: string]: string } = {
-//     yellow: '#ffd966, #ffe699',
-//     green: '#d4edda, #e1f5e8',
-//     blue: '#c3e6f5, #d1eefa',
-//     purple: '#e8d9f5, #f0e6fa'
-//   }
-//   return gradients[color] || '#f0f0f0, #f8f8f8'
-// }
-
 'use client'
-import { Article } from '../../types/article'
+import { article } from '../../types/article'
 import Link from 'next/link'
-import Image from 'next/image'
 
 interface ArticleCardProps {
-  article: Article
+  article: article
 }
+
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   return (
@@ -58,7 +52,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       <div className="article-image">
         {article.imageUrl ? (
           <img
-            src={article.imageUrl}
+            src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
             alt={article.title}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
