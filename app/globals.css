@@ -1635,25 +1635,17 @@ textarea.form-control {
   border-color: var(--primary-purple);
 }
 
-/* Pagination */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 3rem 0 2rem;
-   /* flex-wrap: wrap; */
-}
 
 
 
-joijoij
+
 
 /* Add to your globals.css */
 
 
+
 .page-btn {
-  min-width: 40px;
+  min-width: 90px;
   height: 40px;
   border: 1px solid var(--border-light);
   border-radius: 8px;
@@ -1690,13 +1682,7 @@ joijoij
   align-items: center;
 }
 
-.pagination-info {
-  width: 100%;
-  text-align: center;
-  margin-top: 1rem;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
+
 
 @media (max-width: 768px) {
   .pagination-container {
@@ -1708,6 +1694,115 @@ joijoij
     height: 36px;
     padding: 0.4rem 0.8rem;
   }
+}
+
+
+
+
+.page-btn {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn.active {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn.active {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-ellipsis {
+  padding: 8px;
+  color: #6c757d;
+}
+
+.pagination-info {
+  width: 100%;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn.active {
+  background: #86C8BC;
+  color: white;
+  border-color: #86C8BC;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-ellipsis {
+  padding: 8px;
+  color: #6c757d;
 }
 
 
@@ -2493,14 +2588,6 @@ textarea.form-control {
   border-color: var(--primary-purple);
 }
 
-/* Pagination */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 3rem 0 2rem;
-}
 
 .page-btn {
   width: 40px;

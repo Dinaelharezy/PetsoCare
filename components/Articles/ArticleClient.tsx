@@ -11,9 +11,9 @@ import Pagination from './Pagination'
 import { articlesApi } from '@/data/api/articles'
 import { article } from '@/types/article'
 
-const categories = ['Overview', 'Health', 'Nutrition', 'Behavior', 'Prevention', 'Emergency Care', 'Senior Care', 'Dental Care']
 
-const ARTICLES_PER_PAGE = 8
+
+const ARTICLES_PER_PAGE = 4
 
 export default function ArticlesClient() {
   const [articles, setArticles] = useState<article[]>([])
@@ -21,6 +21,25 @@ export default function ArticlesClient() {
   const [activeCategory, setActiveCategory] = useState('Overview')
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
+
+const [categories, setCategories] = useState<string[]>(['Overview'])
+
+const fetchArticles = async () => {
+  try {
+    setLoading(true)
+    const data = await articlesApi.getAll()
+    setArticles(data)
+    
+    // استخرجي الـ categories من الـ API ✅
+    const uniqueCategories = ['Overview', ...new Set(data.map(a => a.category).filter(Boolean))]
+    setCategories(uniqueCategories)
+    
+  } catch (error) {
+    console.error('Failed to fetch articles:', error)
+  } finally {
+    setLoading(false)
+  }
+}
 
   // Fetch articles on mount and listen for updates
   useEffect(() => {
@@ -39,17 +58,7 @@ export default function ArticlesClient() {
     }
   }, [])
 
-const fetchArticles = async () => {
-  try {
-    setLoading(true)
-    const data = await articlesApi.getAll()
-    setArticles(data) // ✅ بدون أي filter
-  } catch (error) {
-    console.error('Failed to fetch articles:', error)
-  } finally {
-    setLoading(false)
-  }
-}
+
 
   // Filter articles based on category and search
  const filteredArticles = articles.filter(article => {
@@ -57,7 +66,7 @@ const fetchArticles = async () => {
   const matchesSearch =
     article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    article.content.toLowerCase().includes(searchQuery.toLowerCase()) // ✅ string.includes مش some
+    article.content.toLowerCase().includes(searchQuery.toLowerCase()) // 
   return matchesCategory && matchesSearch
 })
 

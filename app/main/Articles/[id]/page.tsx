@@ -6,12 +6,12 @@ import { useParams, useRouter } from 'next/navigation'
 import { Container, Spinner } from 'react-bootstrap'
 import ArticleContent from "@/components/Articles/ArticleContent"
 import { articlesApi } from '@/data/api/articles'
-import { Article } from '@/types/article'
+import { article } from '@/types/article'
 
 export default function ArticleContentPage() {
   const params = useParams()
   const router = useRouter()
-  const [article, setArticle] = useState<Article | null>(null)
+  const [article, setArticle] = useState<article | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -36,7 +36,6 @@ export default function ArticleContentPage() {
           id: a.id, 
           type: typeof a.id,
           title: a.title,
-          published: a.published
         })))
         
         const data = await articlesApi.getById(params.id as string)
@@ -49,13 +48,7 @@ export default function ArticleContentPage() {
           return
         }
 
-        // Check if article is published
-        if (!data.published) {
-          console.log('⚠️ Article is not published')
-          setError('This article is not available')
-          setLoading(false)
-          return
-        }
+
 
         console.log('✨ Article loaded successfully:', data.title)
         setArticle(data)

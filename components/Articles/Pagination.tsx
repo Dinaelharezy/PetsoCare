@@ -55,7 +55,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="pagination-container">
+    <div className="pagination-container gap-3">
       {/* Previous Button */}
       <button
         className="page-btn"
