@@ -35,8 +35,24 @@
   font-style: italic;
 }
 
+.card * {
+     font-family: 'Quicksand', sans-serif !important;
+}
+
 .font-for-app {
     font-family: 'Quicksand', sans-serif;
+}
+.font-for-app:hover {
+    color: rgb(78, 163, 13) !important;
+    transition: background-color 0.3s ease;
+}
+
+.color-for-app {
+  color: rgb(199, 242, 167) !important;
+  /* color: rgb(178, 242, 130); */
+}
+.color-for-app:hover {
+  color: rgb(178, 242, 130) !important;
 }
 
 #themee:hover {

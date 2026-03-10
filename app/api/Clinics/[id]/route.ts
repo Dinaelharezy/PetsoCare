@@ -1,16 +1,15 @@
 
-
 import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;  // ✅ await الـ params
+  const { id } = await params;  
   
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/Clinics/${id}`,
       {
         headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",

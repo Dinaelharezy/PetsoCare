@@ -1,20 +1,37 @@
 
 
+// export interface Vet {
+//   id: string
+//   name: string
+//   specialty: string
+//   rating: number
+//   reviews: number
+//   image: string
+//   location: string
+//   phone: string
+//   email: string
+//   bio: string
+//   experience?: number
+//   published?: boolean
+//   createdAt?: string
+//   updatedAt?: string
+// }
+
+// types/Vet.ts
 export interface Vet {
-  id: string
+  id: number
   name: string
-  specialty: string
-  rating: number
-  reviews: number
-  image: string
-  location: string
+  address: string
+  governorate: string
   phone: string
-  email: string
-  bio: string
-  experience?: number
-  published?: boolean
+  facebookPage?: string
+  imageUrl?: string
+  latitude?: number
+  longitude?: number
+  bookingPrice?: number
+  workingDays?: string
+  workingHours?: string
   createdAt?: string
-  updatedAt?: string
 }
 
 // For the admin form

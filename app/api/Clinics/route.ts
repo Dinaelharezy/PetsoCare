@@ -1,10 +1,9 @@
-
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/Articles?pageSize=100`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/Clinics`,
       {
         headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",
@@ -12,14 +11,14 @@ export async function GET() {
     );
     const data = await response.json();
     
-    // ✅ لو array رجعه مباشرة
+   
     if (Array.isArray(data)) {
       return NextResponse.json(data);
     }
     
-    // ✅ لو paginated - جرب كل الاحتمالات
-    const articles = data.items ?? data.data ?? data.articles ?? data.result ?? [];
-    return NextResponse.json(articles);
+
+    const clinics = data.items ?? data.data ?? data.articles ?? data.result ?? [];
+    return NextResponse.json(clinics);
     
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
