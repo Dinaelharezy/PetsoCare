@@ -29,7 +29,7 @@ const fetchArticles = async () => {
     setLoading(true)
     const data = await articlesApi.getAll()
     setArticles(data)
-    
+    console.log('Fetched articles:', data)
     // استخرجي الـ categories من الـ API ✅
     const uniqueCategories = ['Overview', ...new Set(data.map(a => a.category).filter(Boolean))]
     setCategories(uniqueCategories)

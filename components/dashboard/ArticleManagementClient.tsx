@@ -1,5 +1,5 @@
 
-
+//good but photos not working
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -19,7 +19,6 @@ export default function ArticleManagementClient() {
     Title: '',
     Summary: '',
     Content: '',
-    ImageUrl: '',
     Source: '',
     Category: '',
     PublishDate: '',
@@ -38,9 +37,14 @@ export default function ArticleManagementClient() {
         headers: { 'ngrok-skip-browser-warning': 'true' }
       })
       const data = await response.json()
-      setArticles(data)
+      if (Array.isArray(data)) {
+        setArticles(data)
+      } else {
+        setArticles([])
+      }
     } catch (error) {
       console.error('Failed to load articles:', error)
+      setArticles([])
     } finally {
       setLoading(false)
     }
@@ -53,7 +57,6 @@ export default function ArticleManagementClient() {
         Title: article.title,
         Summary: article.summary,
         Content: article.content,
-        ImageUrl: article.imageUrl || '',
         Source: article.source,
         Category: article.category,
         PublishDate: article.publishDate?.split('T')[0] || '',
@@ -64,7 +67,6 @@ export default function ArticleManagementClient() {
         Title: '',
         Summary: '',
         Content: '',
-        ImageUrl: '',
         Source: '',
         Category: '',
         PublishDate: new Date().toISOString().split('T')[0],
@@ -92,25 +94,26 @@ export default function ArticleManagementClient() {
     setError('')
 
     try {
-      const payload = {
-        title: formData.Title,
-        summary: formData.Summary,
-        content: formData.Content,
-        imageUrl: formData.ImageUrl,
-        source: formData.Source,
-        category: formData.Category,
-        publishDate: new Date(formData.PublishDate).toISOString(),
-        published: true
+      // ✅ FormData عشان IFormFile في الـ .NET
+      const formDataToSend = new FormData()
+      formDataToSend.append('Title', formData.Title)
+      formDataToSend.append('Summary', formData.Summary)
+      formDataToSend.append('Content', formData.Content)
+      formDataToSend.append('Category', formData.Category)
+      formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
+      formDataToSend.append('Source', formData.Source)
+      formDataToSend.append('Published', 'true')
+
+      if (imageFile) {
+        formDataToSend.append('Image', imageFile) // ← اسمه Image زي الـ DTO
       }
 
       if (editingArticle) {
         const response = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          // ❌ متحطش Content-Type مع FormData
+          body: formDataToSend
         })
         if (!response.ok) {
           const errData = await response.json().catch(() => ({}))
@@ -122,11 +125,8 @@ export default function ArticleManagementClient() {
       } else {
         const response = await fetch('/api/dashboard/articles', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-          },
-          body: JSON.stringify(payload)
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          body: formDataToSend
         })
         if (!response.ok) {
           const errData = await response.json().catch(() => ({}))
@@ -137,6 +137,7 @@ export default function ArticleManagementClient() {
         setSuccessMessage('Article created successfully!')
       }
 
+      setImageFile(null)
       await loadArticles()
       handleCloseModal()
       setTimeout(() => setSuccessMessage(''), 3000)
@@ -274,15 +275,22 @@ export default function ArticleManagementClient() {
             </Form.Group>
 
             <Form.Group className="mb-2">
-              <Form.Label className="small fw-bold">Image URL</Form.Label>
+              <Form.Label className="small fw-bold">Image</Form.Label>
               <Form.Control
                 size="sm"
-                type="text"
-                name="ImageUrl"
-                value={formData.ImageUrl}
-                onChange={handleInputChange}
-                placeholder="https://... or /images/..."
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0]
+                  if (file) setImageFile(file)
+                }}
               />
+              {editingArticle?.imageUrl && !imageFile && (
+                <small className="text-muted mt-1 d-block">
+                  <i className="bi bi-image me-1"></i>
+                  Current image exists — upload new to replace
+                </small>
+              )}
             </Form.Group>
 
             <Row>
