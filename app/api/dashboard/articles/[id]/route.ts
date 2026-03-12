@@ -68,3 +68,28 @@ export async function DELETE(
 
   return NextResponse.json({ success: true });
 }
+
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const formData = await request.formData();
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${id}/image`,
+    {
+      method: "POST",
+      headers: { "ngrok-skip-browser-warning": "true" },
+      body: formData,
+    }
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    return NextResponse.json({ error: text }, { status: response.status });
+  }
+
+  return NextResponse.json({ success: true });
+}

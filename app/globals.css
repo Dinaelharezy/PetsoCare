@@ -1,10 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fredoka:wght@600;700&display=swap');
 
+
 .nav-link:hover {
   color: rgb(199, 242, 167) !important;
   transition: background-color 0.3s ease;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+  font-family: "Amiri", serif;
+}
+
 
 .nav-link {
   color: rgb(52, 51, 51) !important;
@@ -1220,11 +1230,7 @@ body {
 
 
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 body {
   /* font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; */
@@ -1908,6 +1914,7 @@ textarea.form-control {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
 }
 
 body {

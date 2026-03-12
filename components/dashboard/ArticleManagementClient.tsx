@@ -89,12 +89,117 @@ export default function ArticleManagementClient() {
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   setError('')
 
-    try {
-      // ✅ FormData عشان IFormFile في الـ .NET
+  //   try {
+  //     // ✅ FormData عشان IFormFile في الـ .NET
+  //     const formDataToSend = new FormData()
+  //     formDataToSend.append('Title', formData.Title)
+  //     formDataToSend.append('Summary', formData.Summary)
+  //     formDataToSend.append('Content', formData.Content)
+  //     formDataToSend.append('Category', formData.Category)
+  //     formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
+  //     formDataToSend.append('Source', formData.Source)
+  //     formDataToSend.append('Published', 'true')
+
+  //     if (imageFile) {
+  //       formDataToSend.append('Image', imageFile) // ← اسمه Image زي الـ DTO
+  //     }
+
+  //     if (editingArticle) {
+  //       const response = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+  //         method: 'PUT',
+  //         headers: { 'ngrok-skip-browser-warning': 'true' },
+  //         // ❌ متحطش Content-Type مع FormData
+  //         body: formDataToSend
+  //       })
+  //       if (!response.ok) {
+  //         const errData = await response.json().catch(() => ({}))
+  //         console.error('Update error:', errData)
+  //         setError(`Failed to update: ${response.status}`)
+  //         return
+  //       }
+  //       setSuccessMessage('Article updated successfully!')
+  //     } else {
+  //       const response = await fetch('/api/dashboard/articles', {
+  //         method: 'POST',
+  //         headers: { 'ngrok-skip-browser-warning': 'true' },
+  //         body: formDataToSend
+  //       })
+  //       if (!response.ok) {
+  //         const errData = await response.json().catch(() => ({}))
+  //         console.error('Create error:', errData)
+  //         setError(`Failed to create: ${response.status}`)
+  //         return
+  //       }
+  //       setSuccessMessage('Article created successfully!')
+  //     }
+
+  //     setImageFile(null)
+  //     await loadArticles()
+  //     handleCloseModal()
+  //     setTimeout(() => setSuccessMessage(''), 3000)
+  //     window.dispatchEvent(new Event('articlesUpdated'))
+  //   } catch (error) {
+  //     console.error('Error saving article:', error)
+  //     setError('Failed to save article. Please try again.')
+  //   }
+  // }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError('')
+
+  try {
+    if (editingArticle) {
+      // ✅ Step 1: ابعت البيانات JSON
+      const response = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
+        },
+        body: JSON.stringify({
+          title: formData.Title,
+          summary: formData.Summary,
+          content: formData.Content,
+          category: formData.Category,
+          publishDate: new Date(formData.PublishDate).toISOString(),
+          source: formData.Source,
+          published: true,
+        })
+      })
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        console.error('Update error:', errData)
+        setError(`Failed to update: ${response.status}`)
+        return
+      }
+
+      // ✅ Step 2: لو في صورة جديدة ابعتها منفصلة
+      if (imageFile) {
+        const imgFormData = new FormData()
+        imgFormData.append('Image', imageFile)
+
+        const imgResponse = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+          method: 'PATCH',
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          body: imgFormData
+        })
+
+        if (!imgResponse.ok) {
+          console.error('Image upload failed — article updated but image not changed')
+          // ✅ مش بنوقف العملية، الـ article اتحدث بنجاح
+        }
+      }
+
+      setSuccessMessage('Article updated successfully!')
+
+    } else {
+      // ✅ POST لسه FormData زي ما هو
       const formDataToSend = new FormData()
       formDataToSend.append('Title', formData.Title)
       formDataToSend.append('Summary', formData.Summary)
@@ -103,50 +208,35 @@ export default function ArticleManagementClient() {
       formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
       formDataToSend.append('Source', formData.Source)
       formDataToSend.append('Published', 'true')
+      if (imageFile) formDataToSend.append('Image', imageFile)
 
-      if (imageFile) {
-        formDataToSend.append('Image', imageFile) // ← اسمه Image زي الـ DTO
+      const response = await fetch('/api/dashboard/articles', {
+        method: 'POST',
+        headers: { 'ngrok-skip-browser-warning': 'true' },
+        body: formDataToSend
+      })
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        console.error('Create error:', errData)
+        setError(`Failed to create: ${response.status}`)
+        return
       }
 
-      if (editingArticle) {
-        const response = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
-          method: 'PUT',
-          headers: { 'ngrok-skip-browser-warning': 'true' },
-          // ❌ متحطش Content-Type مع FormData
-          body: formDataToSend
-        })
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}))
-          console.error('Update error:', errData)
-          setError(`Failed to update: ${response.status}`)
-          return
-        }
-        setSuccessMessage('Article updated successfully!')
-      } else {
-        const response = await fetch('/api/dashboard/articles', {
-          method: 'POST',
-          headers: { 'ngrok-skip-browser-warning': 'true' },
-          body: formDataToSend
-        })
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}))
-          console.error('Create error:', errData)
-          setError(`Failed to create: ${response.status}`)
-          return
-        }
-        setSuccessMessage('Article created successfully!')
-      }
-
-      setImageFile(null)
-      await loadArticles()
-      handleCloseModal()
-      setTimeout(() => setSuccessMessage(''), 3000)
-      window.dispatchEvent(new Event('articlesUpdated'))
-    } catch (error) {
-      console.error('Error saving article:', error)
-      setError('Failed to save article. Please try again.')
+      setSuccessMessage('Article created successfully!')
     }
+
+    setImageFile(null)
+    await loadArticles()
+    handleCloseModal()
+    setTimeout(() => setSuccessMessage(''), 3000)
+    window.dispatchEvent(new Event('articlesUpdated'))
+
+  } catch (error) {
+    console.error('Error saving article:', error)
+    setError('Failed to save article. Please try again.')
   }
+}
 
   const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this article?')) {
