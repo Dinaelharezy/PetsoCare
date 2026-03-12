@@ -1,5 +1,5 @@
 
-import DoctorManagementClient from "@/components/dashboard/DoctorManagementClient";
+import DoctorManagementClient from "@/components/dashboard/ClinicManagementClient";
 
 
 export default function DoctorManagementPage   () {

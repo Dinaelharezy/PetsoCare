@@ -7,8 +7,8 @@ import { useState, useEffect, useCallback } from 'react'
 import Chatbot from '@/components/chatbot'
 import { Slide } from '@/types/Slide'
 import Link from 'next/link'
-import { vetsApi } from '../../../data/api/vet'
-import { Vet } from '../../../types/Vet'
+import { clinicsApi } from '../../../data/api/Clinic'
+import { Clinic } from '../../../types/Clinic'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
@@ -23,7 +23,7 @@ export default function HomePage() {
   const [location, setLocation] = useState('')
   const [specialty, setSpecialty] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [vets, setVets] = useState<Vet[]>([])
+  const [Clinics, setClinics] = useState<Clinic[]>([])
   const [loading, setLoading] = useState(true)
 
   const slides: Slide[] = [
@@ -59,25 +59,25 @@ export default function HomePage() {
     }
   ]
 
-  const fetchVets = useCallback(async () => {
+  const fetchClinics = useCallback(async () => {
     try {
       setLoading(true)
-      const data = await vetsApi.getAll()
-      setVets(data)
+      const data = await clinicsApi.getAll()
+      setClinics(data)
     } catch (error) {
-      console.error('Failed to fetch vets:', error)
+      console.error('Failed to fetch clinics:', error)
     } finally {
       setLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    fetchVets()
-    window.addEventListener('vetsUpdated', fetchVets)
+    fetchClinics()
+    window.addEventListener('clinicsUpdated', fetchClinics)
     return () => {
-      window.removeEventListener('vetsUpdated', fetchVets)
+      window.removeEventListener('clinicsUpdated', fetchClinics)
     }
-  }, [fetchVets])
+  }, [fetchClinics])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -89,10 +89,10 @@ export default function HomePage() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
 
-  const locations = ['All Locations', ...Array.from(new Set(vets.map(v => v.governorate)))]
+  const locations = ['All Locations', ...Array.from(new Set(Clinics.map(c => c.governorate)))]
 
-  const filteredVets = vets.filter(vet => {
-    const matchesLocation = !location || location === 'All Locations' || vet.governorate === location
+  const filteredClinics = Clinics.filter(clinic => {
+    const matchesLocation = !location || location === 'All Locations' || clinic.governorate === location
     return matchesLocation
   })
 
@@ -169,10 +169,10 @@ export default function HomePage() {
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        ) : filteredVets.length > 0 ? (
+        ) : filteredClinics.length > 0 ? (
           <Row className="g-5">
-            {filteredVets.map((vet) => (
-              <Col lg={4} md={6} sm={12} key={vet.id}>
+            {filteredClinics.map((clinic) => (
+              <Col lg={4} md={6} sm={12} key={clinic.id}>
                <Card
                   className="vet-card"
                   style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transition: 'transform 0.3s, box-shadow 0.3s', overflow: 'hidden', height: '100%' }}
@@ -180,10 +180,10 @@ export default function HomePage() {
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)' }}
                 >
                   <div className="vet-image-wrapper" style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
-                    {getImageSrc(vet.imageUrl) ? (
+                    {getImageSrc(clinic.imageUrl) ? (
                       <Image
-                        src={getImageSrc(vet.imageUrl)!}
-                        alt={vet.name}
+                        src={getImageSrc(clinic.imageUrl)!}
+                        alt={clinic.name}
                         fill
                         sizes="(max-width:768px) 100vw, 33vw"
                         style={{ objectFit: 'cover', objectPosition: 'center top' }}
@@ -197,10 +197,10 @@ export default function HomePage() {
 
                   <Card.Body style={{ padding: '20px' }}>
                     <h5 className="vet-name" style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '8px', color: '#333' }}>
-                      {vet.name}
+                      {clinic.name}
                     </h5>
                     <p className="vet-specialty" style={{ color: '#666', fontSize: '0.9rem', marginBottom: '15px' }}>
-                      {vet.address}, {vet.governorate}
+                      {clinic.address}, {clinic.governorate}
                     </p>
 
                     <div className="vet-stats" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '15px' }}>
@@ -209,7 +209,7 @@ export default function HomePage() {
                           <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFD700" strokeWidth="2"/>
                         </svg>
                         <span style={{ color: '#666' }}>
-                          <strong style={{ color: '#333' }}>{vet.phone}</strong> &nbsp;|&nbsp; {vet.bookingPrice} EGP
+                          <strong style={{ color: '#333' }}>{clinic.phone}</strong> &nbsp;|&nbsp; {clinic.bookingPrice} EGP
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#666' }}>
@@ -217,12 +217,12 @@ export default function HomePage() {
                           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#4CAF50"/>
                           <circle cx="12" cy="9" r="2.5" fill="white"/>
                         </svg>
-                        <span>{vet.workingDays} , {vet.workingHours}</span>
+                        <span>{clinic.workingDays} , {clinic.workingHours}</span>
                       </div>
                     </div>
 
                     <Link
-                      href={`/main/Vet-profile/${vet.id}`}
+                      href={`/main/Clinic-profile/${clinic.id}`}
                       passHref
                       className='font-for-app'
                       style={{ display: 'block', width: '100%', textAlign: 'center', textDecoration: 'none', padding: '10px', backgroundColor: 'rgb(189, 242, 149)', color: 'white', borderRadius: '8px', fontWeight: '500', transition: 'all 0.3s',marginTop: '1.5rem',boxShadow: '0 100px 100px rgba(0,0,0,0.1)' }}

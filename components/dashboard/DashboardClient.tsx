@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import NotificationsCard from './NotificationCard'
 import StatisticsCard from './StatisticsCard'
 import ArticleManagementDash from '../Management/ArticleManagemenrDash'
-import DoctorManagementDash from '../Management/DoctorManagementDash'
+import DoctorManagementDash from '../Management/ClinicManagementDash'
 import ReportAnimal from './ReportAnimal'
 
 export default function DashboardClient() {

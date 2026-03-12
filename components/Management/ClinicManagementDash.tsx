@@ -3,36 +3,36 @@
 import { Card, Button } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 
-export default function DoctorManagementDash() {
+export default function ClinicManagementDash() {
   const router = useRouter()
 
-  const handleAddDoctor = () => {
-    // Navigate to doctor management page
-    router.push('/admin/doctors')
+  const handleAddClinic = () => {
+    // Navigate to clinic management page
+    router.push('/admin/clinics')
   }
 
-  const handleViewDoctors = () => {
-    // Navigate to doctor management page
-    router.push('/admin/doctors')
+  const handleViewClinics = () => {
+    // Navigate to clinic management page
+    router.push('/admin/clinics')
   }
 
   return (
     <Card className="animate-card">
       <Card.Body>
-        <h5 className="card-title">Doctor Management</h5>
+        <h5 className="card-title">Clinic Management</h5>
         <div className="d-grid gap-3">
           <Button 
             className="btn-primary-green" 
-            onClick={handleAddDoctor}
+            onClick={handleAddClinic}
           >
             <i className="bi bi-person-plus me-2"></i>
-            Add New Doctor
+            Add New Clinic
           </Button>
           <Button 
             variant="outline-secondary" 
-            onClick={handleViewDoctors}
+            onClick={handleViewClinics}
           >
-            View All Doctors
+            View All CLinics
           </Button>
         </div>
       </Card.Body>

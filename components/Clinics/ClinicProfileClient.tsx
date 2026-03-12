@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Container, Row, Col, Card, Button, Form, Spinner } from 'react-bootstrap'
 import Image from 'next/image'
-import { vetsApi } from '../../data/api/vet'
-import { Vet } from '../../types/Vet'
+import { clinicsApi } from '../../data/api/Clinic'
+import { Clinic } from '../../types/Clinic'
 import { Review } from '../../types/Review'
 import { Appointment } from './Appointment'
 
@@ -74,7 +74,7 @@ const parseWorkingDays = (workingDays?: string): { label: string; day: string }[
 export default function DoctorProfileClient() {
   const params = useParams()
   const router = useRouter()
-  const [vet, setVet] = useState<Vet | null>(null)
+  const [Clinic, setClinic] = useState<Clinic | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState('')
@@ -85,16 +85,16 @@ export default function DoctorProfileClient() {
   const [hoverRating, setHoverRating] = useState(0)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
 
-  const weekDays = parseWorkingDays(vet?.workingDays)
+  const weekDays = parseWorkingDays(Clinic?.workingDays)
 
   useEffect(() => {
     const fetchVet = async () => {
       if (!params?.id) return
       try {
         setLoading(true)
-        const data = await vetsApi.getById(params.id as string)
+        const data = await clinicsApi.getById(params.id as string)
         if (!data) { setError('Clinic not found'); return }
-        setVet(data)
+        setClinic(data)
 
         const stored = getStoredReviews(params.id as string)
         setAllReviews([...stored])
@@ -108,11 +108,11 @@ export default function DoctorProfileClient() {
   }, [params?.id])
 
   useEffect(() => {
-    if (vet?.workingDays) {
-      const days = parseWorkingDays(vet.workingDays)
+    if (Clinic?.workingDays) {
+      const days = parseWorkingDays(Clinic.workingDays)
       if (days.length > 0) setSelectedDate(days[0].day)
     }
-  }, [vet])
+  }, [Clinic])
 
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault()
@@ -134,10 +134,10 @@ export default function DoctorProfileClient() {
   }
 
   const handleConfirmAppointment = () => {
-    if (vet) {
-      alert(`Appointment confirmed with ${vet.name} on ${selectedDate}`)
+    if (selectedDate) {
+      alert(`Appointment confirmed with ${Clinic?.name} on ${selectedDate}`)
       window.dispatchEvent(new CustomEvent('newAppointment', {
-        detail: { clinicName: vet.name, patientName: getCurrentUserName(), date: selectedDate }
+        detail: { clinicName: Clinic?.name, patientName: getCurrentUserName(), date: selectedDate }
       }))
     }
   }
@@ -153,7 +153,7 @@ export default function DoctorProfileClient() {
     )
   }
 
-  if (error || !vet) {
+  if (error || !Clinic) {
     return (
       <Container className="py-5 text-center">
         <h3 className="text-muted">{error || 'Clinic not found'}</h3>
@@ -171,10 +171,10 @@ export default function DoctorProfileClient() {
         <Row>
           <Col md={2}>
             <div style={{ width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden' }}>
-              {getImageSrc(vet.imageUrl) ? (
+              {getImageSrc(Clinic?.imageUrl) ? (
                 <Image
-                  src={getImageSrc(vet.imageUrl)!}
-                  alt={vet.name}
+                  src={getImageSrc(Clinic?.imageUrl)!}
+                  alt={Clinic?.name}
                   width={180}
                   height={180}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -189,39 +189,39 @@ export default function DoctorProfileClient() {
           <Col md={10}>
             <div className="d-flex justify-content-between align-items-start mb-3">
               <div>
-                <h2 className="mb-2">{vet.name}</h2>
-                {vet.workingDays && (
+                <h2 className="mb-2">{Clinic?.name}</h2>
+                {Clinic?.workingDays && (
                   <p className="text-muted mb-1">
-                    <i className="bi bi-calendar3 me-2"></i>{vet.workingDays}
+                    <i className="bi bi-calendar3 me-2"></i>{Clinic?.workingDays}
                   </p>
                 )}
-                {vet.workingHours && (
+                {Clinic?.workingHours && (
                   <p className="text-muted mb-0">
-                    <i className="bi bi-clock me-2"></i>{vet.workingHours}
+                    <i className="bi bi-clock me-2"></i>{Clinic?.workingHours}
                   </p>
                 )}
               </div>
               <div className="text-end">
-                {vet.bookingPrice && (
+                {Clinic?.bookingPrice && (
                   <div className="d-flex align-items-center gap-2 mb-2">
                     <i className="bi bi-cash text-success"></i>
-                    <span><strong>{vet.bookingPrice} EGP</strong> per visit</span>
+                    <span><strong>{Clinic?.bookingPrice} EGP</strong> per visit</span>
                   </div>
                 )}
                 <div className="d-flex align-items-center gap-2">
                   <i className="bi bi-geo-alt-fill text-success"></i>
-                  <span>{vet.governorate}</span>
+                  <span>{Clinic?.governorate}</span>
                 </div>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-              <span><i className="bi bi-telephone-fill me-2"></i>{vet.phone}</span>
-              {vet.address && (
-                <span><i className="bi bi-map me-2"></i>{vet.address}</span>
+              <span><i className="bi bi-telephone-fill me-2"></i>{Clinic?.phone}</span>
+              {Clinic?.address && (
+                <span><i className="bi bi-map me-2"></i>{Clinic?.address}</span>
               )}
-              {vet.facebookPage && (
-                <a href={vet.facebookPage} target="_blank" rel="noreferrer">
+              {Clinic?.facebookPage && (
+                <a href={Clinic?.facebookPage} target="_blank" rel="noreferrer">
                   <i className="bi bi-facebook me-2"></i>Facebook Page
                 </a>
               )}
@@ -239,9 +239,9 @@ export default function DoctorProfileClient() {
         <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Clinic Location</h3>
       </div>
       <div style={{ height: '300px', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', marginBottom: '16px' }}>
-        {vet.latitude && vet.longitude ? (
+        {Clinic?.latitude && Clinic?.longitude ? (
           <iframe
-            src={`https://www.openstreetmap.org/export/embed.html?bbox=${vet.longitude - 0.01},${vet.latitude - 0.01},${vet.longitude + 0.01},${vet.latitude + 0.01}&layer=mapnik&marker=${vet.latitude},${vet.longitude}`}
+            src={`https://www.openstreetmap.org/export/embed.html?bbox=${Clinic?.longitude - 0.01},${Clinic?.latitude - 0.01},${Clinic?.longitude + 0.01},${Clinic?.latitude + 0.01}&layer=mapnik&marker=${Clinic?.latitude},${Clinic?.longitude}`}
             title="Clinic Location Map"
             style={{ width: '100%', height: '100%', border: 'none' }}
           />
@@ -252,7 +252,7 @@ export default function DoctorProfileClient() {
         )}
       </div>
       <p className="text-muted mb-4">
-        <small><i className="bi bi-geo-alt-fill me-2"></i>{vet.address}, {vet.governorate}</small>
+        <small><i className="bi bi-geo-alt-fill me-2"></i>{Clinic?.address}, {Clinic?.governorate}</small>
       </p>
 
       {/* Reviews */}

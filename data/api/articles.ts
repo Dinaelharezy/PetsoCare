@@ -21,14 +21,6 @@ export const articlesApi = {
     return response.json()
   },
 
-  // getById: async (id: number): Promise<article> => {
-  //   const response = await fetch(`/api/dashboard/articles/${id}`, {
-  //     headers: { 'ngrok-skip-browser-warning': 'true' }
-  //   })
-  //   if (!response.ok) throw new Error('Failed to fetch article')
-  //   return response.json()
-  // },
-
   create: async (data: Partial<article>): Promise<article> => {
     const response = await fetch(`/api/dashboard/articles`, {
       method: 'POST',

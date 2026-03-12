@@ -17,8 +17,8 @@
 //   updatedAt?: string
 // }
 
-// types/Vet.ts
-export interface Vet {
+// types/Clinic.ts
+export interface Clinic {
   id: number
   name: string
   address: string
@@ -34,20 +34,7 @@ export interface Vet {
   createdAt?: string
 }
 
-// For the admin form
-export interface VetFormData {
-  name: string
-  specialty: string
-  rating: string
-  reviews: string
-  image: string
-  location: string
-  phone: string
-  email: string
-  bio: string
-  experience: string
-  published: boolean
-}
+
 
 // Review interface
 export interface Review {
