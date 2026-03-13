@@ -8,12 +8,12 @@ export default function ClinicManagementDash() {
 
   const handleAddClinic = () => {
     // Navigate to clinic management page
-    router.push('/admin/clinics')
+    router.push('/admin/doctors')
   }
 
   const handleViewClinics = () => {
     // Navigate to clinic management page
-    router.push('/admin/clinics')
+    router.push('/admin/doctors')
   }
 
   return (

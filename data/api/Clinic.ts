@@ -60,7 +60,7 @@ const getAllClinics = async (): Promise<Clinic[]> => {
 }
 
 const getClinicById = async (id: string): Promise<Clinic | null> => {
-  const response = await fetch(`/api/Clinics/${id}`)
+  const response = await fetch(`/api/dashboard/clinics/${id}`)
   if (!response.ok) return null
   return response.json()
 }
@@ -73,11 +73,12 @@ const createClinic = async (data: Partial<Clinic>): Promise<Clinic> => {
     }
   })
 
-  const response = await fetch('/api/Clinics', {
+  const response = await fetch('/api/dashboard/clinics', {
     method: 'POST',
     body: formData,
   })
   if (!response.ok) throw new Error('Failed to create clinic')
+  
   return response.json()
 }
 
@@ -89,7 +90,7 @@ const updateClinic = async (id: number, data: Partial<Clinic>): Promise<Clinic> 
     }
   })
 
-  const response = await fetch(`/api/Clinics/${id}`, {
+  const response = await fetch(`/api/dashboard/clinics/${id}`, {
     method: 'PUT',
     body: formData,
   })
@@ -101,7 +102,7 @@ const updateClinic = async (id: number, data: Partial<Clinic>): Promise<Clinic> 
 }
 
 const deleteClinic = async (id: number): Promise<void> => {
-  const response = await fetch(`/api/Clinics/${id}`, {
+  const response = await fetch(`/api/dashboard/clinics/${id}`, {
     method: 'DELETE',
   })
   if (!response.ok) throw new Error('Failed to delete clinic')
@@ -123,4 +124,4 @@ export const clinicsApi = {
   togglePublish,
 }
 
-export const vetsApi = clinicsApi
+// export const vetsApi = clinicsApi

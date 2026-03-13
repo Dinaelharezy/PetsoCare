@@ -764,7 +764,7 @@ export default function ClinicManagementClient() {
                 <Form.Group className="mb-3">
                   <Form.Label>Image URL</Form.Label>
                   <Form.Control
-                    type="text" name="imageUrl" value={formData.imageUrl}
+                    type="file" name="imageUrl" value={formData.imageUrl}
                     onChange={handleInputChange} placeholder="/clinic.jpg or https://..."
                   />
                 </Form.Group>

@@ -1,9 +1,9 @@
 
-import DoctorManagementClient from "@/components/dashboard/ClinicManagementClient";
+import ClinicManagementClient from "@/components/dashboard/ClinicManagementClient";
 
 
-export default function DoctorManagementPage   () {
+export default function ClinicManagementPage () {
   return (
-   <DoctorManagementClient />
+   <ClinicManagementClient />
   )
 }

@@ -222,12 +222,12 @@ export default function HomePage() {
                     </div>
 
                     <Link
-                      href={`/main/Clinic-profile/${clinic.id}`}
+                      href={`/main/Home/${clinic.id}`}
                       passHref
                       className='font-for-app'
                       style={{ display: 'block', width: '100%', textAlign: 'center', textDecoration: 'none', padding: '10px', backgroundColor: 'rgb(189, 242, 149)', color: 'white', borderRadius: '8px', fontWeight: '500', transition: 'all 0.3s',marginTop: '1.5rem',boxShadow: '0 100px 100px rgba(0,0,0,0.1)' }}
                     >
-                      View Profile
+                      View Clinic
                     </Link>
                   </Card.Body>
                 </Card>
