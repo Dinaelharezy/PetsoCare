@@ -1,5 +1,5 @@
-import DoctorProfileClient from '@/components/Clinics/ClinicProfileClient'
+// import DoctorProfileClient from '@/components/Clinics/ClinicProfileClient'
 
-export default function VetProfilePage() {
-  return <DoctorProfileClient />
-}
+// export default function VetProfilePage() {
+//   return <DoctorProfileClient />
+// }
