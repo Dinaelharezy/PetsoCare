@@ -60,16 +60,18 @@ export default function HomePage() {
   ]
 
   const fetchClinics = useCallback(async () => {
-    try {
-      setLoading(true)
-      const data = await clinicsApi.getAll()
-      setClinics(data)
-    } catch (error) {
-      console.error('Failed to fetch clinics:', error)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  try {
+    setLoading(true)
+    const res = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
+    const data = await res.json()
+    setClinics(data)
+  } catch (error) {
+    console.error('Failed to fetch clinics:', error)
+  } finally {
+    setLoading(false)
+  }
+}, [])
+
 
   useEffect(() => {
     fetchClinics()
@@ -246,3 +248,5 @@ export default function HomePage() {
     </div>
   )
 }
+
+

@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ clinicId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { clinicId } = await params;
+  const { id } = await params;
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/appointments/clinic/${clinicId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/appointments/clinic/${id}`,
     {
       headers: { "ngrok-skip-browser-warning": "true" },
       cache: "no-store",

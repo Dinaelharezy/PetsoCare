@@ -16,8 +16,16 @@ export async function GET(
       }
     );
     const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
+    });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
+
+export const dynamic = 'force-dynamic'

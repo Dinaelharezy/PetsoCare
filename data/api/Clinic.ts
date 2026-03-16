@@ -1,15 +1,18 @@
 
-
 import { Clinic } from '../../types/Clinic'
 
+// ── Admin: Clinics ────────────────────────────────────────────────────────
+
 const getAllClinics = async (): Promise<Clinic[]> => {
-  const response = await fetch('/api/Clinics')
+  const response = await fetch(`/api/Clinics?t=${Date.now()}`, {
+    cache: 'no-store',
+  })
   if (!response.ok) throw new Error('Failed to fetch clinics')
   return response.json()
 }
 
 const getClinicById = async (id: string): Promise<Clinic | null> => {
-  const response = await fetch(`/api/dashboard/clinics/${id}`)
+  const response = await fetch(`/api/Clinics/${id}`)
   if (!response.ok) return null
   return response.json()
 }
@@ -27,7 +30,7 @@ const createClinic = async (data: Partial<Clinic>): Promise<Clinic> => {
     body: formData,
   })
   if (!response.ok) throw new Error('Failed to create clinic')
-  
+
   return response.json()
 }
 
@@ -64,58 +67,60 @@ const togglePublish = async (id: string): Promise<void> => {
   if (!response.ok) throw new Error('Failed to toggle publish status')
 }
 
-// export const clinicsApi = {
-//   getAll: getAllClinics,
-//   getById: getClinicById,
-//   create: createClinic,
-//   update: updateClinic,
-//   delete: deleteClinic,
-//   togglePublish,
-// }
-
-// export const vetsApi = clinicsApi 
 // ── Clinic Owner: Appointments ────────────────────────────────────────────
- 
-const getClinicAppointments = async (clinicId: string | number) => {
-  const response = await fetch(`/api/dashboard/appointments/clinic/${clinicId}`, {
+
+const getClinicAppointments = async (id: string | number) => {
+  const response = await fetch(`/api/dashboard/appointments/clinic/${id}`, {
     cache: 'no-store',
   })
   if (!response.ok) throw new Error('Failed to fetch appointments')
   return response.json()
 }
- 
-const approveAppointment = async (appointmentId: number): Promise<void> => {
-  const response = await fetch(`/api/dashboard/appointments/${appointmentId}/approve`, {
+
+const approveAppointment = async (id: number): Promise<void> => {
+  const response = await fetch(`/api/dashboard/appointments/${id}/approve`, {
     method: 'PUT',
   })
   if (!response.ok) throw new Error('Failed to approve appointment')
 }
- 
-const rejectAppointment = async (appointmentId: number): Promise<void> => {
-  const response = await fetch(`/api/dashboard/appointments/${appointmentId}/reject`, {
+
+// const rejectAppointment = async (id: number): Promise<void> => {
+//   const response = await fetch(`/api/dashboard/appointments/${id}/reject`, {
+//     method: 'PUT',
+    
+//   })
+//   if (!response.ok) throw new Error('Failed to reject appointment')
+// }
+const rejectAppointment = async (id: number, reason?: string): Promise<void> => {
+  const response = await fetch(`/api/dashboard/appointments/${id}/reject`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reason: reason || '' }),
   })
   if (!response.ok) throw new Error('Failed to reject appointment')
 }
- 
+
 // ── Clinic Owner: Settings ────────────────────────────────────────────────
- 
+
 const updateClinicSettings = async (clinicId: string | number, data: Partial<Clinic>): Promise<void> => {
-  const formData = new FormData()
-  Object.entries(data).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      formData.append(key, String(value))
-    }
-  })
   const response = await fetch(`/api/clinic/dashboard/${clinicId}/settings`, {
     method: 'PUT',
-    body: formData,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   })
   if (!response.ok) throw new Error('Failed to update clinic settings')
 }
- 
+
+const getClinicForOwner = async (clinicId: string | number): Promise<Clinic | null> => {
+  // ✅ cache: 'no-store' + timestamp عشان تتجنب الـ stale cache
+  const response = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
+  if (!response.ok) return null
+  const clinics: Clinic[] = await response.json()
+  return clinics.find(c => c.id === Number(clinicId)) ?? null
+}
+
 // ── Export ────────────────────────────────────────────────────────────────
- 
+
 export const clinicsApi = {
   // Admin
   getAll:             getAllClinics,
@@ -124,10 +129,11 @@ export const clinicsApi = {
   update:             updateClinic,
   delete:             deleteClinic,
   togglePublish,
- 
+
   // Clinic owner
   getAppointments:    getClinicAppointments,
   approveAppointment,
   rejectAppointment,
   updateSettings:     updateClinicSettings,
+  getForOwner:        getClinicForOwner,
 }

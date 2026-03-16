@@ -1,5 +1,5 @@
-
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(
   request: Request,
@@ -21,6 +21,12 @@ export async function PUT(
     const text = await response.text();
     return NextResponse.json({ error: text }, { status: response.status });
   }
+
+  // ✅ بيكسر الـ cache
+  revalidatePath('/');
+  revalidatePath('/main/Home');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/clinics');
 
   const text = await response.text();
   if (!text || text.trim() === "") return NextResponse.json({ success: true });
@@ -50,6 +56,12 @@ export async function DELETE(
     return NextResponse.json({ error: "Failed to delete" }, { status: response.status });
   }
 
+  // ✅ بيكسر الـ cache
+  revalidatePath('/');
+  revalidatePath('/main/Home');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/clinics');
+
   return NextResponse.json({ success: true });
 }
 
@@ -75,5 +87,13 @@ export async function PATCH(
     return NextResponse.json({ error: text }, { status: response.status });
   }
 
+  // ✅ بيكسر الـ cache
+  revalidatePath('/');
+  revalidatePath('/main/Home');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/clinics');
+
   return NextResponse.json({ success: true });
 }
+
+export const dynamic = 'force-dynamic'

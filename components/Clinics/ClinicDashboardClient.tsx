@@ -1,71 +1,13 @@
+
 // 'use client'
 
 // import { useState, useEffect } from 'react'
-// import { Container, Row, Col, Modal } from 'react-bootstrap'
+// import { Row, Col, Modal } from 'react-bootstrap'
+// import { clinicsApi } from '../../data/api/Clinic'
+// import { Clinic } from '../../types/Clinic'
+// import { Appointment } from '../../types/Appointment'
+// import { useRouter } from 'next/navigation'
 
-// // ===== Types =====
-// interface Appointment {
-//   id: number
-//   patientName: string
-//   patientPhone: string
-//   date: string
-//   time: string
-//   status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
-//   notes?: string
-// }
-
-// interface ClinicSettings {
-//   name: string
-//   address: string
-//   governorate: string
-//   phone: string
-//   facebookPage?: string
-//   bookingPrice?: number
-//   workingDays?: string
-//   workingHours?: string
-// }
-
-// // ===== API helpers =====
-// // In a real app, clinicId comes from auth session/token (e.g. JWT claim)
-// const getClinicId = () => {
-//   if (typeof window === 'undefined') return ''
-//   return localStorage.getItem('clinicId') || ''
-// }
-
-// const appointmentsApi = {
-//   getAll: async (): Promise<Appointment[]> => {
-//     const res = await fetch(`/api/dashboard/appointments/clinic/${getClinicId()}`, {
-//       headers: { 'ngrok-skip-browser-warning': 'true' },
-//       cache: 'no-store',
-//     })
-//     if (!res.ok) throw new Error('Failed to fetch appointments')
-//     return res.json()
-//   },
-//   approve: async (id: number): Promise<void> => {
-//     const res = await fetch(`/api/dashboard/appointments/${id}/approve`, { method: 'PUT' })
-//     if (!res.ok) throw new Error('Failed to approve')
-//   },
-//   reject: async (id: number): Promise<void> => {
-//     const res = await fetch(`/api/dashboard/appointments/${id}/reject`, { method: 'PUT' })
-//     if (!res.ok) throw new Error('Failed to reject')
-//   },
-// }
-
-// const settingsApi = {
-//   update: async (data: Partial<ClinicSettings>): Promise<void> => {
-//     const formData = new FormData()
-//     Object.entries(data).forEach(([k, v]) => {
-//       if (v !== undefined && v !== null) formData.append(k, String(v))
-//     })
-//     const res = await fetch(`/api/clinic/dashboard/${getClinicId()}/settings`, {
-//       method: 'PUT',
-//       body: formData,
-//     })
-//     if (!res.ok) throw new Error('Failed to update settings')
-//   },
-// }
-
-// // ===== Status config =====
 // const STATUS_CONFIG = {
 //   Pending:   { color: '#F59E0B', bg: '#FEF3C7', textColor: '#78350F' },
 //   Approved:  { color: '#10B981', bg: '#D1FAE5', textColor: '#065F46' },
@@ -75,7 +17,10 @@
 
 // const governorates = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
-// // ===== Main Component =====
+// const getClinicId = (): string => {
+//   return '28'
+// }
+
 // export default function ClinicDashboardClient() {
 //   const [appointments, setAppointments] = useState<Appointment[]>([])
 //   const [loading, setLoading] = useState(true)
@@ -83,29 +28,50 @@
 //   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'danger' } | null>(null)
 //   const [actionLoading, setActionLoading] = useState<number | null>(null)
 //   const [showSettings, setShowSettings] = useState(false)
-//   const [settings, setSettings] = useState<ClinicSettings>({
+//   const [settingsLoading, setSettingsLoading] = useState(false)
+//   const [settings, setSettings] = useState<Partial<Clinic>>({
 //     name: '', address: '', governorate: '', phone: '',
 //     facebookPage: '', bookingPrice: undefined, workingDays: '', workingHours: '',
 //   })
+
+//   const router = useRouter()
 
 //   useEffect(() => { loadAppointments() }, [])
 
 //   const loadAppointments = async () => {
 //     try {
 //       setLoading(true)
-//       const data = await appointmentsApi.getAll()
+//       const data = await clinicsApi.getAppointments(getClinicId())
 //       setAppointments(data)
-//     } catch {
-//       // Demo fallback data
-//       setAppointments([
-//         { id: 1, patientName: 'Ahmed Hassan',   patientPhone: '01012345678', date: '2026-03-20', time: '10:00 AM', status: 'Pending',   notes: 'First visit' },
-//         { id: 2, patientName: 'Sara Mohamed',   patientPhone: '01098765432', date: '2026-03-20', time: '11:30 AM', status: 'Approved' },
-//         { id: 3, patientName: 'Omar Ali',        patientPhone: '01155667788', date: '2026-03-21', time: '02:00 PM', status: 'Rejected' },
-//         { id: 4, patientName: 'Nour Ibrahim',   patientPhone: '01234567890', date: '2026-03-22', time: '09:00 AM', status: 'Cancelled', notes: 'Patient cancelled' },
-//         { id: 5, patientName: 'Youssef Khaled', patientPhone: '01567891234', date: '2026-03-22', time: '03:30 PM', status: 'Pending' },
-//       ])
+//     } catch (err) {
+//       console.error('Failed to load appointments:', err)
 //     } finally {
 //       setLoading(false)
+//     }
+//   }
+
+//   const handleOpenSettings = async () => {
+//     setShowSettings(true)
+//     setSettingsLoading(true)
+//     try {
+//       const all = await clinicsApi.getAll()
+//       const clinic = all.find(c => c.id === Number(getClinicId()))
+//       if (clinic) {
+//         setSettings({
+//           name:         clinic.name         || '',
+//           address:      clinic.address      || '',
+//           governorate:  clinic.governorate  || '',
+//           phone:        clinic.phone        || '',
+//           facebookPage: clinic.facebookPage || '',
+//           bookingPrice: clinic.bookingPrice,
+//           workingDays:  clinic.workingDays  || '',
+//           workingHours: clinic.workingHours || '',
+//         })
+//       }
+//     } catch (err) {
+//       console.error('Failed to load clinic settings:', err)
+//     } finally {
+//       setSettingsLoading(false)
 //     }
 //   }
 
@@ -117,30 +83,75 @@
 //   const handleApprove = async (id: number) => {
 //     setActionLoading(id)
 //     try {
-//       await appointmentsApi.approve(id)
+//       await clinicsApi.approveAppointment(id)
 //       setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Approved' as const } : a))
 //       showToast('Appointment approved!', 'success')
-//     } catch { showToast('Failed to approve.', 'danger') }
-//     finally { setActionLoading(null) }
+//     } catch {
+//       showToast('Failed to approve.', 'danger')
+//     } finally {
+//       setActionLoading(null)
+//     }
 //   }
 
 //   const handleReject = async (id: number) => {
 //     setActionLoading(id)
 //     try {
-//       await appointmentsApi.reject(id)
+//       await clinicsApi.rejectAppointment(id)
 //       setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Rejected' as const } : a))
 //       showToast('Appointment rejected.', 'success')
-//     } catch { showToast('Failed to reject.', 'danger') }
-//     finally { setActionLoading(null) }
+//     } catch {
+//       showToast('Failed to reject.', 'danger')
+//     } finally {
+//       setActionLoading(null)
+//     }
 //   }
+
 
 //   const handleSettingsSave = async (e: React.FormEvent) => {
 //     e.preventDefault()
 //     try {
-//       await settingsApi.update(settings)
+//       const all = await clinicsApi.getAll()
+//       const current = all.find(c => c.id === Number(getClinicId()))
+//      const dataToSend = {
+//   name: settings.name,
+//   address: settings.address,
+//   governorate: settings.governorate,
+//   phone: settings.phone,
+//   facebookPage: settings.facebookPage,
+//   bookingPrice: settings.bookingPrice,
+//   workingDays: settings.workingDays,
+//   workingHours: settings.workingHours,
+// }
+
+//       await clinicsApi.updateSettings(getClinicId(), dataToSend)
+
+//       // أعد جلب الداتا وحدّث الـ state
+//       const updatedAll = await clinicsApi.getAll()
+//       const updatedClinic = updatedAll.find(c => c.id === Number(getClinicId()))
+//       if (updatedClinic) {
+//         setSettings({
+//           name:         updatedClinic.name         || '',
+//           address:      updatedClinic.address      || '',
+//           governorate:  updatedClinic.governorate  || '',
+//           phone:        updatedClinic.phone        || '',
+//           facebookPage: updatedClinic.facebookPage || '',
+//           bookingPrice: updatedClinic.bookingPrice,
+//           workingDays:  updatedClinic.workingDays  || '',
+//           workingHours: updatedClinic.workingHours || '',
+//         })
+//       }
+
 //       showToast('Settings saved!', 'success')
 //       setShowSettings(false)
-//     } catch { showToast('Failed to save settings.', 'danger') }
+
+//       // ✅ بيخبر صفحة الهوم إنها تعمل refetch للداتا
+//       window.dispatchEvent(new CustomEvent('clinicsUpdated'))
+//       // ✅ بيعمل refresh للـ Server Components
+//       router.refresh()
+
+//     } catch {
+//       showToast('Failed to save settings.', 'danger')
+//     }
 //   }
 
 //   const filtered = filterStatus === 'all'
@@ -148,7 +159,7 @@
 //     : appointments.filter(a => a.status === filterStatus)
 
 //   const counts = {
-//     all: appointments.length,
+//     all:       appointments.length,
 //     Pending:   appointments.filter(a => a.status === 'Pending').length,
 //     Approved:  appointments.filter(a => a.status === 'Approved').length,
 //     Rejected:  appointments.filter(a => a.status === 'Rejected').length,
@@ -159,83 +170,37 @@
 //     <>
 //       <style>{`
 //         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
-
 //         .cd-wrap { font-family: 'Sora', sans-serif; background: #F8FAFC; min-height: 100vh; }
-
-//         /* Header */
-//         .cd-header {
-//           background: linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%);
-//           padding: 2rem 1.75rem 3.75rem;
-//           position: relative; overflow: hidden; color: white;
-//         }
-//         .cd-header::before {
-//           content: ''; position: absolute; top: -50px; right: -50px;
-//           width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%;
-//         }
-//         .cd-header::after {
-//           content: ''; position: absolute; bottom: -80px; right: 80px;
-//           width: 320px; height: 320px; background: rgba(255,255,255,0.04); border-radius: 50%;
-//         }
+//         .cd-header { background: linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%); padding: 2rem 1.75rem 3.75rem; position: relative; overflow: hidden; color: white; }
+//         .cd-header::before { content: ''; position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+//         .cd-header::after { content: ''; position: absolute; bottom: -80px; right: 80px; width: 320px; height: 320px; background: rgba(255,255,255,0.04); border-radius: 50%; }
 //         .cd-header h1 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
 //         .cd-header .subtitle { font-size: 0.82rem; opacity: 0.75; margin: 0.3rem 0 0; }
 //         .cd-eyebrow { font-size: 0.68rem; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.2rem; }
-
-//         .cd-header-btn {
-//           background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28);
-//           color: white; font-size: 0.78rem; font-weight: 500; padding: 0.45rem 1rem;
-//           border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
-//         }
+//         .cd-header-btn { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: white; font-size: 0.78rem; font-weight: 500; padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
 //         .cd-header-btn:hover { background: rgba(255,255,255,0.24); }
-
-//         /* Stats */
 //         .cd-stats { padding: 0 1.5rem; margin-top: -2rem; position: relative; z-index: 10; }
-//         .cd-chip {
-//           background: white; border-radius: 12px; padding: 0.9rem 1rem;
-//           box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center;
-//           border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.2s;
-//         }
+//         .cd-chip { background: white; border-radius: 12px; padding: 0.9rem 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.2s; }
 //         .cd-chip:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
 //         .cd-chip.active { border-color: #0D9488; box-shadow: 0 4px 20px rgba(13,148,136,0.18); }
 //         .cd-chip .cn { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; line-height: 1; }
 //         .cd-chip .cl { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #64748B; margin-top: 0.2rem; }
-
-//         /* Content */
 //         .cd-content { padding: 1.25rem 1.5rem 2rem; }
 //         .cd-section-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; }
-
-//         /* Appointment card */
-//         .cd-card {
-//           background: white; border-radius: 12px; border: 1px solid #E2E8F0;
-//           padding: 1.1rem 1.1rem 1.1rem 1.4rem; margin-bottom: 0.75rem;
-//           position: relative; overflow: hidden; transition: all 0.2s;
-//         }
+//         .cd-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 1.1rem 1.1rem 1.1rem 1.4rem; margin-bottom: 0.75rem; position: relative; overflow: hidden; transition: all 0.2s; }
 //         .cd-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-1px); }
-//         .cd-card::before {
-//           content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-//           width: 3.5px; border-radius: 3px 0 0 3px;
-//         }
+//         .cd-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3.5px; border-radius: 3px 0 0 3px; }
 //         .cd-card.Pending::before   { background: #F59E0B; }
 //         .cd-card.Approved::before  { background: #10B981; }
 //         .cd-card.Rejected::before  { background: #EF4444; }
 //         .cd-card.Cancelled::before { background: #94A3B8; }
-
 //         .cd-name { font-size: 0.92rem; font-weight: 600; color: #0F172A; }
 //         .cd-meta { font-size: 0.75rem; color: #64748B; margin-top: 0.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
 //         .cd-meta i { margin-right: 0.2rem; }
 //         .cd-note { font-size: 0.73rem; color: #64748B; font-style: italic; margin-top: 0.5rem; background: #F8FAFC; padding: 0.3rem 0.6rem; border-radius: 6px; display: inline-block; }
-
-//         .cd-pill {
-//           display: inline-flex; align-items: center; gap: 0.28rem;
-//           padding: 0.18rem 0.6rem; border-radius: 20px;
-//           font-size: 0.67rem; font-weight: 600; letter-spacing: 0.03em;
-//         }
+//         .cd-pill { display: inline-flex; align-items: center; gap: 0.28rem; padding: 0.18rem 0.6rem; border-radius: 20px; font-size: 0.67rem; font-weight: 600; letter-spacing: 0.03em; }
 //         .cd-dot { width: 5px; height: 5px; border-radius: 50%; }
-
-//         .cd-btn {
-//           padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem;
-//           font-weight: 600; border: none; cursor: pointer; transition: all 0.18s;
-//           display: inline-flex; align-items: center; gap: 0.28rem; font-family: 'Sora', sans-serif;
-//         }
+//         .cd-btn { padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; display: inline-flex; align-items: center; gap: 0.28rem; font-family: 'Sora', sans-serif; }
 //         .cd-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 //         .cd-btn-approve { background: #D1FAE5; color: #065F46; }
 //         .cd-btn-approve:hover:not(:disabled) { background: #10B981; color: white; }
@@ -245,45 +210,26 @@
 //         .cd-btn-ghost:hover { background: #E2E8F0; }
 //         .cd-btn-primary { background: #0D9488; color: white; padding: 0.45rem 1.25rem; }
 //         .cd-btn-primary:hover { background: #0F766E; }
-
 //         .cd-empty { text-align: center; padding: 3rem 1rem; color: #94A3B8; }
 //         .cd-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-
-//         /* Toast */
-//         .cd-toast {
-//           position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
-//           z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px;
-//           font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-//           animation: cdSlide 0.25s ease; white-space: nowrap; font-family: 'Sora', sans-serif;
-//         }
-//         @keyframes cdSlide {
-//           from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-//           to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-//         }
+//         .cd-toast { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15); animation: cdSlide 0.25s ease; white-space: nowrap; font-family: 'Sora', sans-serif; }
+//         @keyframes cdSlide { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 //         .cd-toast-success { background: #065F46; color: white; }
 //         .cd-toast-danger  { background: #991B1B; color: white; }
-
 //         .cd-spin { animation: cdSpin 0.7s linear infinite; display: inline-block; }
 //         @keyframes cdSpin { to { transform: rotate(360deg); } }
-
-//         /* Settings modal */
 //         .cd-modal .modal-content { border-radius: 16px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.14); overflow: hidden; }
 //         .cd-modal .modal-header { background: linear-gradient(135deg, #0F766E, #0D9488); color: white; border: none; padding: 1.25rem 1.5rem; }
 //         .cd-modal .modal-header .btn-close { filter: invert(1); opacity: 0.85; }
 //         .cd-modal .modal-title { font-family: 'Sora'; font-size: 1rem; font-weight: 600; }
 //         .cd-modal label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #64748B; margin-bottom: 0.35rem; }
-//         .cd-modal .form-control, .cd-modal .form-select {
-//           border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem;
-//           padding: 0.55rem 0.85rem; font-family: 'Sora'; transition: border-color 0.2s;
-//         }
-//         .cd-modal .form-control:focus, .cd-modal .form-select:focus {
-//           border-color: #0D9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
-//         }
+//         .cd-modal .form-control, .cd-modal .form-select { border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem; padding: 0.55rem 0.85rem; font-family: 'Sora'; transition: border-color 0.2s; }
+//         .cd-modal .form-control:focus, .cd-modal .form-select:focus { border-color: #0D9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
 //         .cd-modal .modal-footer { border: none; padding: 1rem 1.5rem; background: #F8FAFC; }
+//         .cd-settings-loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: #64748B; gap: 0.75rem; font-size: 0.85rem; }
 //       `}</style>
 
 //       <div className="cd-wrap">
-//         {/* Toast */}
 //         {toast && (
 //           <div className={`cd-toast cd-toast-${toast.type}`}>
 //             <i className={`bi bi-${toast.type === 'success' ? 'check-circle' : 'x-circle'} me-2`}></i>
@@ -291,7 +237,6 @@
 //           </div>
 //         )}
 
-//         {/* Header */}
 //         <div className="cd-header">
 //           <div className="d-flex justify-content-between align-items-start position-relative" style={{ zIndex: 2 }}>
 //             <div>
@@ -299,13 +244,12 @@
 //               <h1>My Dashboard</h1>
 //               <p className="subtitle">Manage appointments & clinic settings</p>
 //             </div>
-//             <button className="cd-header-btn" onClick={() => setShowSettings(true)}>
+//             <button className="cd-header-btn" onClick={handleOpenSettings}>
 //               <i className="bi bi-gear-fill"></i> Settings
 //             </button>
 //           </div>
 //         </div>
 
-//         {/* Stats Filter Row */}
 //         <div className="cd-stats">
 //           <Row className="g-2">
 //             {[
@@ -328,7 +272,6 @@
 //           </Row>
 //         </div>
 
-//         {/* Appointments List */}
 //         <div className="cd-content">
 //           <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
 //             <span className="cd-section-label">
@@ -350,7 +293,9 @@
 //           ) : filtered.length === 0 ? (
 //             <div className="cd-empty">
 //               <div className="cd-empty-icon">📭</div>
-//               <p style={{ fontSize: '0.85rem' }}>No {filterStatus !== 'all' ? filterStatus.toLowerCase() : ''} appointments found.</p>
+//               <p style={{ fontSize: '0.85rem' }}>
+//                 No {filterStatus !== 'all' ? filterStatus.toLowerCase() : ''} appointments found.
+//               </p>
 //             </div>
 //           ) : (
 //             filtered.map(appt => {
@@ -407,62 +352,68 @@
 //         </div>
 //       </div>
 
-//       {/* Settings Modal */}
 //       <Modal show={showSettings} onHide={() => setShowSettings(false)} size="lg" scrollable className="cd-modal">
 //         <Modal.Header closeButton>
 //           <Modal.Title><i className="bi bi-gear-fill me-2"></i>Clinic Settings</Modal.Title>
 //         </Modal.Header>
 //         <form onSubmit={handleSettingsSave}>
 //           <Modal.Body className="p-4">
-//             <Row className="g-3">
-//               <Col md={6}>
-//                 <label className="form-label d-block">Clinic Name *</label>
-//                 <input type="text" className="form-control" value={settings.name} placeholder="Your Clinic Name"
-//                   onChange={e => setSettings({ ...settings, name: e.target.value })} required />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Phone *</label>
-//                 <input type="tel" className="form-control" value={settings.phone} placeholder="+20 XXX XXX XXXX"
-//                   onChange={e => setSettings({ ...settings, phone: e.target.value })} required />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Address *</label>
-//                 <input type="text" className="form-control" value={settings.address} placeholder="Street, Area"
-//                   onChange={e => setSettings({ ...settings, address: e.target.value })} required />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Governorate *</label>
-//                 <select className="form-select" value={settings.governorate}
-//                   onChange={e => setSettings({ ...settings, governorate: e.target.value })} required>
-//                   <option value="">Select governorate</option>
-//                   {governorates.map(g => <option key={g} value={g}>{g}</option>)}
-//                 </select>
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Working Days</label>
-//                 <input type="text" className="form-control" value={settings.workingDays} placeholder="Saturday - Thursday"
-//                   onChange={e => setSettings({ ...settings, workingDays: e.target.value })} />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Working Hours</label>
-//                 <input type="text" className="form-control" value={settings.workingHours} placeholder="9:00 AM - 5:00 PM"
-//                   onChange={e => setSettings({ ...settings, workingHours: e.target.value })} />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Booking Price (EGP)</label>
-//                 <input type="number" className="form-control" value={settings.bookingPrice || ''} placeholder="500" min="0"
-//                   onChange={e => setSettings({ ...settings, bookingPrice: parseFloat(e.target.value) || undefined })} />
-//               </Col>
-//               <Col md={6}>
-//                 <label className="form-label d-block">Facebook Page URL</label>
-//                 <input type="url" className="form-control" value={settings.facebookPage} placeholder="https://facebook.com/yourclinic"
-//                   onChange={e => setSettings({ ...settings, facebookPage: e.target.value })} />
-//               </Col>
-//             </Row>
+//             {settingsLoading ? (
+//               <div className="cd-settings-loading">
+//                 <div className="spinner-border spinner-border-sm text-success" role="status" />
+//                 Loading clinic data...
+//               </div>
+//             ) : (
+//               <Row className="g-3">
+//                 {/* <Col md={6}>
+//                   <label className="form-label d-block">Clinic Name *</label>
+//                   <input type="text" className="form-control" value={settings.name || ''} placeholder="Your Clinic Name"
+//                     onChange={e => setSettings({ ...settings, name: e.target.value })} required />
+//                 </Col>
+//                 <Col md={6}>
+//                   <label className="form-label d-block">Phone *</label>
+//                   <input type="tel" className="form-control" value={settings.phone || ''} placeholder="+20 XXX XXX XXXX"
+//                     onChange={e => setSettings({ ...settings, phone: e.target.value })} required />
+//                 </Col>
+//                 <Col md={6}>
+//                   <label className="form-label d-block">Address *</label>
+//                   <input type="text" className="form-control" value={settings.address || ''} placeholder="Street, Area"
+//                     onChange={e => setSettings({ ...settings, address: e.target.value })} required />
+//                 </Col> */}
+//                 {/* <Col md={6}>
+//                   <label className="form-label d-block">Governorate *</label>
+//                   <select className="form-select" value={settings.governorate || ''}
+//                     onChange={e => setSettings({ ...settings, governorate: e.target.value })} required>
+//                     <option value="">Select governorate</option>
+//                     {governorates.map(g => <option key={g} value={g}>{g}</option>)}
+//                   </select>
+//                 </Col> */}
+//                 <Col md={6}>
+//                   <label className="form-label d-block">Working Days</label>
+//                   <input type="text" className="form-control" value={settings.workingDays || ''} placeholder="Saturday - Thursday"
+//                     onChange={e => setSettings({ ...settings, workingDays: e.target.value })} />
+//                 </Col>
+//                 <Col md={6}>
+//                   <label className="form-label d-block">Working Hours</label>
+//                   <input type="text" className="form-control" value={settings.workingHours || ''} placeholder="9:00 AM - 5:00 PM"
+//                     onChange={e => setSettings({ ...settings, workingHours: e.target.value })} />
+//                 </Col>
+//                 <Col md={6}>
+//                   <label className="form-label d-block">Booking Price (EGP)</label>
+//                   <input type="number" className="form-control" value={settings.bookingPrice || ''} placeholder="500" min="0"
+//                     onChange={e => setSettings({ ...settings, bookingPrice: parseFloat(e.target.value) || undefined })} />
+//                 </Col>
+//                 {/* <Col md={6}>
+//                   <label className="form-label d-block">Facebook Page URL</label>
+//                   <input type="url" className="form-control" value={settings.facebookPage || ''} placeholder="https://facebook.com/yourclinic"
+//                     onChange={e => setSettings({ ...settings, facebookPage: e.target.value })} />
+//                 </Col> */}
+//               </Row>
+//             )}
 //           </Modal.Body>
 //           <Modal.Footer>
 //             <button type="button" className="cd-btn cd-btn-ghost" onClick={() => setShowSettings(false)}>Cancel</button>
-//             <button type="submit" className="cd-btn cd-btn-primary">
+//             <button type="submit" className="cd-btn cd-btn-primary" disabled={settingsLoading}>
 //               <i className="bi bi-save me-1"></i> Save Settings
 //             </button>
 //           </Modal.Footer>
@@ -478,20 +429,8 @@ import { useState, useEffect } from 'react'
 import { Row, Col, Modal } from 'react-bootstrap'
 import { clinicsApi } from '../../data/api/Clinic'
 import { Clinic } from '../../types/Clinic'
-
-// ── Types ─────────────────────────────────────────────────────────────────
-
-interface Appointment {
-  id: number
-  patientName: string
-  patientPhone: string
-  date: string
-  time: string
-  status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
-  notes?: string
-}
-
-// ── Status config ─────────────────────────────────────────────────────────
+import { Appointment } from '../../types/Appointment'
+import { useRouter } from 'next/navigation'
 
 const STATUS_CONFIG = {
   Pending:   { color: '#F59E0B', bg: '#FEF3C7', textColor: '#78350F' },
@@ -502,14 +441,9 @@ const STATUS_CONFIG = {
 
 const governorates = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
-// ── Helper: get clinicId from localStorage (set at login) ─────────────────
-
 const getClinicId = (): string => {
-  if (typeof window === 'undefined') return ''
-  return localStorage.getItem('clinicId') || ''
+  return '28'
 }
-
-// ── Component ─────────────────────────────────────────────────────────────
 
 export default function ClinicDashboardClient() {
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -518,14 +452,21 @@ export default function ClinicDashboardClient() {
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'danger' } | null>(null)
   const [actionLoading, setActionLoading] = useState<number | null>(null)
   const [showSettings, setShowSettings] = useState(false)
+  const [settingsLoading, setSettingsLoading] = useState(false)
   const [settings, setSettings] = useState<Partial<Clinic>>({
     name: '', address: '', governorate: '', phone: '',
     facebookPage: '', bookingPrice: undefined, workingDays: '', workingHours: '',
   })
 
+  // ── Reject Modal State ───────────────────────────────────────────────────
+  const [showRejectModal, setShowRejectModal] = useState(false)
+  const [rejectTargetId, setRejectTargetId] = useState<number | null>(null)
+  const [rejectReason, setRejectReason] = useState('')
+
+  const router = useRouter()
+
   useEffect(() => { loadAppointments() }, [])
 
-  // ── Load appointments via clinicsApi ──
   const loadAppointments = async () => {
     try {
       setLoading(true)
@@ -538,12 +479,36 @@ export default function ClinicDashboardClient() {
     }
   }
 
+  const handleOpenSettings = async () => {
+    setShowSettings(true)
+    setSettingsLoading(true)
+    try {
+      const all = await clinicsApi.getAll()
+      const clinic = all.find(c => c.id === Number(getClinicId()))
+      if (clinic) {
+        setSettings({
+          name:         clinic.name         || '',
+          address:      clinic.address      || '',
+          governorate:  clinic.governorate  || '',
+          phone:        clinic.phone        || '',
+          facebookPage: clinic.facebookPage || '',
+          bookingPrice: clinic.bookingPrice,
+          workingDays:  clinic.workingDays  || '',
+          workingHours: clinic.workingHours || '',
+        })
+      }
+    } catch (err) {
+      console.error('Failed to load clinic settings:', err)
+    } finally {
+      setSettingsLoading(false)
+    }
+  }
+
   const showToast = (msg: string, type: 'success' | 'danger') => {
     setToast({ msg, type })
     setTimeout(() => setToast(null), 3500)
   }
 
-  // ── Approve via clinicsApi ──
   const handleApprove = async (id: number) => {
     setActionLoading(id)
     try {
@@ -557,27 +522,66 @@ export default function ClinicDashboardClient() {
     }
   }
 
-  // ── Reject via clinicsApi ──
-  const handleReject = async (id: number) => {
-    setActionLoading(id)
+  // ── فتح الـ Reject Modal ─────────────────────────────────────────────────
+  const openRejectModal = (id: number) => {
+    setRejectTargetId(id)
+    setRejectReason('')
+    setShowRejectModal(true)
+  }
+
+  // ── تنفيذ الـ Reject بعد التأكيد ────────────────────────────────────────
+  const handleRejectConfirm = async () => {
+    if (rejectTargetId === null) return
+    setActionLoading(rejectTargetId)
+    setShowRejectModal(false)
     try {
-      await clinicsApi.rejectAppointment(id)
-      setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Rejected' as const } : a))
+      await clinicsApi.rejectAppointment(rejectTargetId, rejectReason)
+      setAppointments(prev => prev.map(a => a.id === rejectTargetId ? { ...a, status: 'Rejected' as const } : a))
       showToast('Appointment rejected.', 'success')
     } catch {
       showToast('Failed to reject.', 'danger')
     } finally {
       setActionLoading(null)
+      setRejectTargetId(null)
+      setRejectReason('')
     }
   }
 
-  // ── Save settings via clinicsApi ──
   const handleSettingsSave = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await clinicsApi.updateSettings(getClinicId(), settings)
+      const dataToSend = {
+        name: settings.name,
+        address: settings.address,
+        governorate: settings.governorate,
+        phone: settings.phone,
+        facebookPage: settings.facebookPage,
+        bookingPrice: settings.bookingPrice,
+        workingDays: settings.workingDays,
+        workingHours: settings.workingHours,
+      }
+
+      await clinicsApi.updateSettings(getClinicId(), dataToSend)
+
+      const updatedAll = await clinicsApi.getAll()
+      const updatedClinic = updatedAll.find(c => c.id === Number(getClinicId()))
+      if (updatedClinic) {
+        setSettings({
+          name:         updatedClinic.name         || '',
+          address:      updatedClinic.address      || '',
+          governorate:  updatedClinic.governorate  || '',
+          phone:        updatedClinic.phone        || '',
+          facebookPage: updatedClinic.facebookPage || '',
+          bookingPrice: updatedClinic.bookingPrice,
+          workingDays:  updatedClinic.workingDays  || '',
+          workingHours: updatedClinic.workingHours || '',
+        })
+      }
+
       showToast('Settings saved!', 'success')
       setShowSettings(false)
+      window.dispatchEvent(new CustomEvent('clinicsUpdated'))
+      router.refresh()
     } catch {
       showToast('Failed to save settings.', 'danger')
     }
@@ -599,78 +603,37 @@ export default function ClinicDashboardClient() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
-
         .cd-wrap { font-family: 'Sora', sans-serif; background: #F8FAFC; min-height: 100vh; }
-
-        .cd-header {
-          background: linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%);
-          padding: 2rem 1.75rem 3.75rem;
-          position: relative; overflow: hidden; color: white;
-        }
-        .cd-header::before {
-          content: ''; position: absolute; top: -50px; right: -50px;
-          width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%;
-        }
-        .cd-header::after {
-          content: ''; position: absolute; bottom: -80px; right: 80px;
-          width: 320px; height: 320px; background: rgba(255,255,255,0.04); border-radius: 50%;
-        }
+        .cd-header { background: linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%); padding: 2rem 1.75rem 3.75rem; position: relative; overflow: hidden; color: white; }
+        .cd-header::before { content: ''; position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+        .cd-header::after { content: ''; position: absolute; bottom: -80px; right: 80px; width: 320px; height: 320px; background: rgba(255,255,255,0.04); border-radius: 50%; }
         .cd-header h1 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
         .cd-header .subtitle { font-size: 0.82rem; opacity: 0.75; margin: 0.3rem 0 0; }
         .cd-eyebrow { font-size: 0.68rem; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.2rem; }
-        .cd-header-btn {
-          background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28);
-          color: white; font-size: 0.78rem; font-weight: 500; padding: 0.45rem 1rem;
-          border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
-        }
+        .cd-header-btn { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); color: white; font-size: 0.78rem; font-weight: 500; padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
         .cd-header-btn:hover { background: rgba(255,255,255,0.24); }
-
         .cd-stats { padding: 0 1.5rem; margin-top: -2rem; position: relative; z-index: 10; }
-        .cd-chip {
-          background: white; border-radius: 12px; padding: 0.9rem 1rem;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center;
-          border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.2s;
-        }
+        .cd-chip { background: white; border-radius: 12px; padding: 0.9rem 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.2s; }
         .cd-chip:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
         .cd-chip.active { border-color: #0D9488; box-shadow: 0 4px 20px rgba(13,148,136,0.18); }
         .cd-chip .cn { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; line-height: 1; }
         .cd-chip .cl { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #64748B; margin-top: 0.2rem; }
-
         .cd-content { padding: 1.25rem 1.5rem 2rem; }
         .cd-section-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; }
-
-        .cd-card {
-          background: white; border-radius: 12px; border: 1px solid #E2E8F0;
-          padding: 1.1rem 1.1rem 1.1rem 1.4rem; margin-bottom: 0.75rem;
-          position: relative; overflow: hidden; transition: all 0.2s;
-        }
+        .cd-card { background: white; border-radius: 12px; border: 1px solid #E2E8F0; padding: 1.1rem 1.1rem 1.1rem 1.4rem; margin-bottom: 0.75rem; position: relative; overflow: hidden; transition: all 0.2s; }
         .cd-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-1px); }
-        .cd-card::before {
-          content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-          width: 3.5px; border-radius: 3px 0 0 3px;
-        }
+        .cd-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3.5px; border-radius: 3px 0 0 3px; }
         .cd-card.Pending::before   { background: #F59E0B; }
         .cd-card.Approved::before  { background: #10B981; }
         .cd-card.Rejected::before  { background: #EF4444; }
         .cd-card.Cancelled::before { background: #94A3B8; }
-
         .cd-name { font-size: 0.92rem; font-weight: 600; color: #0F172A; }
         .cd-meta { font-size: 0.75rem; color: #64748B; margin-top: 0.25rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
         .cd-meta i { margin-right: 0.2rem; }
         .cd-note { font-size: 0.73rem; color: #64748B; font-style: italic; margin-top: 0.5rem; background: #F8FAFC; padding: 0.3rem 0.6rem; border-radius: 6px; display: inline-block; }
-
-        .cd-pill {
-          display: inline-flex; align-items: center; gap: 0.28rem;
-          padding: 0.18rem 0.6rem; border-radius: 20px;
-          font-size: 0.67rem; font-weight: 600; letter-spacing: 0.03em;
-        }
+        .cd-pill { display: inline-flex; align-items: center; gap: 0.28rem; padding: 0.18rem 0.6rem; border-radius: 20px; font-size: 0.67rem; font-weight: 600; letter-spacing: 0.03em; }
         .cd-dot { width: 5px; height: 5px; border-radius: 50%; }
-
-        .cd-btn {
-          padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem;
-          font-weight: 600; border: none; cursor: pointer; transition: all 0.18s;
-          display: inline-flex; align-items: center; gap: 0.28rem; font-family: 'Sora', sans-serif;
-        }
+        .cd-btn { padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; display: inline-flex; align-items: center; gap: 0.28rem; font-family: 'Sora', sans-serif; }
         .cd-btn:disabled { opacity: 0.45; cursor: not-allowed; }
         .cd-btn-approve { background: #D1FAE5; color: #065F46; }
         .cd-btn-approve:hover:not(:disabled) { background: #10B981; color: white; }
@@ -680,39 +643,26 @@ export default function ClinicDashboardClient() {
         .cd-btn-ghost:hover { background: #E2E8F0; }
         .cd-btn-primary { background: #0D9488; color: white; padding: 0.45rem 1.25rem; }
         .cd-btn-primary:hover { background: #0F766E; }
-
+        .cd-btn-danger  { background: #EF4444; color: white; padding: 0.45rem 1.25rem; }
+        .cd-btn-danger:hover { background: #DC2626; }
         .cd-empty { text-align: center; padding: 3rem 1rem; color: #94A3B8; }
         .cd-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-
-        .cd-toast {
-          position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
-          z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px;
-          font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-          animation: cdSlide 0.25s ease; white-space: nowrap; font-family: 'Sora', sans-serif;
-        }
-        @keyframes cdSlide {
-          from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
+        .cd-toast { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15); animation: cdSlide 0.25s ease; white-space: nowrap; font-family: 'Sora', sans-serif; }
+        @keyframes cdSlide { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .cd-toast-success { background: #065F46; color: white; }
         .cd-toast-danger  { background: #991B1B; color: white; }
-
         .cd-spin { animation: cdSpin 0.7s linear infinite; display: inline-block; }
         @keyframes cdSpin { to { transform: rotate(360deg); } }
-
         .cd-modal .modal-content { border-radius: 16px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.14); overflow: hidden; }
         .cd-modal .modal-header { background: linear-gradient(135deg, #0F766E, #0D9488); color: white; border: none; padding: 1.25rem 1.5rem; }
         .cd-modal .modal-header .btn-close { filter: invert(1); opacity: 0.85; }
         .cd-modal .modal-title { font-family: 'Sora'; font-size: 1rem; font-weight: 600; }
         .cd-modal label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #64748B; margin-bottom: 0.35rem; }
-        .cd-modal .form-control, .cd-modal .form-select {
-          border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem;
-          padding: 0.55rem 0.85rem; font-family: 'Sora'; transition: border-color 0.2s;
-        }
-        .cd-modal .form-control:focus, .cd-modal .form-select:focus {
-          border-color: #0D9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
-        }
+        .cd-modal .form-control, .cd-modal .form-select { border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem; padding: 0.55rem 0.85rem; font-family: 'Sora'; transition: border-color 0.2s; }
+        .cd-modal .form-control:focus, .cd-modal .form-select:focus { border-color: #0D9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
         .cd-modal .modal-footer { border: none; padding: 1rem 1.5rem; background: #F8FAFC; }
+        .cd-settings-loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: #64748B; gap: 0.75rem; font-size: 0.85rem; }
+        .cd-reject-modal .modal-header { background: linear-gradient(135deg, #991B1B, #EF4444) !important; }
       `}</style>
 
       <div className="cd-wrap">
@@ -723,7 +673,6 @@ export default function ClinicDashboardClient() {
           </div>
         )}
 
-        {/* Header */}
         <div className="cd-header">
           <div className="d-flex justify-content-between align-items-start position-relative" style={{ zIndex: 2 }}>
             <div>
@@ -731,13 +680,12 @@ export default function ClinicDashboardClient() {
               <h1>My Dashboard</h1>
               <p className="subtitle">Manage appointments & clinic settings</p>
             </div>
-            <button className="cd-header-btn" onClick={() => setShowSettings(true)}>
+            <button className="cd-header-btn" onClick={handleOpenSettings}>
               <i className="bi bi-gear-fill"></i> Settings
             </button>
           </div>
         </div>
 
-        {/* Stats */}
         <div className="cd-stats">
           <Row className="g-2">
             {[
@@ -760,7 +708,6 @@ export default function ClinicDashboardClient() {
           </Row>
         </div>
 
-        {/* Appointments List */}
         <div className="cd-content">
           <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
             <span className="cd-section-label">
@@ -826,7 +773,7 @@ export default function ClinicDashboardClient() {
                         </button>
                         <button
                           className="cd-btn cd-btn-reject"
-                          onClick={() => handleReject(appt.id)}
+                          onClick={() => openRejectModal(appt.id)}
                           disabled={actionLoading === appt.id}
                         >
                           <i className="bi bi-x"></i> Reject
@@ -841,62 +788,72 @@ export default function ClinicDashboardClient() {
         </div>
       </div>
 
-      {/* Settings Modal */}
+      {/* ── Reject Confirmation Modal ───────────────────────────────────────── */}
+      <Modal show={showRejectModal} onHide={() => setShowRejectModal(false)} centered className="cd-modal cd-reject-modal">
+        <Modal.Header closeButton>
+          <Modal.Title><i className="bi bi-x-circle me-2"></i>Reject Appointment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4">
+          <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '1rem' }}>
+            Are you sure you want to reject this appointment?
+          </p>
+          <label className="form-label d-block">
+            Reason <span style={{ color: '#94A3B8', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
+          </label>
+          <textarea
+            className="form-control"
+            rows={3}
+            placeholder="e.g. No available slots on this date..."
+            value={rejectReason}
+            onChange={e => setRejectReason(e.target.value)}
+            style={{ resize: 'none' }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <button type="button" className="cd-btn cd-btn-ghost" onClick={() => setShowRejectModal(false)}>
+            Cancel
+          </button>
+          <button type="button" className="cd-btn cd-btn-danger" onClick={handleRejectConfirm}>
+            <i className="bi bi-x-circle me-1"></i> Confirm Reject
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ── Settings Modal ──────────────────────────────────────────────────── */}
       <Modal show={showSettings} onHide={() => setShowSettings(false)} size="lg" scrollable className="cd-modal">
         <Modal.Header closeButton>
           <Modal.Title><i className="bi bi-gear-fill me-2"></i>Clinic Settings</Modal.Title>
         </Modal.Header>
         <form onSubmit={handleSettingsSave}>
           <Modal.Body className="p-4">
-            <Row className="g-3">
-              <Col md={6}>
-                <label className="form-label d-block">Clinic Name *</label>
-                <input type="text" className="form-control" value={settings.name || ''} placeholder="Your Clinic Name"
-                  onChange={e => setSettings({ ...settings, name: e.target.value })} required />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Phone *</label>
-                <input type="tel" className="form-control" value={settings.phone || ''} placeholder="+20 XXX XXX XXXX"
-                  onChange={e => setSettings({ ...settings, phone: e.target.value })} required />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Address *</label>
-                <input type="text" className="form-control" value={settings.address || ''} placeholder="Street, Area"
-                  onChange={e => setSettings({ ...settings, address: e.target.value })} required />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Governorate *</label>
-                <select className="form-select" value={settings.governorate || ''}
-                  onChange={e => setSettings({ ...settings, governorate: e.target.value })} required>
-                  <option value="">Select governorate</option>
-                  {governorates.map(g => <option key={g} value={g}>{g}</option>)}
-                </select>
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Working Days</label>
-                <input type="text" className="form-control" value={settings.workingDays || ''} placeholder="Saturday - Thursday"
-                  onChange={e => setSettings({ ...settings, workingDays: e.target.value })} />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Working Hours</label>
-                <input type="text" className="form-control" value={settings.workingHours || ''} placeholder="9:00 AM - 5:00 PM"
-                  onChange={e => setSettings({ ...settings, workingHours: e.target.value })} />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Booking Price (EGP)</label>
-                <input type="number" className="form-control" value={settings.bookingPrice || ''} placeholder="500" min="0"
-                  onChange={e => setSettings({ ...settings, bookingPrice: parseFloat(e.target.value) || undefined })} />
-              </Col>
-              <Col md={6}>
-                <label className="form-label d-block">Facebook Page URL</label>
-                <input type="url" className="form-control" value={settings.facebookPage || ''} placeholder="https://facebook.com/yourclinic"
-                  onChange={e => setSettings({ ...settings, facebookPage: e.target.value })} />
-              </Col>
-            </Row>
+            {settingsLoading ? (
+              <div className="cd-settings-loading">
+                <div className="spinner-border spinner-border-sm text-success" role="status" />
+                Loading clinic data...
+              </div>
+            ) : (
+              <Row className="g-3">
+                <Col md={6}>
+                  <label className="form-label d-block">Working Days</label>
+                  <input type="text" className="form-control" value={settings.workingDays || ''} placeholder="Saturday - Thursday"
+                    onChange={e => setSettings({ ...settings, workingDays: e.target.value })} />
+                </Col>
+                <Col md={6}>
+                  <label className="form-label d-block">Working Hours</label>
+                  <input type="text" className="form-control" value={settings.workingHours || ''} placeholder="9:00 AM - 5:00 PM"
+                    onChange={e => setSettings({ ...settings, workingHours: e.target.value })} />
+                </Col>
+                <Col md={6}>
+                  <label className="form-label d-block">Booking Price (EGP)</label>
+                  <input type="number" className="form-control" value={settings.bookingPrice || ''} placeholder="500" min="0"
+                    onChange={e => setSettings({ ...settings, bookingPrice: parseFloat(e.target.value) || undefined })} />
+                </Col>
+              </Row>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="cd-btn cd-btn-ghost" onClick={() => setShowSettings(false)}>Cancel</button>
-            <button type="submit" className="cd-btn cd-btn-primary">
+            <button type="submit" className="cd-btn cd-btn-primary" disabled={settingsLoading}>
               <i className="bi bi-save me-1"></i> Save Settings
             </button>
           </Modal.Footer>

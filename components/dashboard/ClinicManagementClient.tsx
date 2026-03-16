@@ -46,7 +46,13 @@ export default function ClinicManagementClient() {
       setLoading(false)
     }
   }
-
+useEffect(() => {
+  const handleClinicUpdated = () => loadClinics()
+  // window.addEventListener('clinicUpdated', handleClinicUpdated)
+  // return () => window.removeEventListener('clinicUpdated', handleClinicUpdated)
+window.addEventListener('clinicsUpdated', handleClinicUpdated)
+return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
+}, [])
   const handleShowModal = (clinic?: Clinic) => {
     if (clinic) {
       setEditingClinic(clinic)

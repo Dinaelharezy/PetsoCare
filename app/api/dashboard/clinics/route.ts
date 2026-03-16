@@ -1,6 +1,7 @@
 
 
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const response = await fetch(
@@ -11,8 +12,18 @@ export async function GET() {
     }
   );
   const data = await response.json();
-  return NextResponse.json(data);
+  
+  return NextResponse.json(data, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  });
 }
+
+export const dynamic = 'force-dynamic'
+
 
 export async function POST(request: Request) {
   // ✅ استقبل FormData وبعتها للـ .NET زي ما هي
@@ -32,10 +43,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: text }, { status: response.status });
   }
 
+  // ✅ بيكسر الـ cache
+  revalidatePath('/');
+  revalidatePath('/main/Home');
+  revalidatePath('/admin/dashboard');
+  revalidatePath('/admin/clinics');
+
   const text = await response.text();
   if (!text || text.trim() === '') return NextResponse.json({ success: true });
 
-  try {
+  try { 
     return NextResponse.json(JSON.parse(text));
   } catch {
     return NextResponse.json({ success: true });

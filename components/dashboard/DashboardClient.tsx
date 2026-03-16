@@ -1,11 +1,12 @@
 'use client'
 
 import { Container, Row, Col } from 'react-bootstrap'
-import NotificationsCard from './NotificationCard'
+// import NotificationsCard from './NotificationCard'
 import StatisticsCard from './StatisticsCard'
 import ArticleManagementDash from '../Management/ArticleManagemenrDash'
-import DoctorManagementDash from '../Management/ClinicManagementDash'
+// import DoctorManagementDash from '../Management/ClinicManagementDash'
 import ReportAnimal from './ReportAnimal'
+import ClinicManagementDash from '../Management/ClinicManagementDash'
 
 export default function DashboardClient() {
   return (
@@ -19,7 +20,7 @@ export default function DashboardClient() {
         {/* Top Row: Notifications and Statistics */}
         <Row className="g-4 mb-4">
           <Col lg={6}>
-            <NotificationsCard />
+            {/* <NotificationsCard /> */}
           </Col>
           <Col lg={6}>
             <StatisticsCard />
@@ -32,7 +33,7 @@ export default function DashboardClient() {
             <ArticleManagementDash />
           </Col>
           <Col lg={4}>
-            <DoctorManagementDash />
+            <ClinicManagementDash />
           </Col>
           <Col lg={4}>
             <ReportAnimal />

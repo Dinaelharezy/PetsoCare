@@ -1,16 +1,22 @@
+
+
 import { NextResponse } from "next/server";
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ AppointId: string }> }
 ) {
-  const { id } = await params;
+  const { AppointId } = await params;
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/appointments/${id}/approve`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/appointments/${AppointId}/approve`,
     {
       method: "PUT",
-      headers: { "ngrok-skip-browser-warning": "true" },
+      headers: { 
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ status: "Approved" }),
     }
   );
 
