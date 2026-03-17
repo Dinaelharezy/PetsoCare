@@ -59,19 +59,44 @@ export default function HomePage() {
     }
   ]
 
-  const fetchClinics = useCallback(async () => {
+//   const fetchClinics = useCallback(async () => {
+//   try {
+//     setLoading(true)
+//     const res = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
+//     const data = await res.json()
+//     setClinics(data)
+//   } catch (error) {
+//     console.error('Failed to fetch clinics:', error)
+//   } finally {
+//     setLoading(false)
+//   }
+// }, [])
+
+const fetchClinics = useCallback(async () => {
   try {
     setLoading(true)
-    const res = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
+
+    const res = await fetch(`/api/Clinics?t=${Date.now()}`, {
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      throw new Error('API not working')
+    }
+
     const data = await res.json()
     setClinics(data)
+
   } catch (error) {
     console.error('Failed to fetch clinics:', error)
+
+    // خلي الصفحة تفتح حتى لو مفيش API
+    setClinics([])
+
   } finally {
     setLoading(false)
   }
 }, [])
-
 
   useEffect(() => {
     fetchClinics()
