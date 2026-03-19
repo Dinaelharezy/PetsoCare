@@ -16,8 +16,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'kyree-thatchy-janey.ngrok-free.dev',
+        protocol: "https",
+        hostname: "**.trycloudflare.com"
       }
     ]
   }

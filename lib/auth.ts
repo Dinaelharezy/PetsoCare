@@ -25,7 +25,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }),
           });
 
-          if (!res.ok) return null;
+           if (!res.ok) {
+      const err = await res.json()
+      console.error('Login API error:', JSON.stringify(err))
+      return null
+    }
 
           const data = await res.json();
           // .NET returns: { id, name, email, role: "Admin", token: "..." }
