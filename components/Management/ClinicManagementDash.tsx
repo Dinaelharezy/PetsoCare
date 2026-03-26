@@ -32,7 +32,7 @@ export default function ClinicManagementDash() {
             variant="outline-secondary" 
             onClick={handleViewClinics}
           >
-            View All CLinics
+            View All Clinics
           </Button>
         </div>
       </Card.Body>
