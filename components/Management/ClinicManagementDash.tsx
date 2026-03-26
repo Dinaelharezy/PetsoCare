@@ -17,12 +17,12 @@ export default function ClinicManagementDash() {
   }
 
   return (
-    <Card className="animate-card">
+    <Card className="animate-card p-2">
       <Card.Body>
-        <h5 className="card-title">Clinic Management</h5>
+        <h5 className="card-title p-1">Clinic Management</h5>
         <div className="d-grid gap-3">
           <Button 
-            className="btn-primary-green" 
+            className="color-for-app" 
             onClick={handleAddClinic}
           >
             <i className="bi bi-person-plus me-2"></i>

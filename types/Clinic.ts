@@ -34,14 +34,3 @@ export interface Clinic {
   createdAt?: string
 }
 
-
-
-// Review interface
-export interface Review {
-  id: string
-  vetId: string
-  name: string
-  rating: number
-  date: string
-  comment: string
-}

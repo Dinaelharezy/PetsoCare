@@ -37,8 +37,14 @@ export default function NavBar() {
             <Nav.Link as={Link} href="/main/Home" active={pathname === '/main/Home'}>
               Home
             </Nav.Link>
+             <Nav.Link as={Link} href="/main/Clinics" active={pathname === '/main/Clinics'}>
+              Clinics
+            </Nav.Link>
             <Nav.Link as={Link} href="/main/Articles" active={pathname === '/main/Articles'}>
               Articles
+            </Nav.Link>
+            <Nav.Link as={Link} href="/main/Articles" active={pathname === '/main/Rabies'}>
+              Rabies
             </Nav.Link>
             <NavDropdown title="Reports" id="reports-dropdown">
               <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
@@ -57,9 +63,9 @@ export default function NavBar() {
           <div className="navbar-right">
 
             {/* Search */}
-            <input className="navbar-search" type="search" placeholder="Search" aria-label="Search" />
+            {/* <input className="navbar-search" type="search" placeholder="Search" aria-label="Search" /> */}
 
-            <div className="navbar-right-icons">
+            <div className="navbar-right-icons ">
 
               {/* Theme Toggle */}
               <button onClick={toggleTheme} className="theme-btn"
@@ -79,7 +85,7 @@ export default function NavBar() {
               <NavDropdown
                 title={
                   <img
-                    src={session?.user?.image ?? 'woman.png'}
+                    src={session?.user?.image ?? '/woman.png'}
                     alt="Profile"
                     className="profile-avatar"
                   />

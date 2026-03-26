@@ -151,8 +151,8 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
     <Container fluid className="px-4 py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="page-title">Clinic Management</h1>
-        <Button className="btn-primary-green" onClick={() => handleShowModal()}>
-          <i className="bi bi-plus-circle me-2"></i>Add New Clinic
+        <Button className="color-for-app" onClick={() => handleShowModal()}>
+          <i className="bi bi-plus-circle me-2 "></i>Add New Clinic
         </Button>
       </div>
 

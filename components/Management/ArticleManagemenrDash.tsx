@@ -17,15 +17,15 @@ export default function ArticleManagementDash() {
   }
 
   return (
-    <Card className="animate-card">
+    <Card className="animate-card p-2">
       <Card.Body>
-        <h5 className="card-title">Article Management</h5>
+        <h5 className="card-title p-1">Article Management</h5>
         <div className="d-grid gap-3">
           <Button 
-            className="btn-primary-green" 
+            className="color-for-app" 
             onClick={handleAddArticle}
           >
-            <i className="bi bi-file-earmark-plus me-2"></i>
+            <i className="color-for-app bi bi-file-earmark-plus me-2"></i>
             Add New Article
           </Button>
           <Button 

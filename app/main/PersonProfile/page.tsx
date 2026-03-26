@@ -76,33 +76,10 @@ export default function PersonProfile() {
               variant="outline-secondary"
               size="sm"
               className="px-4 py-2"
-              onClick={() => router.push('/SignUpCompletion')}
+              onClick={() => router.push('/main/EditProfile')}
             >
               Edit Profile
             </Button>
-          </div>
-
-          {/* My Pets */}
-          <div className="mb-4">
-            <h6 className="my-4 fw-bold fs-5 specializedFont">My Pets</h6>
-            {pets.map(pet => (
-              <div key={pet.id} className="pet-card">
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden', marginRight: '1rem', flexShrink: 0 }}>
-                  <Image src={pet.image} alt={pet.name} width={60} height={60} style={{ objectFit: 'cover' }} />
-                </div>
-                <div className="flex-grow-1">
-                  <div className="fw-bold specializedFont">{pet.name}</div>
-                  <div className="small text-muted">
-                    <span className="specializedFont pet-type">🐾 {pet.type}</span>
-                    <span className="ms-2">{pet.age}</span>
-                  </div>
-                </div>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 6L15 12L9 18" stroke="#999" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </div>
-            ))}
-            <Button className="btn-register mt-3">Register New Pet</Button>
           </div>
 
         </Col>

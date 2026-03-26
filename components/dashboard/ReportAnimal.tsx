@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Card, Form, Button } from 'react-bootstrap'
-
 export default function ReportAnimal() {
   const [report, setReport] = useState('')
 
@@ -16,20 +15,20 @@ export default function ReportAnimal() {
   }
 
   return (
-    <Card className="animate-card">
-      <Card.Body>
-        <h5 className="card-title">Report Dangerous Animal</h5>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+    <Card className="h-100 animate-card" >
+      <Card.Body className="d-flex flex-column">
+        <h5 className="card-title ps-3 pt-2">Report Dangerous Animal</h5>
+        <Form onSubmit={handleSubmit} className="d-flex flex-column flex-grow-1">
+          <Form.Group className="mb-3 flex-grow-1">
             <Form.Control
               as="textarea"
               placeholder="Location or description of dangerous animal"
               value={report}
               onChange={(e) => setReport(e.target.value)}
-              style={{ minHeight: '80px' }}
+              style={{ minHeight: '30px', height: '100%' }}
             />
           </Form.Group>
-          <Button type="submit" className="btn-danger-custom w-100">
+          <Button type="submit" className="w-100 color-for-app">
             <i className="bi bi-exclamation-triangle me-2"></i>
             Add Warning
           </Button>

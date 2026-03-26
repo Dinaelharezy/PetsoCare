@@ -1,7 +1,7 @@
 'use client'
 
 import { Container, Row, Col } from 'react-bootstrap'
-// import NotificationsCard from './NotificationCard'
+import NotificationsCard from './NotificationCard'
 import StatisticsCard from './StatisticsCard'
 import ArticleManagementDash from '../Management/ArticleManagemenrDash'
 // import DoctorManagementDash from '../Management/ClinicManagementDash'
@@ -11,16 +11,16 @@ import ClinicManagementDash from '../Management/ClinicManagementDash'
 export default function DashboardClient() {
   return (
     <>
-      <Container fluid className="px-4 py-4">
+      <Container fluid className="px-5 p-4">
         {/* Page Header */}
         <div className="page-header">
           <h1 className="page-title">Admin Dashboard</h1>
         </div>
 
         {/* Top Row: Notifications and Statistics */}
-        <Row className="g-4 mb-4">
+        <Row className="g-4 mb-5">
           <Col lg={6}>
-            {/* <NotificationsCard /> */}
+            <NotificationsCard />
           </Col>
           <Col lg={6}>
             <StatisticsCard />
@@ -28,7 +28,7 @@ export default function DashboardClient() {
         </Row>
 
         {/* Bottom Row: Action Sections */}
-        <Row className="g-4">
+        <Row className="g-">
           <Col lg={4}>
             <ArticleManagementDash />
           </Col>

@@ -1,18 +1,11 @@
 
-
-// // middleware.ts
+// // middleware.ts sh8al kwys bs by2fl fe weshy fe developmet hayb2a kwys fr produtcion
 // import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
 
 // const ROUTE_ROLES: Record<string, string[]> = {
-//   "/admin":  ["Admin"],           
+//   "/admin":  ["Admin"],
 //   "/clinic": ["Admin", "Clinic"],
-// };
-
-// const ROLE_HOME: Record<string, string> = {
-//   Admin:  "/admin",
-//   Editor: "/dashboard",
-//   User:   "/dashboard",
 // };
 
 // const PUBLIC_PATHS = [
@@ -22,13 +15,18 @@
 //   "/api/auth",
 //   "/_next",
 //   "/favicon.ico",
-//   "/Images",        // ✅ لو عندك صور من الـ API
+//   "/Images",
 // ];
 
 // export async function middleware(req: NextRequest) {
 //   const { pathname } = req.nextUrl;
 
-//   // ✅ Public pages — اسمح بيها مباشرة
+//   // ✅ Static files — صور وملفات
+//   if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|json|txt|woff|woff2|ttf|avif)$/)) {
+//     return NextResponse.next();
+//   }
+
+//   // ✅ Public pages
 //   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
 //     return NextResponse.next();
 //   }
@@ -61,7 +59,9 @@
 // }
 
 // export const config = {
-//   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+//   matcher: [
+//     "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.ico).*)",
+//   ],
 // };
 
 // middleware.ts
@@ -86,8 +86,13 @@ const PUBLIC_PATHS = [
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ✅ Static files — صور وملفات
-  if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|json|txt|woff|woff2|ttf)$/)) {
+  // ✅ Static files
+  if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|json|txt|woff|woff2|ttf|avif)$/)) {
+    return NextResponse.next();
+  }
+
+  // ✅ DEV BYPASS — في development اعمل كأنك Admin وعدّي على طول
+  if (process.env.NODE_ENV === "development") {
     return NextResponse.next();
   }
 

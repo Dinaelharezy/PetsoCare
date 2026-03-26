@@ -29,12 +29,7 @@
 
 }
 
-/* .nav-link {
-  color: rgb(52, 51, 51) !important;
-  transition: background-color 0.3s ease;
-  font-family: 'Quicksand', sans-serif;
-} */
-/* Comfortaa */
+
 
 .comfortaa {
   font-family: "Comfortaa", sans-serif;
@@ -72,10 +67,19 @@
 
 .color-for-app {
   color: rgb(199, 242, 167) !important;
-  /* color: rgb(178, 242, 130); */
+  
 }
+
+.color-for-app {
+  background-color: #86C8BC !important;
+  border-color: #86C8BC !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+
+
 .color-for-app:hover {
-  color: rgb(178, 242, 130) !important;
+  background-color: #65c0af !important;
 }
 
 #themee:hover {
@@ -145,43 +149,6 @@
 
 }
 
-/* body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f8f9fa;
-        } */
-        /* .navbar {
-            background-color: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 1rem 2rem;
-        }
-        .navbar-brand, .nav-link {
-            color: #333 !important;
-            font-weight: 500;
-        }
-        .search-bar {
-            max-width: 300px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            padding: 0.4rem 1rem;
-        }
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: #ff6b6b;
-        }
-        .main-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .page-title {
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: #333;
-        } */
 
 
         /* ── Navbar Base ─────────────────────────────────────────────── */
@@ -264,7 +231,7 @@
 /* ── Right Side Wrapper ──────────────────────────────────────── */
 .navbar-right {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.75rem;
   margin-left: auto;
   padding-right: 1.5rem;
@@ -274,7 +241,7 @@
 .navbar-right-icons {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.4rem;
   border-radius: 50%;
 }
 
