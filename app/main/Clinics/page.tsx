@@ -1,7 +1,7 @@
 
-import Clinics from '../../../components/Clinics/Clinics'
+import ClinicsClient from '../../../components/Clinics/ClinicsClient'
 export default function ClinicsPage() {
 return (
-<Clinics />
+<ClinicsClient />
 )
 }

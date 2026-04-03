@@ -1,22 +1,5 @@
 
 
-// export interface Vet {
-//   id: string
-//   name: string
-//   specialty: string
-//   rating: number
-//   reviews: number
-//   image: string
-//   location: string
-//   phone: string
-//   email: string
-//   bio: string
-//   experience?: number
-//   published?: boolean
-//   createdAt?: string
-//   updatedAt?: string
-// }
-
 // types/Clinic.ts
 export interface Clinic {
   id: number

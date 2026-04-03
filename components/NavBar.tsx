@@ -44,7 +44,7 @@ export default function NavBar() {
               Articles
             </Nav.Link>
             <Nav.Link as={Link} href="/main/Rabies" active={pathname === '/main/Rabies'}>
-              Rabies
+              Diseases
             </Nav.Link>
             <NavDropdown title="Reports" id="reports-dropdown">
               <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
