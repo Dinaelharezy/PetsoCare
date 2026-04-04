@@ -49,7 +49,7 @@ export default function NavBar() {
             <NavDropdown title="Reports" id="reports-dropdown">
               <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
               <NavDropdown.Item as={Link} href="/main/reports/DangerousAnimal">Dangerous Animal Report</NavDropdown.Item>
-              <NavDropdown.Item as={Link} href="/main/reports/GeneralComplaint">General Complainment</NavDropdown.Item>
+              <NavDropdown.Item as={Link} href="/main/reports/GeneralComplainment">General Complainment</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} href="/main/VaccineSchedule" active={pathname === '/main/VaccineSchedule'}>
               Vaccines
