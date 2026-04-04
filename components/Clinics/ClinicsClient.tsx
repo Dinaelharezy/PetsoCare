@@ -1,93 +1,27 @@
 
 'use client'
-
-import { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import CategoryFilters from './CategoryFilters'
 import Card from './Card'
-import Pagination from './Pagination'
-import { clinicsApi } from '@/data/api/Clinic'
-import { Clinic } from '@/types/Clinic'
-
+import Pagination from '../Pagination'
+import { useClinics } from './hooks/useClinics'
 
 
 const ClINICS_PER_PAGE = 4
 
 export default function ClinicsClient() {
-  const [Clinic, setClinic] = useState<Clinic[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('Overview')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState('')
-
-const [categories, setCategories] = useState<string[]>(['Overview'])
-
-const fetchClinics = async () => {
-  try {
-    setLoading(true)
-    const data = await clinicsApi.getAll()
-    setClinic(data)
-    console.log('Fetched Clinic:', data)
-    // استخرجي الـ categories من الـ API ✅
-    const uniqueCategories = ['Overview', ...new Set(data.map(a => a.governorate).filter(Boolean))]
-    setCategories(uniqueCategories)
-    
-  } catch (error) {
-    console.error('Failed to fetch Clinic:', error)
-  } finally {
-    setLoading(false)
-  }
-}
-
-  // Fetch articles on mount and listen for updates
-  useEffect(() => {
-    fetchClinics()
-
-    // Listen for article updates from admin panel
-    const handleClinicsUpdated = () => {
-      console.log('Articles updated - refreshing...')
-      fetchClinics()
-    }
-
-    window.addEventListener('Clinics Updated', handleClinicsUpdated)
-
-    return () => {
-      window.removeEventListener('Clinics Updated', handleClinicsUpdated)
-    }
-  }, [])
-
-
-
-  // Filter articles based on category and search
- const filteredClinics = Clinic.filter(Clinic => {
-  const matchesCategory = activeCategory === 'Overview' || Clinic.category === activeCategory
-  const matchesSearch =
-    Clinic.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    Clinic.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    Clinic.governorate.toLowerCase().includes(searchQuery.toLowerCase()) // 
-  return matchesCategory && matchesSearch
-})
-
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredClinics.length / ClINICS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ClINICS_PER_PAGE
-  const endIndex = startIndex + ClINICS_PER_PAGE
-  const currentClinics = filteredClinics.slice(startIndex, endIndex)
-
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [activeCategory, searchQuery])
-
-  if (loading) {
-    return (
-      <Container className="py-5 text-center">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </Container>
-    )
-  }
+  const {
+    currentClinics,
+    filteredClinics,
+    loading,
+    categories,
+    activeCategory,
+    setActiveCategory,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    CLINICS_PER_PAGE,
+  } = useClinics()
 
   return (
     <>

@@ -471,8 +471,8 @@ const slides: Slide[] = [
       {/* ── Search Section ── */}
       <Container className="search-section" style={{ marginTop: '60px' }}>
         <h2
-          className="section-title text-center font-for-app"
-          style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '40px', color: '#333' }}
+          className="section-title"
+          style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '40px', color: '#333',fontFamily:''}}
         >
           Find Your Perfect Clinic & Educate Yourself with Our Articles
         </h2>

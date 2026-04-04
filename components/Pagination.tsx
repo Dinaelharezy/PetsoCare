@@ -1,6 +1,6 @@
-
-
 'use client'
+
+import { useMemo } from 'react'
 
 interface PaginationProps {
   currentPage: number
@@ -18,11 +18,14 @@ export default function Pagination({
   onPageChange
 }: PaginationProps) {
   // Calculate start and end item numbers
-  const startItem = (currentPage - 1) * itemsPerPage + 1
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems)
+  // const startItem = (currentPage - 1) * itemsPerPage + 1
+  // const endItem = Math.min(currentPage * itemsPerPage, totalItems)
+
+  const startItem = totalItems === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1
+  const endItem = totalItems === 0 ? 0 : Math.min(currentPage * itemsPerPage, totalItems)
 
   // Generate page numbers to display
-  const getPageNumbers = () => {
+  const generatePageNumbers = () => {
     const pages: (number | string)[] = []
     
     if (totalPages <= 7) {
@@ -54,6 +57,8 @@ export default function Pagination({
     return pages
   }
 
+const pages = useMemo(() => generatePageNumbers(), [currentPage, totalPages])
+
   return (
     <div className="pagination-container gap-3">
       {/* Previous Button */}
@@ -67,7 +72,7 @@ export default function Pagination({
       </button>
 
       {/* Page Numbers */}
-      {getPageNumbers().map((page, index) => (
+      {pages.map((page, index) => (
         page === '...' ? (
           <span key={`ellipsis-${index}`} className="page-ellipsis">
             ...
@@ -97,7 +102,7 @@ export default function Pagination({
 
       {/* Items Info */}
       <div className="pagination-info">
-        Showing {startItem}-{endItem} of {totalItems} Clinics and Shelters
+        Showing {startItem}-{endItem} of {totalItems} articles
       </div>
     </div>
   )

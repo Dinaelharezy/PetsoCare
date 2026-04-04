@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Card, Button, Spinner, Alert, Form } from 'react-bootstrap'
+import { useAppointment } from './hooks/useAppointment'
 
 export interface AvailableTime {
   ClinicId: string
@@ -18,17 +19,21 @@ type Step = 'datetime' | 'info' | 'confirm' | 'done'
 export function Appointment() {
   const params = useParams()
   const clinicId = params?.id as string
-
-  const [step, setStep] = useState<Step>('datetime')
-  const [availableDates, setAvailableDates] = useState<string[]>([])
-  const [availableTimes, setAvailableTimes] = useState<string[]>([])
-  const [loadingTimes, setLoadingTimes] = useState(false)
-  const [selectedDate, setSelectedDate] = useState('')
-  const [selectedTime, setSelectedTime] = useState('')
-  const [customerName, setCustomerName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [booking, setBooking] = useState(false)
-  const [error, setError] = useState('')
+  const {    availableDates,
+    availableTimes,
+    loadingTimes,
+    selectedDate,
+    setSelectedDate,
+    selectedTime,
+    setSelectedTime,
+    customerName,
+    setCustomerName,
+    phone,
+    setPhone,
+    booking,
+    setBooking,
+    error,
+    setError} = useAppointment(clinicId)
 
   // Generate next 7 available days
   useEffect(() => {
@@ -39,7 +44,6 @@ export function Appointment() {
       d.setDate(today.getDate() + i)
       days.push(d.toISOString().split('T')[0])
     }
-    setAvailableDates(days)
     setSelectedDate(days[0])
   }, [])
 
@@ -57,9 +61,6 @@ export function Appointment() {
         if (!res.ok) throw new Error()
         const data = await res.json()
         const times = Array.isArray(data) ? data : data.times ?? data.data ?? []
-        setAvailableTimes(times.map((t: string | { time: string }) =>
-          typeof t === 'string' ? t : t.time
-        ))
       } catch {
         // Fallback times if API fails
         setAvailableTimes(['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])

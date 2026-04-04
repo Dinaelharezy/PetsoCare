@@ -11,8 +11,10 @@ interface ArticleContentProps {
 
 export default function ArticleContent({ article }: ArticleContentProps) {
   const router = useRouter()
+  
 console.log(article.imageUrl)
 console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
+
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
       <Container className="py-5">
@@ -43,28 +45,17 @@ console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
                 {new Date(article.publishDate).toLocaleDateString()}
               </div>
 
-              {/* Image */}
-              {/* {article.imageUrl && (
-                <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
-                  <img
-                    src={article.imageUrl}
-                    alt={article.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              )} */}
-
               {article.imageUrl && (
-  <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
-    <Image
-  src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
-  alt={article.title}
-  width={800}
-  height={400}
-  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-/>
-  </div>
-)}
+              <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
+                <Image
+              src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
+              alt={article.title}
+              width={800}
+              height={400}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+              </div>
+            )}
 
               {/* Summary */}
               {article.summary && (
@@ -82,7 +73,7 @@ console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
                 </div>
               )}
 
-              {/* Content — string مش array */}
+              {/* Content — string array */}
               <div style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#2c3e50' }}>
                 {article.content.split('\n').map((paragraph, index) => (
                   <p key={index} className="mb-4">{paragraph}</p>

@@ -3565,16 +3565,7 @@ footer, footer * {
           margin: 0 auto;
         }
 
-        .section-title {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.9rem;
-          font-weight: 700;
-          color: var(--teal);
-          margin-bottom: 15px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
+  
 
         .section-title::after {
           content: '';
