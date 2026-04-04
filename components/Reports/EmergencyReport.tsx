@@ -1,150 +1,301 @@
 'use client'
 
 import { useState } from 'react'
-import { Container, Card, Form, Button } from 'react-bootstrap'
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap'
+
+const BODY_LOCATIONS = ['Neck', 'Head', 'Hand', 'Arm', 'Leg', 'More than one location']
+
+const INITIAL_ACTIONS = ['Wound washing', 'Vaccination']
 
 export default function EmergencyReport() {
-  const [urgency, setUrgency] = useState('High')
   const [formData, setFormData] = useState({
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
-    phone: '+1 (555) 987-6543',
-    location: '456 Oak Ave',
-    description: 'Found a stray cat with a noticeable limp on its front paw. Appears disoriented and in pain. Needs urgent medical attention.'
+    name: '',
+    phone: '',
+    governorate: '',
+    district: '',
+    animalType: 'Dog',
+    exposureType: 'Bite',
+    severity: 'Superficial',
+    exposureDateTime: '',
+    locationCity: '',
+    otherBodyLocation: '',
+    otherAction: '',
   })
+  const [bodyLocations, setBodyLocations] = useState<string[]>([])
+  const [initialActions, setInitialActions] = useState<string[]>([])
+  const [locationMode, setLocationMode] = useState<'gps' | 'manual'>('manual')
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const toggleBodyLocation = (loc: string) => {
+    setBodyLocations(prev =>
+      prev.includes(loc) ? prev.filter(l => l !== loc) : [...prev, loc]
+    )
+  }
+
+  const toggleAction = (action: string) => {
+    setInitialActions(prev =>
+      prev.includes(action) ? prev.filter(a => a !== action) : [...prev, action]
+    )
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert('Emergency report submitted successfully!')
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    alert('Bite/scratch report submitted successfully! Relevant health authorities have been notified.')
   }
 
   return (
     <Container className="py-5" style={{ maxWidth: '800px' }}>
-      <h2 className="mb-2">Emergency Report: Immediate Help Needed</h2>
+      <h2 className="mb-2">Report a Bite or Scratch Case</h2>
       <p className="text-muted mb-4">
-        For urgent situations involving sick or injured animals requiring swift attention.
+        Use this form to report exposure to an animal bite or scratch. This does not replace the need to visit an emergency department immediately.
       </p>
+
+      <Alert variant="danger" className="mb-4">
+        <strong>⚠️ Important:</strong> This application does <strong>not</strong> replace the need to go immediately to the emergency department after a bite or scratch.
+      </Alert>
 
       <Card className="p-4">
         <Form onSubmit={handleSubmit}>
-          {/* Name and Email */}
+
+          {/* 1. Reporter Information */}
+          <h5 className="mb-3 border-bottom pb-2">1. Reporter Information</h5>
           <div className="row mb-3">
             <div className="col-md-6">
               <Form.Group>
-                <Form.Label>Your Name</Form.Label>
+                <Form.Label>Name <span className="text-muted">(Optional)</span></Form.Label>
                 <Form.Control
                   type="text"
                   name="name"
                   value={formData.name}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                />
+              </Form.Group>
+            </div>
+            <div className="col-md-6">
+              <Form.Group>
+                <Form.Label>Mobile Number <span className="text-muted">(Optional)</span></Form.Label>
+                <Form.Control
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+20 ..."
+                />
+              </Form.Group>
+            </div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <Form.Group>
+                <Form.Label>Governorate <span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="text"
+                  name="governorate"
+                  value={formData.governorate}
+                  onChange={handleChange}
+                  placeholder="e.g. Port Said"
                   required
                 />
               </Form.Group>
             </div>
             <div className="col-md-6">
               <Form.Group>
-                <Form.Label>Email Address</Form.Label>
+                <Form.Label>Area / District <span className="text-danger">*</span></Form.Label>
                 <Form.Control
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
+                  type="text"
+                  name="district"
+                  value={formData.district}
+                  onChange={handleChange}
+                  placeholder="e.g. Al-Qabuti"
                   required
                 />
               </Form.Group>
             </div>
           </div>
 
-          {/* Phone Number */}
-          <Form.Group className="mb-3">
-            <Form.Label>Phone Number</Form.Label>
-            <Form.Control
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
-
-          {/* Exact Location */}
-          <Form.Group className="mb-3">
-            <Form.Label>Exact Location</Form.Label>
-            <Form.Control
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
-
-          {/* Situation Description */}
-          <Form.Group className="mb-3">
-            <Form.Label>Situation Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows={4}
-              required
-            />
-          </Form.Group>
-
-          {/* Upload Photo */}
+          {/* 2. Animal Type */}
+          <h5 className="mb-3 border-bottom pb-2">2. Animal Type</h5>
           <Form.Group className="mb-4">
-            <Form.Label>Upload Photo (Optional)</Form.Label>
-            <div className="upload-area">
-              <div className="upload-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                  <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-              </div>
-              <p className="mb-0">Drag & drop photos here, or click to upload</p>
-            </div>
+            <Form.Label>Select the type of animal that caused the bite or scratch <span className="text-danger">*</span></Form.Label>
+            <Form.Select name="animalType" value={formData.animalType} onChange={handleChange} required>
+              <option value="Dog">Dog</option>
+              <option value="Cat">Cat</option>
+            </Form.Select>
           </Form.Group>
 
-          {/* Urgency Level */}
+          {/* 3. Location on Body */}
+          <h5 className="mb-3 border-bottom pb-2">3. Location of Exposure on the Body</h5>
+          <div className="mb-4">
+            {BODY_LOCATIONS.map(loc => (
+              <Form.Check
+                key={loc}
+                type="checkbox"
+                id={`body-${loc}`}
+                label={loc}
+                className="mb-2"
+                checked={bodyLocations.includes(loc)}
+                onChange={() => toggleBodyLocation(loc)}
+              />
+            ))}
+            <div className="d-flex align-items-center gap-2 mt-2">
+              <Form.Check
+                type="checkbox"
+                id="body-other"
+                label="Other:"
+                checked={!!formData.otherBodyLocation}
+                onChange={() => {
+                  if (formData.otherBodyLocation) setFormData(prev => ({ ...prev, otherBodyLocation: '' }))
+                }}
+              />
+              <Form.Control
+                type="text"
+                name="otherBodyLocation"
+                value={formData.otherBodyLocation}
+                onChange={handleChange}
+                placeholder="Specify location..."
+                style={{ maxWidth: '280px' }}
+              />
+            </div>
+          </div>
+
+          {/* 4. Type of Exposure */}
+          <h5 className="mb-3 border-bottom pb-2">4. Type of Exposure</h5>
           <Form.Group className="mb-4">
-            <Form.Label>Urgency Level</Form.Label>
-            <div className="urgency-selector">
-              <div
-                className={`urgency-option ${urgency === 'Low' ? 'selected low' : ''}`}
-                onClick={() => setUrgency('Low')}
-              >
-                Low
-              </div>
-              <div
-                className={`urgency-option ${urgency === 'Medium' ? 'selected medium' : ''}`}
-                onClick={() => setUrgency('Medium')}
-              >
-                Medium
-              </div>
-              <div
-                className={`urgency-option ${urgency === 'High' ? 'selected high' : ''}`}
-                onClick={() => setUrgency('High')}
-              >
-                High
-              </div>
-            </div>
+            {['Bite', 'Scratch'].map(type => (
+              <Form.Check
+                key={type}
+                type="radio"
+                id={`exposure-${type}`}
+                label={type}
+                name="exposureType"
+                value={type}
+                checked={formData.exposureType === type}
+                onChange={handleChange}
+                className="mb-2"
+              />
+            ))}
           </Form.Group>
 
-          {/* Submit Button */}
-          <Button type="submit" className="btn-danger-custom w-100">
-            Submit Emergency Report
+          {/* 5. Severity */}
+          <h5 className="mb-3 border-bottom pb-2">5. Severity of Injury</h5>
+          <Form.Group className="mb-4">
+            {['Superficial', 'Deep', 'Bleeding'].map(level => (
+              <Form.Check
+                key={level}
+                type="radio"
+                id={`severity-${level}`}
+                label={level}
+                name="severity"
+                value={level}
+                checked={formData.severity === level}
+                onChange={handleChange}
+                className="mb-2"
+              />
+            ))}
+          </Form.Group>
+
+          {/* 6. Date and Time */}
+          <h5 className="mb-3 border-bottom pb-2">6. Date and Time of Exposure</h5>
+          <Form.Group className="mb-4">
+            <Form.Label>When did the exposure occur? <span className="text-danger">*</span></Form.Label>
+            <Form.Control
+              type="datetime-local"
+              name="exposureDateTime"
+              value={formData.exposureDateTime}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          {/* 7. Case Location */}
+          <h5 className="mb-3 border-bottom pb-2">7. Case Location</h5>
+          <div className="mb-3 d-flex gap-2">
+            <Button
+              variant={locationMode === 'gps' ? 'success' : 'outline-secondary'}
+              onClick={() => setLocationMode('gps')}
+              type="button"
+            >
+              📍 Detect Location Automatically
+            </Button>
+            <Button
+              variant={locationMode === 'manual' ? 'primary' : 'outline-secondary'}
+              onClick={() => setLocationMode('manual')}
+              type="button"
+            >
+              ✏️ Enter Manually
+            </Button>
+          </div>
+          {locationMode === 'manual' && (
+            <Form.Group className="mb-4">
+              <Form.Label>City / Area <span className="text-danger">*</span></Form.Label>
+              <Form.Control
+                type="text"
+                name="locationCity"
+                value={formData.locationCity}
+                onChange={handleChange}
+                placeholder="e.g. Al-Israa Area"
+                required
+              />
+            </Form.Group>
+          )}
+          {locationMode === 'gps' && (
+            <Alert variant="info" className="mb-4">
+              📡 GPS location will be captured automatically upon submission.
+            </Alert>
+          )}
+
+          {/* 8. Initial Actions */}
+          <h5 className="mb-3 border-bottom pb-2">8. Initial Actions Taken After Exposure</h5>
+          <div className="mb-4">
+            {INITIAL_ACTIONS.map(action => (
+              <Form.Check
+                key={action}
+                type="checkbox"
+                id={`action-${action}`}
+                label={action}
+                className="mb-2"
+                checked={initialActions.includes(action)}
+                onChange={() => toggleAction(action)}
+              />
+            ))}
+            <div className="d-flex align-items-center gap-2 mt-2">
+              <Form.Check
+                type="checkbox"
+                id="action-other"
+                label="Other:"
+                checked={!!formData.otherAction}
+                onChange={() => {
+                  if (formData.otherAction) setFormData(prev => ({ ...prev, otherAction: '' }))
+                }}
+              />
+              <Form.Control
+                type="text"
+                name="otherAction"
+                value={formData.otherAction}
+                onChange={handleChange}
+                placeholder="Describe other action..."
+                style={{ maxWidth: '280px' }}
+              />
+            </div>
+          </div>
+
+          {/* Submit */}
+          <Button type="submit" variant="danger" className="w-100 py-2 fw-bold">
+            Submit Report
           </Button>
         </Form>
       </Card>
+
+      <div className="mt-3 text-center">
+        <Button variant="outline-secondary">
+          🗺 View Cases on the Map
+        </Button>
+      </div>
     </Container>
   )
 }

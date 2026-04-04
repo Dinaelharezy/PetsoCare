@@ -1,11 +1,12 @@
 
+
 import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      roles: string[];
+      role: string;
       accessToken: string;
     } & DefaultSession["user"];
   }
@@ -14,15 +15,15 @@ declare module "next-auth" {
     id: string;
     name: string;
     email: string;
-    roles: string[];
+    role: string;
     accessToken: string;
   }
 }
 
 declare module "next-auth/jwt" {
-  interface JWT {           // ✅ لا import ولا extends — بس أضف الـ fields
+  interface JWT {
     id: string;
-    roles: string[];
+    role: string;
     accessToken: string;
   }
 }

@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 export default function Login() {
   const router = useRouter()
   const params = useSearchParams()
-  // const callbackUrl = params.get('callbackUrl') || '/main/Home'
   const rawCallback = params.get('callbackUrl') ?? '/main/Home'
 const callbackUrl = rawCallback === '/login' ? '/main/Home' : rawCallback
 

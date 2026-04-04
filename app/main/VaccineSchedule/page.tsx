@@ -1,8 +1,9 @@
-import VaccineClient from "@/components/Vaccine/VaccineClient";
+import VaccinationSchedule from "@/components/Vaccine/VaccinationSchedule";
+
 
 export default function VaccineSchedule() {
 return (
     
-    <VaccineClient />
+    <VaccinationSchedule />
 )
 }
