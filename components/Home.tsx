@@ -9,20 +9,11 @@ import { Slide } from '@/types/Slide'
 import Link from 'next/link'
 import { Clinic } from '../types/Clinic'
 import { article as Article } from '../types/article'
+import { getImageSrc } from '../utils/imageUtils'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
-const getImageSrc = (src?: string): string | null => {
-  if (!src) return null
-  if (src.startsWith('http')) return src
-  if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
-    const full = BASE_URL ? `${BASE_URL}${src}` : src
-    // ✅ روّح عن طريق الـ proxy
-    return `/api/image?url=${encodeURIComponent(full)}`
-  }
-  if (src.startsWith('/')) return src
-  return null
-}
+
 
 const FALLBACK_CLINICS: Clinic[] = [
   {
@@ -149,11 +140,19 @@ function ArticleCard({ article }: { article: Article }) {
       onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)' }}
     >
       <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
-        <img
-          src={getImageSrc(article.imageUrl) ?? ''}
-          alt={article.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-        />
+        {getImageSrc(article.imageUrl) ? (
+          <img
+            src={getImageSrc(article.imageUrl)!}
+            alt={article.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+          />
+        ) :
+         (
+          <div className="d-flex align-items-center justify-content-center h-100 bg-light">
+            <i className="bi bi-building text-secondary" style={{ fontSize: '4rem' }}></i>
+          </div>
+        )}
+        
         <span style={{ position: 'absolute', top: '12px', left: '12px', background: 'rgba(92,184,92,0.92)', color: '#fff', fontSize: '0.75rem', fontWeight: '600', padding: '4px 10px', borderRadius: '20px' }}>
           {article.category}
         </span>

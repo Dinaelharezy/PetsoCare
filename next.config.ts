@@ -86,8 +86,29 @@ const nextConfig = {
   images: {
     // ✅ بيقبل أي domain خارجي من غير قيود
     unoptimized: true,
+      remotePatterns: [
+     {
+      protocol: 'https',
+      hostname: '**.ngrok-free.dev',
+   },
+ ],
   },
 }
  
 module.exports = nextConfig
  
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   images: {
+//   images: {
+//   remotePatterns: [
+//     {
+//       protocol: 'https',
+//       hostname: '**.ngrok-free.dev',
+//     },
+//   ],
+// }
+// }
+// }
+
+// module.exports = nextConfig;

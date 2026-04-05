@@ -34,9 +34,11 @@ export default function NavBar() {
 
           {/* Nav Links */}
           <Nav className="d-flex align-items-lg-center gap-5">
-            <Nav.Link as={Link} href="/main/Home" active={pathname === '/main/Home'}>
+            {/* <Nav.Link as={Link} href="/main/Home" active={pathname === '/main/Home'}>
               Home
-            </Nav.Link>
+            </Nav.Link> */}
+<Nav.Link as={Link} href="/main/Home" active={pathname === '/main/Home'}>Home</Nav.Link>
+
              <Nav.Link as={Link} href="/main/Clinics" active={pathname === '/main/Clinics'}>
               Clinics
             </Nav.Link>
@@ -46,11 +48,11 @@ export default function NavBar() {
             <Nav.Link as={Link} href="/main/Rabies" active={pathname === '/main/Rabies'}>
               Diseases
             </Nav.Link>
-            <NavDropdown title="Reports" id="reports-dropdown">
+            {/* <NavDropdown title="Reports" id="reports-dropdown">
               <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
               <NavDropdown.Item as={Link} href="/main/reports/DangerousAnimal">Dangerous Animal Report</NavDropdown.Item>
               <NavDropdown.Item as={Link} href="/main/reports/GeneralComplainment">General Complainment</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
             <Nav.Link as={Link} href="/main/VaccineSchedule" active={pathname === '/main/VaccineSchedule'}>
               Vaccines
             </Nav.Link>
@@ -96,12 +98,20 @@ export default function NavBar() {
                 <NavDropdown.Item as={Link} href="/main/PersonProfile">
                   My Profile
                 </NavDropdown.Item>
+              <NavDropdown title="Reports" id="reports-dropdown"  align="end">
+              <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
+              <NavDropdown.Item as={Link} href="/main/reports/DangerousAnimal">Dangerous Animal Report</NavDropdown.Item>
+              <NavDropdown.Item as={Link} href="/main/reports/GeneralComplainment">General Complainment</NavDropdown.Item>
+            </NavDropdown>
                 <NavDropdown.Item as={Link} href="/main/About">
                   About
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item as={Link} href="/admin/dashboard">
                   Settings
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} href="/main/contacts">
+                  Contacts
                 </NavDropdown.Item>
                 {/* ✅ Logout يستخدم signOut مع next-auth */}
                 <NavDropdown.Item

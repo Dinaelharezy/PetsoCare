@@ -285,7 +285,7 @@ export default function DoctorProfileClient() {
           <Col md={2}>
             <div style={{ width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden' }}>
               {getImageSrc(clinic.imageUrl) ? (
-                <Image
+                <img
                   src={getImageSrc(clinic.imageUrl)!}
                   alt={clinic.name}
                   width={180}

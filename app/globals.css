@@ -2,6 +2,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fredoka:wght@600;700&display=swap');
 
 
+/* الـ navbar */
+.navbar {
+  background-color: var(--navbar-bg) !important;
+}
+
+/* الـ cards */
+.card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* الـ body */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease; /* ✅ smooth transition */
+}
+
 .nav-link:hover {
   color: rgb(199, 242, 167) !important;
   transition: background-color 0.3s ease;
@@ -160,6 +179,14 @@
   z-index: 1030;
 }
 
+.navbar .nav-link.active::after {
+  width: 70%;
+}
+.navbar .nav-link:not(.active)::after {
+  width: 0 !important;
+}
+
+
 .logo-container {
   flex-shrink: 0;
 }
@@ -201,15 +228,16 @@
 
 /* ── Dropdown ────────────────────────────────────────────────── */
 .navbar .dropdown-menu {
-  border: none;
+  /* border: none; */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 0.5rem;
   margin-top: 0.5rem;
+  text-decoration: none;
 }
 
 .navbar .dropdown-item {
-  border-radius: 7px;
+  /* border-radius: 7px; */
   font-size: 0.88rem;
   padding: 0.5rem 0.85rem;
   transition: background 0.15s;
@@ -220,13 +248,7 @@
   color: #0D9488;
 }
 
-/* ── Right Side Wrapper ──────────────────────────────────────── */
-/* .navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-} */
+
 
 /* ── Right Side Wrapper ──────────────────────────────────────── */
 .navbar-right {
@@ -271,9 +293,36 @@
 .profile-avatar:hover {
   border-color: #0D9488;
 }
+/* ── Reports nested inside Profile dropdown ──────────── */
+#profile-dropdown + .dropdown-menu .dropdown-toggle::after {
+  display: none !important;
+}
+#profile-dropdown + .dropdown-menu .dropdown-toggle {
+  font-size: 0.88rem !important;
+  padding: 0.5rem 0.85rem !important;
+  font-weight: 400 !important;
+  color: var(--bs-dropdown-link-color) !important;
+}
+
+#profile-dropdown + .dropdown-menu .dropdown > .dropdown-toggle {
+  font-size: 0.2rem;
+  padding: 0.5rem 0.85rem;
+  transition: background 0.15s;
+  color: inherit;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  border-radius: 7px;
+}
+
+#profile-dropdown + .dropdown-menu .dropdown > .dropdown-toggle:hover {
+  background: #F0FDFA;
+  color: #0D9488;
+}
 
 /* ── Search ──────────────────────────────────────────────────── */
-.navbar-search {
+/* .navbar-search {
   width: 220px;
   height: 36px;
   border-radius: 20px;
@@ -287,7 +336,7 @@
 .navbar-search:focus {
   border-color: #0D9488;
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-}
+} */
 
 @media (max-width: 991px) {
   .navbar-collapse {
@@ -1091,13 +1140,28 @@
   --text-dark: #2c3e50;
   --text-muted: #7f8c8d;
   --bg-light: #f8fafb;
+    --bg-primary:    #ffffff;
+  --bg-secondary:  #f8f9fa;
+  --text-primary:  #212529;
+  --text-secondary:#6c757d;
+  --card-bg:       #ffffff;
+  --card-border:   #e0e0e0;
+  --navbar-bg:     #ffffff;
+  --input-bg:      #ffffff;
+  --input-border:  #ced4da;
 }
 
-/* * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-} */
+[data-theme='dark'] {
+  --bg-primary:    #121212;
+  --bg-secondary:  #1e1e1e;
+  --text-primary:  #e0e0e0;
+  --text-secondary:#a0a0a0;
+  --card-bg:       #1e1e1e;
+  --card-border:   #333333;
+  --navbar-bg:     #1a1a1a;
+  --input-bg:      #2a2a2a;
+  --input-border:  #444444;
+}
 
 body {
   /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
@@ -3759,3 +3823,226 @@ footer, footer * {
           background: linear-gradient(to right, transparent, #d1d5db, transparent);
           margin: 0 20px;
         }
+
+
+        /* ===== DARK MODE ===== */
+
+        
+      /* ============================================
+   DARK MODE OVERRIDES - ضيفيهم في الآخر
+   ============================================ */
+
+[data-theme='dark'] body,
+[data-theme='dark'] {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── Cards & Sections ── */
+[data-theme='dark'] .card,
+[data-theme='dark'] .vaccine-card,
+[data-theme='dark'] .settings-card,
+[data-theme='dark'] .add-vaccine-card,
+[data-theme='dark'] .calendar-card,
+[data-theme='dark'] .vaccine-section,
+[data-theme='dark'] .stat-card,
+[data-theme='dark'] .review-card,
+[data-theme='dark'] .clinic-details,
+[data-theme='dark'] .doctor-card,
+[data-theme='dark'] .article-card,
+[data-theme='dark'] .feature-card,
+[data-theme='dark'] .section-card,
+[data-theme='dark'] .stat-box,
+[data-theme='dark'] .references,
+[data-theme='dark'] .doctor-card {
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── White backgrounds ── */
+[data-theme='dark'] .header-section,
+[data-theme='dark'] .page-header,
+[data-theme='dark'] .vet-finder-page,
+[data-theme='dark'] .about-page {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── Footer ── */
+[data-theme='dark'] .footer {
+  background-color: #1a1a1a !important;
+  border-top-color: #333 !important;
+}
+[data-theme='dark'] .footer-section h6 { color: #e0e0e0 !important; }
+[data-theme='dark'] .footer-section a  { color: #a0a0a0 !important; }
+[data-theme='dark'] .footer-bottom     { color: #666 !important; border-top-color: #333 !important; }
+
+/* ── Sidebar ── */
+[data-theme='dark'] .sidebar {
+  background-color: #1a1a1a !important;
+  border-right-color: #333 !important;
+}
+[data-theme='dark'] .sidebar-item {
+  color: #ccc !important;
+  border-bottom-color: #2a2a2a !important;
+}
+[data-theme='dark'] .sidebar-item:hover,
+[data-theme='dark'] .sidebar-item.active {
+  background-color: #2a2a2a !important;
+}
+
+/* ── disease / stat cards ── */
+[data-theme='dark'] .disease {
+  background-color: #2a2a1a !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── Edit / Profile cards ── */
+[data-theme='dark'] .edit-animal,
+[data-theme='dark'] .edit-profile,
+[data-theme='dark'] .edit-medicalHist,
+[data-theme='dark'] .pet-card,
+[data-theme='dark'] .profile-card {
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── pet-type badge ── */
+[data-theme='dark'] .pet-type {
+  background-color: #2a3a2a !important;
+  color: #ccc !important;
+}
+
+/* ── Inputs & Selects ── */
+[data-theme='dark'] .form-control,
+[data-theme='dark'] .form-select,
+[data-theme='dark'] .search-input-field,
+[data-theme='dark'] .filter-select,
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] select {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+[data-theme='dark'] .form-control::placeholder,
+[data-theme='dark'] input::placeholder,
+[data-theme='dark'] textarea::placeholder {
+  color: #666 !important;
+}
+
+/* ── Dropdowns ── */
+[data-theme='dark'] .dropdown-menu {
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+}
+[data-theme='dark'] .dropdown-item {
+  color: #e0e0e0 !important;
+}
+[data-theme='dark'] .dropdown-item:hover {
+  background-color: #2a2a2a !important;
+  color: #0D9488 !important;
+}
+
+/* ── Navbar ── */
+[data-theme='dark'] .navbar {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ── Tables ── */
+[data-theme='dark'] .table {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+}
+[data-theme='dark'] .table thead th {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  border-bottom-color: #444 !important;
+}
+[data-theme='dark'] .table tbody tr:hover {
+  background-color: #252525 !important;
+}
+[data-theme='dark'] .table td,
+[data-theme='dark'] .table th {
+  border-color: #333 !important;
+}
+
+/* ── Text colors ── */
+[data-theme='dark'] h1, [data-theme='dark'] h2,
+[data-theme='dark'] h3, [data-theme='dark'] h4,
+[data-theme='dark'] h5, [data-theme='dark'] h6,
+[data-theme='dark'] p, [data-theme='dark'] li,
+[data-theme='dark'] .section-title,
+[data-theme='dark'] .page-title,
+[data-theme='dark'] .card-title,
+[data-theme='dark'] .vet-name,
+[data-theme='dark'] .clinic-name,
+[data-theme='dark'] .main-title {
+  color: #e0e0e0 !important;
+}
+
+[data-theme='dark'] .text-muted,
+[data-theme='dark'] .vet-specialty,
+[data-theme='dark'] .clinic-address,
+[data-theme='dark'] .review-text,
+[data-theme='dark'] .notification-time {
+  color: #888 !important;
+}
+
+/* ── Buttons ── */
+[data-theme='dark'] .vacc-butt,
+[data-theme='dark'] .page-btn {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+[data-theme='dark'] .page-btn:hover:not(:disabled) {
+  background-color: #0D9488 !important;
+  border-color: #0D9488 !important;
+}
+[data-theme='dark'] .category-btn,
+[data-theme='dark'] .filter-btn {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+/* ── Alert / Info boxes ── */
+[data-theme='dark'] .alert-box {
+  background: #1e1e1e !important;
+  border-color: #444 !important;
+  color: #e0e0e0 !important;
+}
+
+/* ── Vaccine / Settings items ── */
+[data-theme='dark'] .vaccine-item,
+[data-theme='dark'] .settings-item,
+[data-theme='dark'] .notification-item {
+  border-bottom-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+}
+[data-theme='dark'] .settings-item:hover {
+  background-color: #252525 !important;
+}
+
+/* ── Modal ── */
+[data-theme='dark'] .modal-content {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+  border-color: #333 !important;
+}
+[data-theme='dark'] .modal-footer {
+  border-top-color: #333 !important;
+}
+
+/* ── Scrollbar ── */
+[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: #1a1a1a !important;
+}
+
+*, *::before, *::after {
+  transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease;
+}

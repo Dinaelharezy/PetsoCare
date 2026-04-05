@@ -15,3 +15,4 @@ export async function GET(req: NextRequest) {
     headers: { 'Content-Type': contentType },
   })
 }
+
