@@ -1,29 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { Container, Card, Form, Button } from 'react-bootstrap'
+import { useComplainment } from './hooks/useComplainment'
+
 
 export default function GeneralComplainment() {
-  const [urgency, setUrgency] = useState('Low')
-  const [formData, setFormData] = useState({
-    name: 'Alex Johnson',
-    email: 'alex.johnson@example.com',
-    phone: '+1 (555) 333-4444',
-    subject: 'Feedback on Vaccination Reminders',
-    message: 'I appreciate the vaccine reminders, but I noticed they sometimes come too late. Could there be an option to set the reminder days earlier, perhaps 1-2 weeks in advance?'
-  })
+ const {    urgency, setUrgency,
+        handleInputChange,
+        handleSubmit,
+        formData,
+        setFormData
+} = useComplainment();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    alert('General complaint submitted successfully!')
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
 
   return (
     <Container className="py-5" style={{ maxWidth: '800px' }}>

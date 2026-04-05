@@ -1,11 +1,10 @@
 'use client'
 import { Container, Row, Col } from 'react-bootstrap'
-import AddVaccineForm from '../../components/Vaccine/VaccineForm'
-import VaccineCalendar from '../../components/Vaccine/VaccineCalendar'
-import VaccineList from '../../components/Vaccine/VaccineList'
+import AddVaccineForm from '../components/VaccineForm'
+import VaccineCalendar from '../components/VaccineCalendar'
+import VaccineList from '../components/VaccineList'
 import { FiMessageCircle } from 'react-icons/fi'
-import useVaccineSchedule from '../../hooks/useVaccineSchedule'
-import { Vaccine } from '../../types/Vaccine'
+import useVaccineSchedule from '../../../hooks/useVaccineSchedule'
 
 export default function VaccineClient() {
   const {

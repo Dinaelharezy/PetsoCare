@@ -1,4 +1,4 @@
-import VaccinationSchedule from "@/components/Vaccine/VaccinationSchedule";
+import VaccinationSchedule from "../../../components/Vaccine/pages/VaccinationSchedule";
 
 
 export default function VaccineSchedule() {
