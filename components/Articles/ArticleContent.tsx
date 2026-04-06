@@ -4,16 +4,37 @@
 import { Container, Row, Col, Badge } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 import { article } from '@/types/article'
-import Image from 'next/image'
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
+
+// Mirrors the shared getImageSrc utility exactly:
+// - http URL  → proxy
+// - /Images, /uploads, /api → prepend BASE_URL then proxy
+// - any other "/" path (public folder like /Dog-2.jpg) → serve directly ✅
+const getArticleImageSrc = (src?: string): string | null => {
+  if (!src) return null
+
+  if (src.startsWith('http')) {
+    return `/api/image?url=${encodeURIComponent(src)}`
+  }
+
+  if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
+    const full = BASE_URL ? `${BASE_URL}${src}` : src
+    return `/api/image?url=${encodeURIComponent(full)}`
+  }
+
+  if (src.startsWith('/')) return src
+
+  return null
+}
+
 interface ArticleContentProps {
   article: article
 }
 
 export default function ArticleContent({ article }: ArticleContentProps) {
   const router = useRouter()
-  
-console.log(article.imageUrl)
-console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
+  const imageSrc = getArticleImageSrc(article.imageUrl)
 
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
@@ -45,17 +66,18 @@ console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
                 {new Date(article.publishDate).toLocaleDateString()}
               </div>
 
-              {article.imageUrl && (
-              <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
-                <Image
-              src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
-              alt={article.title}
-              width={800}
-              height={400}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-              </div>
-            )}
+              {/* ✅ Fixed: uses getArticleImageSrc instead of hardcoding BASE_URL */}
+              {imageSrc && (
+                <div className="mb-4 rounded-3 overflow-hidden" style={{ maxHeight: '400px' }}>
+                  <img
+                    src={imageSrc}
+                    alt={article.title}
+                    width={800}
+                    height={400}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+              )}
 
               {/* Summary */}
               {article.summary && (
@@ -66,31 +88,23 @@ console.log(`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`)
                     borderLeft: '4px solid #86C8BC',
                     fontSize: '1.1rem',
                     fontStyle: 'italic',
-                    color: '#495057'
+                    color: '#495057',
                   }}
                 >
                   {article.summary}
                 </div>
               )}
 
-              {/* Content — string array */}
+              {/* Content */}
               <div style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#2c3e50' }}>
                 {article.content.split('\n').map((paragraph, index) => (
-                  <p key={index} className="mb-4">{paragraph}</p>
+                  <p key={index} className="mb-2">
+                    {paragraph}
+                  </p>
                 ))}
               </div>
             </div>
 
-            {/* More in Category */}
-            <div className="bg-white rounded-4 shadow-sm p-4">
-              <h5 className="mb-3">More Articles in {article.category}</h5>
-              <button
-                className="btn btn-outline-primary"
-                onClick={() => router.push(`/main/Articles?category=${article.category}`)}
-              >
-                View All {article.category} Articles
-              </button>
-            </div>
           </Col>
         </Row>
       </Container>

@@ -22,7 +22,8 @@ export default function ArticleManagementDash() {
         <h5 className="card-title p-1">Article Management</h5>
         <div className="d-grid gap-3">
           <Button 
-            className="color-for-app" 
+            className="background-for-app" 
+            
             onClick={handleAddArticle}
           >
             <i className="color-for-app bi bi-file-earmark-plus me-2"></i>

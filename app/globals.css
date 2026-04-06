@@ -88,6 +88,12 @@ body {
   color: rgb(199, 242, 167) !important;
   
 }
+.background-for-app {
+  background-color: rgb(183, 228, 149) !important;
+  border: rgb(199, 242, 167) !important;
+  color: white;
+  
+}
 
 .color-for-app {
   background-color: rgb(188, 241, 148) !important;
@@ -3164,7 +3170,7 @@ textarea.form-control {
 
 /* Modal Styles */
 .modal-header {
-  background: linear-gradient(135deg, #86C8BC 0%, #6fb5a8 100%);
+background-color:rgb(202, 244, 171);
   color: white;
   border-bottom: none;
 }
@@ -3236,7 +3242,7 @@ textarea.form-control {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -3245,12 +3251,14 @@ textarea.form-control {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #86C8BC;
+ background-color: rgb(202, 244, 171) !important;
+  border: rgb(199, 242, 167) !important;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6fb5a8;
+ background-color: rgb(183, 228, 149) !important;
+  border: rgb(199, 242, 167) !important;
 }
 
 /* Animation */

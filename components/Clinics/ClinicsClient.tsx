@@ -5,6 +5,7 @@ import CategoryFilters from './CategoryFilters'
 import Card from './Card'
 import Pagination from '../Pagination'
 import { useClinics } from './hooks/useClinics'
+import LoadingSpin from '../LoadingSpin'
 
 
 const ClINICS_PER_PAGE = 4
@@ -23,6 +24,7 @@ export default function ClinicsClient() {
     CLINICS_PER_PAGE,
   } = useClinics()
 
+  if(loading) return <LoadingSpin />
   return (
     <>
       {/* Header */}

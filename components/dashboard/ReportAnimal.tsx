@@ -50,7 +50,7 @@ export default function ReportAnimal() {
         <h5 className="card-title pb-2">Report Dangerous Animal</h5>
         <div className="d-grid gap-3">
           <Button 
-            variant="outline-secondary color-for-app" 
+            variant="outline-secondary background-for-app" style={{color:'white'}} 
             onClick={handleShow}
           >
             Report
@@ -93,8 +93,10 @@ export default function ReportAnimal() {
               </p>
             )}
 
+          
+
             {/* Submit */}
-            <Button type="submit" className="w-100 color-for-app">
+            <Button type="submit" className="w-100 background-for-app">
               Confirm Warning
             </Button>
 

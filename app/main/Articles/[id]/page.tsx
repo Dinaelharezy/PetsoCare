@@ -1,8 +1,12 @@
 
 
+import ArticleFetching from '../../../../components/Articles/ArticleFetching'
 
-import ArticleFetching from '@/components/Articles/ArticleFetching'
-   
-export default function ArticlesPage({ params }: { params: { id: string } }) {
-  return <ArticleFetching id={params.id} />
+interface Params {
+  params: { id: string }
+}
+
+export default async function ArticlesPage({ params }: Params) {
+  const { id } = await params; // fixes Next.js async warning
+  return <ArticleFetching id={id} />
 }

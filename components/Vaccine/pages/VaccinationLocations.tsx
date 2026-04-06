@@ -81,6 +81,7 @@ export default function VaccinationLocations() {
         </button>
         <Link
         href='/main/VaccinationAreas'
+         onClick={() => setActiveTab('area')}
           style={{
             border: 'none',
             borderRadius: '50px',
@@ -88,8 +89,8 @@ export default function VaccinationLocations() {
             fontWeight: 600,
             fontSize: '0.95rem',
             cursor: 'pointer',
-            background: activeTab === 'human' ? '#0d6efd' : '#e9ecef',
-            color: activeTab === 'human' ? '#fff' : '#555',
+            background: activeTab === 'area' ? '#93f3a3' : '#e9ecef',
+            color: activeTab === 'area' ? '#fff' : '#555',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -102,7 +103,7 @@ export default function VaccinationLocations() {
               width: 12,
               height: 12,
               borderRadius: '50%',
-              background: activeTab === 'human' ? '#fff' : '#0d6efd',
+              background: activeTab === 'area' ? '#fff' : '#0d6efd',
               display: 'inline-block',
             }}
           />

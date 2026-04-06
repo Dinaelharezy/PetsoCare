@@ -1,12 +1,12 @@
 'use client'
 
 import { Container, Row, Col } from 'react-bootstrap'
-import NotificationsCard from './NotificationCard'
+import NotificationsCard from '../NotificationCard'
 import StatisticsCard from './StatisticsCard'
-import ArticleManagementDash from '../Management/ArticleManagemenrDash'
+import ArticleManagementDash from './Management/ArticleManagemenrDash'
 // import DoctorManagementDash from '../Management/ClinicManagementDash'
 import ReportAnimal from './ReportAnimal'
-import ClinicManagementDash from '../Management/ClinicManagementDash'
+import ClinicManagementDash from './Management/ClinicManagementDash'
 
 export default function DashboardClient() {
   return (

@@ -6,6 +6,43 @@ import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Button, Modal, Form, Badge, Alert } from 'react-bootstrap'
 import { article } from '../../types/article'
 
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
+
+// export const getImageSrc = (src?: string): string | null => {
+//   if (!src) return null
+//   if (src.startsWith('http')) return src
+//   if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
+//     const full = BASE_URL ? `${BASE_URL}${src}` : src
+//     // ✅ روّح عن طريق الـ proxy
+//     return `/api/image?url=${encodeURIComponent(full)}`
+//   }
+//   if (src.startsWith('/')) return src
+//   return null
+// }
+
+
+
+export const getImageSrc = (src?: string): string | null => {
+  if (!src) return null
+
+  // لو URL كامل من الـ backend - روّحه عن طريق الـ proxy
+  if (src.startsWith('http')) {
+    return `/api/image?url=${encodeURIComponent(src)}`
+  }
+
+  // لو path نسبي من الـ backend
+  if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
+    const full = BASE_URL ? `${BASE_URL}${src}` : src
+    return `/api/image?url=${encodeURIComponent(full)}`
+  }
+
+  // لو صورة محلية في Next.js (public folder)
+  if (src.startsWith('/')) return src
+
+  return null
+}
+
 export default function ArticleManagementClient() {
   const [articles, setArticles] = useState<article[]>([])
   const [loading, setLoading] = useState(true)
@@ -20,6 +57,7 @@ export default function ArticleManagementClient() {
     Summary: '',
     Content: '',
     Source: '',
+    imageFile:'',
     Category: '',
     PublishDate: '',
   })
@@ -57,6 +95,7 @@ export default function ArticleManagementClient() {
         Title: article.title,
         Summary: article.summary,
         Content: article.content,
+        imageFile: article.imageUrl,
         Source: article.source,
         Category: article.category,
         PublishDate: article.publishDate?.split('T')[0] || '',
@@ -67,6 +106,7 @@ export default function ArticleManagementClient() {
         Title: '',
         Summary: '',
         Content: '',
+        imageFile:'',
         Source: '',
         Category: '',
         PublishDate: new Date().toISOString().split('T')[0],
@@ -179,7 +219,7 @@ export default function ArticleManagementClient() {
         return
       }
 
-      // ✅ Step 2: لو في صورة جديدة ابعتها منفصلة
+    
       if (imageFile) {
         const imgFormData = new FormData()
         imgFormData.append('Image', imageFile)
@@ -200,15 +240,26 @@ export default function ArticleManagementClient() {
 
     } else {
       // ✅ POST لسه FormData زي ما هو
+      // const formDataToSend = new FormData()
+      // formDataToSend.append('Title', formData.Title)
+      // formDataToSend.append('Summary', formData.Summary)
+      // formDataToSend.append('Content', formData.Content)
+      // formDataToSend.append('Category', formData.Category)
+      // formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
+      // formDataToSend.append('Source', formData.Source)
+      // formDataToSend.append('Published', 'true')
+      // if (imageFile) formDataToSend.append('Image', imageFile)
       const formDataToSend = new FormData()
-      formDataToSend.append('Title', formData.Title)
-      formDataToSend.append('Summary', formData.Summary)
-      formDataToSend.append('Content', formData.Content)
-      formDataToSend.append('Category', formData.Category)
-      formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
-      formDataToSend.append('Source', formData.Source)
-      formDataToSend.append('Published', 'true')
-      if (imageFile) formDataToSend.append('Image', imageFile)
+formDataToSend.append('Title', formData.Title)
+formDataToSend.append('Summary', formData.Summary)
+formDataToSend.append('Content', formData.Content)
+formDataToSend.append('TitleEn', formData.TitleEn)
+formDataToSend.append('SummaryEn', formData.SummaryEn)
+formDataToSend.append('ContentEn', formData.ContentEn)
+formDataToSend.append('Category', formData.Category)
+formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
+formDataToSend.append('Source', formData.Source)
+if (imageFile) formDataToSend.append('Image', imageFile)
 
       const response = await fetch('/api/dashboard/articles', {
         method: 'POST',
@@ -263,7 +314,7 @@ export default function ArticleManagementClient() {
   if (loading) {
     return (
       <Container className="py-5 text-center">
-        <div className="spinner-border text-primary" role="status">
+        <div className="spinner-border text-primary " role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
       </Container>
@@ -274,8 +325,8 @@ export default function ArticleManagementClient() {
     <Container fluid className="px-4 py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="page-title">Article Management</h1>
-        <Button className="btn-primary-green" onClick={() => handleShowModal()}>
-          <i className="bi bi-file-earmark-plus me-2"></i>
+        <Button className="background-for-app" onClick={() => handleShowModal()}>
+          <i className="bi bi-file-earmark-plus me-2 "></i>
           Add New Article
         </Button>
       </div>
@@ -296,13 +347,28 @@ export default function ArticleManagementClient() {
                   <Badge bg="dark">ID: {article.id}</Badge>
                 </div>
 
-                {article.imageUrl && (
+                {/* {article.imageUrl && (
                   <img
                     src={`${process.env.NEXT_PUBLIC_API_URL}${article.imageUrl}`}
                     alt={article.title}
                     style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px', marginBottom: '12px' }}
                   />
-                )}
+                )} */}
+
+{article.imageUrl && (
+  <img
+    src={getImageSrc(article.imageUrl) || '/fallback.png'} // fallback لو مفيش صورة
+    alt={article.title}
+    style={{
+      width: '100%',
+      height: '150px',
+      objectFit: 'cover',
+      borderRadius: '8px',
+      marginBottom: '12px'
+    }}
+  />
+)}
+
 
                 <h5 className="card-title mb-2">{article.title}</h5>
                 <p className="text-muted small mb-2">{article.summary}</p>
@@ -336,8 +402,8 @@ export default function ArticleManagementClient() {
         </Card>
       )}
 
-      <Modal show={showModal} onHide={handleCloseModal} centered size="lg" scrollable>
-        <Modal.Header closeButton style={{ background: '#86C8BC', color: 'white' }}>
+      <Modal show={showModal} onHide={handleCloseModal} centered size="lg" scrollable >
+        <Modal.Header closeButton style={{color: 'white'}}>
           <Modal.Title style={{ fontSize: '1.1rem' }}>
             {editingArticle ? `Edit Article (ID: ${editingArticle.id})` : 'Add New Article'}
           </Modal.Title>
@@ -409,7 +475,7 @@ export default function ArticleManagementClient() {
           </Modal.Body>
           <Modal.Footer style={{ padding: '10px 20px' }}>
             <Button variant="secondary" size="sm" onClick={handleCloseModal}>Cancel</Button>
-            <Button type="submit" size="sm" className="btn-primary-green">
+            <Button type="submit" size="sm" className="background-for-app">
               {editingArticle ? 'Update Article' : 'Create Article'}
             </Button>
           </Modal.Footer>

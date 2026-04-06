@@ -7,13 +7,37 @@ import Image from 'next/image'
 import { clinicsApi } from '../../data/api/Clinic'
 import { Clinic } from '../../types/Clinic'
 
+
+
+
 export default function ClinicManagementClient() {
   const [clinics, setClinics] = useState<Clinic[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [editingClinic, setEditingClinic] = useState<Clinic | null>(null)
   const [successMessage, setSuccessMessage] = useState('')
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
+
+const getImageSrc = (src?: string): string | null => {
+  if (!src) return null
+
+  // لو URL كامل من الـ backend - روّحه عن طريق الـ proxy
+  if (src.startsWith('http')) {
+    return `/api/image?url=${encodeURIComponent(src)}`
+  }
+
+  // لو path نسبي من الـ backend
+  if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
+    const full = BASE_URL ? `${BASE_URL}${src}` : src
+    return `/api/image?url=${encodeURIComponent(full)}`
+  }
+
+  // لو صورة محلية في Next.js (public folder)
+  if (src.startsWith('/')) return src
+
+  return null
+}
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -167,7 +191,7 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
           <Col lg={4} md={6} key={clinic.id}>
             <Card className="h-100">
               <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
-                {isValidImage(clinic.imageUrl) ? (
+                {/* {isValidImage(clinic.imageUrl) ? (
                   <Image
                     src={clinic.imageUrl!}
                     alt={clinic.name}
@@ -179,7 +203,21 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
                   <div className="d-flex align-items-center justify-content-center h-100 bg-light">
                     <i className="bi bi-building text-secondary" style={{ fontSize: '4rem' }}></i>
                   </div>
-                )}
+                )} */}
+  {isValidImage(clinic.imageUrl) ? (
+    <Image
+      src={getImageSrc(clinic.imageUrl)!} // استخدمنا الدالة هنا
+      alt={clinic.name}
+      width={400}
+      height={220}
+      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+    />
+  ) : (
+    <div className="d-flex align-items-center justify-content-center h-100 bg-light">
+      <i className="bi bi-building text-secondary" style={{ fontSize: '4rem' }}></i>
+    </div>
+  )}
+
               </div>
 
               <Card.Body>

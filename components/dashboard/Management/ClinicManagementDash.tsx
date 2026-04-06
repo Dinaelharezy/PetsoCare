@@ -22,7 +22,7 @@ export default function ClinicManagementDash() {
         <h5 className="card-title p-1">Clinic Management</h5>
         <div className="d-grid gap-3">
           <Button 
-            className="color-for-app" 
+            className="background-for-app" 
             onClick={handleAddClinic}
           >
             <i className="bi bi-person-plus me-2"></i>

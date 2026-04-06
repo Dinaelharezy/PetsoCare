@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Tab } from 'react-bootstrap'
 export  function useVaccLocations() {
-type Tab = 'animal' | 'human'
+type Tab = 'animal' | 'human' | 'area'
   const [activeTab, setActiveTab] = useState<Tab>('animal')
   const ANIMAL_LOCATIONS = [
   {

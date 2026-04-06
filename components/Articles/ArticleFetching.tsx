@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+
 import { useRouter } from 'next/navigation'
 import { Container, Spinner } from 'react-bootstrap'
 import ArticleContent from "@/components/Articles/ArticleContent"
-import { articlesApi } from '@/data/api/articles'
-import { article } from '@/types/article'
+
 import { useContent } from './hooks/useContent'
 export default function ArticleFetching({ id }: { id: string }) {
   const router = useRouter()

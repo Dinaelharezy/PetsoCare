@@ -146,6 +146,7 @@ import CategoryFilters from './CategoryFilters'
 import ArticleCard from './ArticleCard'
 import Pagination from '../Pagination'
 import { useArticles } from './hooks/useArticles'
+import LoadingSpin from '../LoadingSpin'
 
 
 export default function ArticlesClient() {
@@ -163,20 +164,37 @@ export default function ArticlesClient() {
     currentArticles
   } = useArticles()
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  if (loading) return <LoadingSpin />
 
   return (
     <>
-      <Container>
-        <SearchBar value={searchQuery} onChange={setSearchQuery} />
+      <Container className='mb-4'>
 
-        <CategoryFilters
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
+      {/* <div style={{ textAlign: 'center', margin: '2rem', color: '#555' }}>
+        <h3 className='bold'>Explore a world of knowledge, discover articles that inspire and inform you</h3>
+        <p className='text-muted'>"Search, explore, and dive into content curated for you and your interests."</p>
+      </div> */}
+            {/* Header */}
+            <div className="header-section">
+              <Container>
+              <h1 className="main-title font-for-app">
+      Explore a world of knowledge, discover articles that inspire and inform you
+              </h1>
+              <p className="subtitle">
+      Search, explore, and dive into content curated for you and your interests.
+              </p>
+      
+                {/* <SearchBar value={searchQuery} onChange={setSearchQuery} /> */}
+                
+                <CategoryFilters
+                  categories={categories}
+                  activeCategory={activeCategory}
+                  onCategoryChange={setActiveCategory}
+                />
+              </Container>
+            </div>
+
+    
 
         <Row>
           {currentArticles.map((article) => (

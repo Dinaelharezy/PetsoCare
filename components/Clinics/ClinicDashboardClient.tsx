@@ -36,9 +36,8 @@ export default function ClinicDashboardClient() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
-        .cd-wrap { font-family: 'Sora', sans-serif; background: #F8FAFC; min-height: 100vh; }
-        .cd-header { background: linear-gradient(135deg, #0F766E 0%, #0D9488 60%, #14B8A6 100%); padding: 2rem 1.75rem 3.75rem; position: relative; overflow: hidden; color: white; }
+        .cd-wrap {background: #F8FAFC; min-height: 100vh; }
+        .cd-header { background:linear-gradient(135deg, #80e19f 0%, #5aec75 60%, hsl(116, 63%, 69%) 100%); padding: 2rem 1.75rem 3.75rem; position: relative; overflow: hidden; color: white; }
         .cd-header::before { content: ''; position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; background: rgba(255,255,255,0.06); border-radius: 50%; }
         .cd-header::after { content: ''; position: absolute; bottom: -80px; right: 80px; width: 320px; height: 320px; background: rgba(255,255,255,0.04); border-radius: 50%; }
         .cd-header h1 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
@@ -50,7 +49,7 @@ export default function ClinicDashboardClient() {
         .cd-chip { background: white; border-radius: 12px; padding: 0.9rem 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center; border: 1.5px solid #E2E8F0; cursor: pointer; transition: all 0.2s; }
         .cd-chip:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
         .cd-chip.active { border-color: #0D9488; box-shadow: 0 4px 20px rgba(13,148,136,0.18); }
-        .cd-chip .cn { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; line-height: 1; }
+        .cd-chip .cn { font-size: 1.6rem; font-weight: 500; line-height: 1; }
         .cd-chip .cl { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #64748B; margin-top: 0.2rem; }
         .cd-content { padding: 1.25rem 1.5rem 2rem; }
         .cd-section-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; }
@@ -67,7 +66,7 @@ export default function ClinicDashboardClient() {
         .cd-note { font-size: 0.73rem; color: #64748B; font-style: italic; margin-top: 0.5rem; background: #F8FAFC; padding: 0.3rem 0.6rem; border-radius: 6px; display: inline-block; }
         .cd-pill { display: inline-flex; align-items: center; gap: 0.28rem; padding: 0.18rem 0.6rem; border-radius: 20px; font-size: 0.67rem; font-weight: 600; letter-spacing: 0.03em; }
         .cd-dot { width: 5px; height: 5px; border-radius: 50%; }
-        .cd-btn { padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; display: inline-flex; align-items: center; gap: 0.28rem; font-family: 'Sora', sans-serif; }
+        .cd-btn { padding: 0.32rem 0.8rem; border-radius: 7px; font-size: 0.73rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; display: inline-flex; align-items: center; gap: 0.28rem; }
         .cd-btn:disabled { opacity: 0.45; cursor: not-allowed; }
         .cd-btn-approve { background: #D1FAE5; color: #065F46; }
         .cd-btn-approve:hover:not(:disabled) { background: #10B981; color: white; }
@@ -81,19 +80,19 @@ export default function ClinicDashboardClient() {
         .cd-btn-danger:hover { background: #DC2626; }
         .cd-empty { text-align: center; padding: 3rem 1rem; color: #94A3B8; }
         .cd-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-        .cd-toast { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15); animation: cdSlide 0.25s ease; white-space: nowrap; font-family: 'Sora', sans-serif; }
+        .cd-toast { position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 0.65rem 1.4rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.15); animation: cdSlide 0.25s ease; white-space: nowrap; }
         @keyframes cdSlide { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .cd-toast-success { background: #065F46; color: white; }
         .cd-toast-danger  { background: #991B1B; color: white; }
         .cd-spin { animation: cdSpin 0.7s linear infinite; display: inline-block; }
         @keyframes cdSpin { to { transform: rotate(360deg); } }
         .cd-modal .modal-content { border-radius: 16px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.14); overflow: hidden; }
-        .cd-modal .modal-header { background: linear-gradient(135deg, #0F766E, #0D9488); color: white; border: none; padding: 1.25rem 1.5rem; }
+        .cd-modal .modal-header { background: linear-gradient(135deg, #82cb6e, #95f586); color: white; border: none; padding: 1.25rem 1.5rem; }
         .cd-modal .modal-header .btn-close { filter: invert(1); opacity: 0.85; }
-        .cd-modal .modal-title { font-family: 'Sora'; font-size: 1rem; font-weight: 600; }
+        .cd-modal .modal-title { font-size: 1rem; font-weight: 600; }
         .cd-modal label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #64748B; margin-bottom: 0.35rem; }
-        .cd-modal .form-control, .cd-modal .form-select { border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem; padding: 0.55rem 0.85rem; font-family: 'Sora'; transition: border-color 0.2s; }
-        .cd-modal .form-control:focus, .cd-modal .form-select:focus { border-color: #0D9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
+        .cd-modal .form-control, .cd-modal .form-select { border-radius: 8px; border: 1.5px solid #E2E8F0; font-size: 0.85rem; padding: 0.55rem 0.85rem;  transition: border-color 0.2s; }
+        .cd-modal .form-control:focus, .cd-modal .form-select:focus { border-color: #7be077; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
         .cd-modal .modal-footer { border: none; padding: 1rem 1.5rem; background: #F8FAFC; }
         .cd-settings-loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: #64748B; gap: 0.75rem; font-size: 0.85rem; }
         .cd-reject-modal .modal-header { background: linear-gradient(135deg, #991B1B, #EF4444) !important; }
@@ -108,7 +107,7 @@ export default function ClinicDashboardClient() {
         )}
 
         <div className="cd-header">
-          <div className="d-flex justify-content-between align-items-start position-relative" style={{ zIndex: 2 }}>
+          <div className="d-flex justify-content-between align-items-start position-relative " style={{ zIndex: 2 }}>
             <div>
               <p className="cd-eyebrow">Clinic Portal</p>
               <h1>My Dashboard</h1>
@@ -287,7 +286,7 @@ export default function ClinicDashboardClient() {
           </Modal.Body>
           <Modal.Footer>
             <button type="button" className="cd-btn cd-btn-ghost" onClick={() => setShowSettings(false)}>Cancel</button>
-            <button type="submit" className="cd-btn cd-btn-primary" disabled={settingsLoading}>
+            <button type="submit" className="cd-btn" style={{backgroundColor:''}} disabled={settingsLoading}>
               <i className="bi bi-save me-1"></i> Save Settings
             </button>
           </Modal.Footer>
