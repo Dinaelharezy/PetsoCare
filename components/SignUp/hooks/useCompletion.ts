@@ -14,6 +14,7 @@ export interface RegisterForm {
   confirmPassword: string
 }
 
+
 export type SaveStatus = 'idle' | 'saving' | 'success' | 'error'
 
 export interface PasswordStrength {

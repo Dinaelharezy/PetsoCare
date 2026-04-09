@@ -4,7 +4,7 @@ import { clinicsApi } from '../../../data/api/Clinic'
 import { Clinic } from '../../../types/Clinic'
 import { Appointment } from '../../../types/Appointment'
 
-const getClinicId = (): string => '28'
+const getClinicId = (): string => '15'
 
 export function useDashboard() {
   const router = useRouter()

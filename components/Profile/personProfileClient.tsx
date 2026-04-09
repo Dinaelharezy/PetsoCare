@@ -153,7 +153,7 @@
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import Image from 'next/image'
 import { useProfile } from './hooks/useProfile'
-
+import LoadingSpin from '../LoadingSpin'
 export default function PersonProfileClient() {
   const {
     isLoading,
@@ -167,11 +167,7 @@ export default function PersonProfileClient() {
   } = useProfile()
 
   if (isLoading) {
-    return (
-      <div className="min-vh-100 d-flex align-items-center justify-content-center">
-        <div className="spinner-border" style={{ color: 'rgb(100,170,70)' }} />
-      </div>
-    )
+    return <LoadingSpin />
   }
 
   return (

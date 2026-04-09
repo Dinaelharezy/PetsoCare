@@ -83,8 +83,9 @@ export default function Card({ Clinic }: ClinicsCardProps) {
         )}
       </div>
       <div className="article-content">
+             <h3 className="article-title">{Clinic.name}</h3>
         <span className="article-category">{Clinic.address}</span>
-        <h3 className="article-title">{Clinic.governorate}</h3>
+        <h5 className="article-title">{Clinic.governorate}</h5>
         <p className="article-excerpt">{Clinic.workingDays}</p>
         <p className="article-excerpt">{Clinic.workingHours}</p>
         <div className="article-meta"></div>
