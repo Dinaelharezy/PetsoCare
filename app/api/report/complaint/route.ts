@@ -21,16 +21,37 @@ export async function POST(request: Request) {
     }
   )
 
-  if (!response.ok) {
-    const text = await response.text()
-    return NextResponse.json({ error: text }, { status: response.status })
-  }
+//   if (!response.ok) {
+//     const text = await response.text()
+//     return NextResponse.json({ error: text }, { status: response.status })
+//   }
 
-  revalidatePath('/')
-  revalidatePath('/admin/dashboard')
+//   revalidatePath('/')
+//   revalidatePath('/admin/dashboard')
 
-  const data = await response.json()
-  return NextResponse.json({ success: true, data })
+//   const data = await response.json()
+//   return NextResponse.json({ success: true, data })
+// }
+
+// export const dynamic = 'force-dynamic'
+
+if (!response.ok) {
+  const text = await response.text()
+  return NextResponse.json({ error: text }, { status: response.status })
 }
 
-export const dynamic = 'force-dynamic'
+revalidatePath('/')
+revalidatePath('/admin/dashboard')
+
+const contentType = response.headers.get('content-type')
+
+let data
+
+if (contentType && contentType.includes('application/json')) {
+  data = await response.json()
+} else {
+  data = await response.text()
+}
+
+return NextResponse.json({ success: true, data })
+}

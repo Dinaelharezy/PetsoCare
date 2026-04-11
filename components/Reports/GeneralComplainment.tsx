@@ -1,6 +1,6 @@
 'use client'
 
-import { Container, Card, Form, Button } from 'react-bootstrap'
+import { Container, Card, Form, Button,Alert } from 'react-bootstrap'
 import { useComplainment } from './hooks/useComplainment'
 
 
@@ -9,10 +9,25 @@ export default function GeneralComplainment() {
         handleInputChange,
         handleSubmit,
         formData,
-        setFormData
+        setFormData,
+        submitted,
+        handleImageChange,
+        image,
+        setImage,
 } = useComplainment();
 
-
+if (submitted) {
+    return (
+      <Container className="py-5" style={{ maxWidth: '800px' }}>
+        <Alert variant="success" className="text-center p-5">
+          <div style={{ fontSize: '3rem' }}>✅</div>
+          <h4 className="mt-3 fw-bold">Report Submitted Successfully!</h4>
+          <p className="text-muted">The relevant health authorities have been notified.</p>
+          <p className="text-muted small">Form will reset automatically in a few seconds…</p>
+        </Alert>
+      </Container>
+    )
+  }
   return (
     <Container className="py-5" style={{ maxWidth: '800px' }}>
       <h2 className="mb-2">General Complaints & Feedback</h2>
@@ -89,7 +104,14 @@ export default function GeneralComplainment() {
           {/* Attach Supporting Photo */}
           <Form.Group className="mb-4">
             <Form.Label>Attach Supporting Photo (Optional)</Form.Label>
-            <div className="upload-area">
+            <div className="upload-area" onClick={() => document.getElementById('fileInput')?.click()}>
+                <input
+    id="fileInput"
+    type="file"
+    accept="image/*"
+    hidden
+    onChange={handleImageChange}
+  />
               <div className="upload-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>

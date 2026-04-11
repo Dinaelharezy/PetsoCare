@@ -284,26 +284,6 @@ export default function DangerousAnimalReport() {
           <p className="text-muted">The relevant health authorities have been notified.</p>
           <p className="text-muted small">Form will reset automatically in a few seconds…</p>
         </Alert>
-
-        <Card className="p-4">
-          <h6 className="fw-bold border-bottom pb-2 mb-3">📋 Submitted Report Summary</h6>
-          <table className="table table-sm table-bordered">
-            <tbody>
-              {Object.entries(submittedData).map(([key, value]) => (
-                <tr key={key}>
-                  <td className="fw-semibold text-capitalize" style={{ width: '40%' }}>
-                    {key.replace(/([A-Z])/g, ' $1')}
-                  </td>
-                  <td>
-                    {Array.isArray(value)
-                      ? value.join(', ') || '—'
-                      : String(value) || '—'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
       </Container>
     )
   }

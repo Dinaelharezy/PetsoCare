@@ -171,7 +171,7 @@ export function useDangerousAnimal() {
 
     const payload = {
       ...formData,
-      symptoms: [
+      SelectedSymptoms: [
         ...selectedSymptoms,
         ...(formData.otherSymptom ? [formData.otherSymptom] : []),
       ],

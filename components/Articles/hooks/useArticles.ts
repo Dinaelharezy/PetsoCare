@@ -1,69 +1,84 @@
-// // code working
-// import { useContext, useEffect, useState } from 'react'
-// import { fetchArticles } from '../services/articlesApi'
+
+
+// 'use client'
+
+// import { useState, useEffect, useCallback } from 'react'
 // import { article } from '@/types/article'
-// import { articlesApi } from '../../../data/api/articles'
+// import { FALLBACK_ARTICLES } from '../../Home'
+
 // const ARTICLES_PER_PAGE = 4
 
 // export const useArticles = () => {
-// const [articles, setArticles] = useState<article[]>([])
+//   const [articles, setArticles] = useState<article[]>([])
 //   const [loading, setLoading] = useState(true)
 //   const [activeCategory, setActiveCategory] = useState('Overview')
 //   const [currentPage, setCurrentPage] = useState(1)
 //   const [searchQuery, setSearchQuery] = useState('')
 //   const [categories, setCategories] = useState(['Overview'])
 
-//   useEffect(() => {
-//     const load = async () => {
-//       try {
-//         setLoading(true)
-//         const data = await articlesApi.getAll()
-
-//         setArticles(data)
-
-//         const uniqueCategories = [
-//           'Overview',
-//           ...new Set(data.map(a => a.category).filter(Boolean))
-//         ]
-//         setCategories(uniqueCategories)
-//       } finally {
-//         setLoading(false)
-//       }
+//   // ======================
+//   // fetch articles function
+//   // ======================
+//   const fetchArticles = useCallback(async () => {
+//     try {
+//       setLoading(true)
+//       // const res = await fetch(`/api/Articles?lang=en&t=${Date.now()}`, { cache: 'no-store' })
+//       const res =fetch(`/api/Articles?lang=en&t=${Date.now()}`, { cache: 'no-store' });
+//       if (!res.ok) throw new Error('Articles API not working')
+//       const data: article[] = await res.json()
+//       applyData(data)
+//     } catch (error) {
+//       console.error('Failed to fetch articles:', error)
+//       applyData(FALLBACK_ARTICLES)
+//     } finally {
+//       setLoading(false)
 //     }
-
-//     load()
 //   }, [])
 
-//   // filtering
-//   const filteredArticles = articles.filter(article => {
-//     const matchesCategory =
-//       activeCategory === 'Overview' || article.category === activeCategory
+//   // ======================
+//   // helper to apply data and extract categories
+//   // ======================
+//   const applyData = (data: article[]) => {
+//     setArticles(data)
+//     const uniqueCategories = ['Overview', ...new Set(data.map(a => a.category).filter(Boolean))]
+//     setCategories(uniqueCategories)
+//   }
 
+//   // ======================
+//   // initial load
+//   // ======================
+//   useEffect(() => {
+//     fetchArticles()
+//   }, [fetchArticles])
+
+//   // ======================
+//   // filtered articles
+//   // ======================
+//   const filteredArticles = articles.filter(article => {
+//     const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
 //     const matchesSearch =
 //       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
 //       article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
 //       article.content.toLowerCase().includes(searchQuery.toLowerCase())
-
 //     return matchesCategory && matchesSearch
 //   })
 
+//   // ======================
 //   // pagination
+//   // ======================
 //   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
 //   const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
+//   const currentArticles = filteredArticles.slice(startIndex, startIndex + ARTICLES_PER_PAGE)
 
-//   const currentArticles = filteredArticles.slice(
-//     startIndex,
-//     startIndex + ARTICLES_PER_PAGE
-//   )
-
-//   // reset page
+//   // ======================
+//   // reset page on filter/search change
+//   // ======================
 //   useEffect(() => {
 //     setCurrentPage(1)
 //   }, [activeCategory, searchQuery])
 
 //   return {
 //     loading,
-//     setLoading,
 //     articles,
 //     setArticles,
 //     categories,
@@ -76,86 +91,9 @@
 //     totalPages,
 //     filteredArticles,
 //     currentArticles,
-
+//     fetchArticles, // expose reload if needed
 //   }
 // }
-
-// // import { useEffect, useState } from 'react'
-// // import { fetchArticles } from '../services/articlesApi'
-// // import { article } from '@/types/article'
-// // import { FALLBACK_ARTICLES } from '../..//Home'
-// // import { articlesApi } from '@/data/api/articles'
-// // const ARTICLES_PER_PAGE = 4
-
-// // export const useArticles = () => {
-// //   const [articles, setArticles] = useState<article[]>([])
-// //   const [loading, setLoading] = useState(true)
-// //   const [activeCategory, setActiveCategory] = useState('Overview')
-// //   const [currentPage, setCurrentPage] = useState(1)
-// //   const [searchQuery, setSearchQuery] = useState('')
-// //   const [categories, setCategories] = useState(['Overview'])
-
-// //   useEffect(() => {
-// //     const load = async () => {
-// //       try {
-// //         setLoading(true)
-// //          const data = await articlesApi.getAll()  
-// //         applyData(data)
-// //       } catch {
-// //         // API واقع → استخدم الـ fallback
-// //         applyData(FALLBACK_ARTICLES)
-// //       } finally {
-// //         setLoading(false)
-// //       }
-// //     }
-
-// //     const applyData = (data: article[]) => {
-// //       setArticles(data)
-// //       const uniqueCategories = [
-// //         'Overview',
-// //         ...new Set(data.map(a => a.category).filter(Boolean)),
-// //       ]
-// //       setCategories(uniqueCategories)
-// //     }
-
-// //     load()
-// //   }, [])
-
-// //   const filteredArticles = articles.filter(article => {
-// //     const matchesCategory =
-// //       activeCategory === 'Overview' || article.category === activeCategory
-// //     const matchesSearch =
-// //       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-// //       article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-// //       article.content.toLowerCase().includes(searchQuery.toLowerCase())
-// //     return matchesCategory && matchesSearch
-// //   })
-
-// //   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
-// //   const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
-// //   const currentArticles = filteredArticles.slice(startIndex, startIndex + ARTICLES_PER_PAGE)
-
-// //   useEffect(() => {
-// //     setCurrentPage(1)
-// //   }, [activeCategory, searchQuery])
-
-// //   return {
-// //     loading,
-// //     setLoading,
-// //     articles,
-// //     setArticles,
-// //     categories,
-// //     activeCategory,
-// //     setActiveCategory,
-// //     searchQuery,
-// //     setSearchQuery,
-// //     currentPage,
-// //     setCurrentPage,
-// //     totalPages,
-// //     filteredArticles,
-// //     currentArticles,
-// //   }
-// // }
 
 'use client'
 
@@ -173,16 +111,20 @@ export const useArticles = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [categories, setCategories] = useState(['Overview'])
 
-  // ======================
-  // fetch articles function
-  // ======================
   const fetchArticles = useCallback(async () => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/Articles?lang=en&t=${Date.now()}`, { cache: 'no-store' })
+
+      const res = await fetch(
+        `/api/Articles?lang=en&t=${Date.now()}`,
+        { cache: 'no-store' }
+      )
+
       if (!res.ok) throw new Error('Articles API not working')
+
       const data: article[] = await res.json()
       applyData(data)
+
     } catch (error) {
       console.error('Failed to fetch articles:', error)
       applyData(FALLBACK_ARTICLES)
@@ -191,44 +133,41 @@ export const useArticles = () => {
     }
   }, [])
 
-  // ======================
-  // helper to apply data and extract categories
-  // ======================
   const applyData = (data: article[]) => {
     setArticles(data)
-    const uniqueCategories = ['Overview', ...new Set(data.map(a => a.category).filter(Boolean))]
+
+    const uniqueCategories = [
+      'Overview',
+      ...new Set(data.map(a => a.category).filter(Boolean))
+    ]
+
     setCategories(uniqueCategories)
   }
 
-  // ======================
-  // initial load
-  // ======================
   useEffect(() => {
     fetchArticles()
   }, [fetchArticles])
 
-  // ======================
-  // filtered articles
-  // ======================
   const filteredArticles = articles.filter(article => {
-    const matchesCategory = activeCategory === 'Overview' || article.category === activeCategory
+    const matchesCategory =
+      activeCategory === 'Overview' || article.category === activeCategory
+
     const matchesSearch =
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.content.toLowerCase().includes(searchQuery.toLowerCase())
+
     return matchesCategory && matchesSearch
   })
 
-  // ======================
-  // pagination
-  // ======================
   const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE)
   const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE
-  const currentArticles = filteredArticles.slice(startIndex, startIndex + ARTICLES_PER_PAGE)
 
-  // ======================
-  // reset page on filter/search change
-  // ======================
+  const currentArticles = filteredArticles.slice(
+    startIndex,
+    startIndex + ARTICLES_PER_PAGE
+  )
+
   useEffect(() => {
     setCurrentPage(1)
   }, [activeCategory, searchQuery])
@@ -247,6 +186,6 @@ export const useArticles = () => {
     totalPages,
     filteredArticles,
     currentArticles,
-    fetchArticles, // expose reload if needed
+    fetchArticles,
   }
 }
