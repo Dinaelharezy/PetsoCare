@@ -7,6 +7,7 @@ import ArticleManagementDash from './Management/ArticleManagemenrDash'
 // import DoctorManagementDash from '../Management/ClinicManagementDash'
 import ReportAnimal from './ReportAnimal'
 import ClinicManagementDash from './Management/ClinicManagementDash'
+import ReportManagement from './ReportManagement'
 
 export default function DashboardClient() {
   return (
@@ -24,6 +25,9 @@ export default function DashboardClient() {
           </Col>
           <Col lg={6}>
             <StatisticsCard />
+          </Col>
+          <Col lg={6}>
+           <ReportManagement />
           </Col>
         </Row>
 

@@ -322,7 +322,6 @@ export default function EditProfileClient() {
   return (
     <div className="min-vh-100 py-5" style={{ backgroundColor: '#f0f4f0' }}>
       <div className="container" style={{ maxWidth: 720 }}>
-
         {/* ── Header ── */}
         <div className="mb-4">
           <h1 className="fw-bold text-dark">Account Settings</h1>

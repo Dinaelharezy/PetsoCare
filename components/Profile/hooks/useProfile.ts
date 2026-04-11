@@ -98,7 +98,7 @@
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
+const API = process.env.NEXT_PUBLIC_API_URL
 export interface Vaccine {
   name: string
   pet: string
@@ -135,7 +135,14 @@ export function useProfile() {
         },
       })
         .then(res => res.json())
-        .then(data => setProfileData(data))
+        // .then(data => setProfileData(data))
+        .then(data => {
+  console.log('Full profile keys:', Object.keys(data))
+  console.log('image value:', data.image)
+  console.log('imageUrl value:', data.imageUrl)
+  console.log('ALL DATA:', JSON.stringify(data))
+  setProfileData(data)
+})
         .catch(err => console.error('Failed to fetch profile:', err))
         .finally(() => setLoadingData(false))
     }
@@ -145,7 +152,12 @@ export function useProfile() {
 
   const userName  = profileData?.name  ?? session?.user?.name  ?? ''
   const userEmail = profileData?.email ?? session?.user?.email ?? ''
-  const userImage = profileData?.image ?? session?.user?.image ?? '/woman.png'
+  // const userImage = profileData?.image ?? session?.user?.image ?? '/woman.png'
+  const userImage = profileData?.image
+  ? profileData.image.startsWith('http')
+    ? profileData.image                   
+    : `${API}${profileData.image}`         
+  : session?.user?.image ?? '/woman.png'
   const userRole  = profileData?.role  ?? (session?.user as any)?.role ?? 'User'
 
   const vaccines: Vaccine[] = [

@@ -45,6 +45,13 @@ export function useEdit() {
         setEmail(data.email ?? '')
         setPhone(data.phone ?? '')
         setImagePreviewUrl(data.image ?? '/woman.png')
+
+    const img = data.image ?? data.imageUrl
+  if (img) {
+    setImagePreviewUrl(img.startsWith('http') ? img : `${API}${img}`)
+  } else {
+    setImagePreviewUrl('/woman.png')
+  }
       })
       .catch(err => console.error('Failed to load profile:', err))
   }, [token])
@@ -83,48 +90,40 @@ export function useEdit() {
     }
   }
 
-  // const handleUploadImage = async () => {
-  //   if (!imageFile) return
-  //   setSaving(true)
-  //   setErrorMsg('')
-  //   setSuccessMsg('')
-  //   try {
-  //     const formData = new FormData()
-  //     formData.append('file', imageFile) // ← غيرنا من 'image' لـ 'file'
 
-  //     const res = await fetch(`${API}/api/user/upload-image`, {
-  //       method: 'POST',
-  //       headers: getHeaders(token),
-  //       body: formData,
-  //     })
+// const handleUploadImage = async () => {
+//   if (!imageFile) return
+//   setSaving(true)
+//   setErrorMsg('')
+//   setSuccessMsg('')
+//   try {
+//     const formData = new FormData()
+//     formData.append('file', imageFile)
 
-  //     // ── Debug: شوفي الـ response في الـ console ──
-  //     console.log('Upload status:', res.status)
-  //     const responseData = await res.json().catch(() => null)
-  //     console.log('Upload response:', responseData)
+//     const res = await fetch(`${API}/api/user/upload-image`, {
+//       method: 'POST',
+//       headers: getHeaders(token),
+//       body: formData,
+//     })
 
-  //     if (!res.ok) throw new Error(JSON.stringify(responseData))
+//     console.log('Upload status:', res.status)
 
-  //     // الـ backend بيرجع URL الصورة الجديدة — جربنا كل الأسماء الشائعة
-  //     const newImageUrl =
-  //       responseData?.imageUrl ??
-  //       responseData?.url      ??
-  //       responseData?.image    ??
-  //       responseData?.data?.url ??
-  //       null
+//     // ← نقري الـ response كـ text مش JSON
+//     const rawText = await res.text()
+//     console.log('Raw response:', rawText)
 
-  //     if (newImageUrl) {
-  //       setImagePreviewUrl(newImageUrl)
-  //     }
+//     if (!res.ok) throw new Error(rawText)
 
-  //     setSuccessMsg('Image uploaded successfully!')
-  //     await update()
-  //   } catch (e: any) {
-  //     setErrorMsg(e.message ?? 'Image upload failed')
-  //   } finally {
-  //     setSaving(false)
-  //   }
-  // }
+//     // لو وصلنا هنا يبقى نجح
+//     setSuccessMsg('Image uploaded successfully!')
+//     await update()
+
+//   } catch (e: any) {
+//     setErrorMsg(e.message ?? 'Image upload failed')
+//   } finally {
+//     setSaving(false)
+//   }
+// }
 
 const handleUploadImage = async () => {
   if (!imageFile) return
@@ -141,22 +140,29 @@ const handleUploadImage = async () => {
       body: formData,
     })
 
-    console.log('Upload status:', res.status)
+    const responseData = await res.json() // ← parse JSON مش text
+    console.log('Upload response:', responseData)
 
-    // ← نقري الـ response كـ text مش JSON
-    const rawText = await res.text()
-    console.log('Raw response:', rawText)
+    if (!res.ok) throw new Error(responseData?.message ?? 'Upload failed')
 
-    if (!res.ok) throw new Error(rawText)
+  const newImageUrl = responseData?.imageUrl
+if (newImageUrl) {
+  const fullUrl = newImageUrl.startsWith('http') 
+    ? newImageUrl 
+    : `${API}${newImageUrl}`
+  setImagePreviewUrl(fullUrl)
+}
 
-    // لو وصلنا هنا يبقى نجح
     setSuccessMsg('Image uploaded successfully!')
-    await update()
+
+    // ← حدّث الـ session بالـ image الجديدة
+    await update({ image: newImageUrl })
 
   } catch (e: any) {
     setErrorMsg(e.message ?? 'Image upload failed')
   } finally {
     setSaving(false)
+    setImageFile(null) // ← reset الملف
   }
 }
 

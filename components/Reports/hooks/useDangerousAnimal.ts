@@ -1,55 +1,151 @@
 
+// 'use client'
+
+// import { useState } from 'react'
+
+// export function useDangerousAnimal() {
+//   const DOG_SYMPTOMS = [
+//     'Sudden aggression or unusual aggressive behavior',
+//     'Repeated attempts to bite',
+//     'Eating strange objects',
+//     'Random running, noticeable nervous or behavioral disturbance',
+//     'Voice change',
+//     'Excessive drooling',
+//     'Partial or complete paralysis',
+//     'Sudden behavioral change (isolation or extreme agitation)',
+//     'Difficulty swallowing',
+//   ]
+
+//   const CAT_SYMPTOMS = [
+//     'Sudden change in behavior (fear, extreme calmness, or unusual aggression)',
+//     'Severe isolation or constant hiding',
+//     'Loss of appetite',
+//     'Unusual meowing or noticeable change in voice',
+//     'Dilated pupils',
+//     'Repeated biting or scratching attempts without reason',
+//     'Random running or abnormal tension and movement',
+//     'Extreme sensitivity to sound and light',
+//     'Drooling or foam around the mouth',
+//     'Difficulty swallowing and refusal to drink water or eat',
+//     'Loss of balance or staggering',
+//     'Partial paralysis, usually starting in the hind legs',
+//     'Complete paralysis or inability to move',
+//   ]
+
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     phone: '',
+//     governorate: '',
+//     district: '',
+//     animalType: 'Dog',
+//     reportDate: '',
+//     locationCity: '',
+//     otherSymptom: '',
+//   })
+
+//   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
+//   const [locationMode, setLocationMode] = useState<'gps' | 'manual'>('manual')
+//   const [submitted, setSubmitted] = useState(false)
+
+//   const symptoms =
+//     formData.animalType === 'Dog' ? DOG_SYMPTOMS : CAT_SYMPTOMS
+
+//   const highSuspicion = selectedSymptoms.length > 1
+
+//   const toggleSymptom = (symptom: string) => {
+//     setSelectedSymptoms(prev =>
+//       prev.includes(symptom)
+//         ? prev.filter(s => s !== symptom)
+//         : [...prev, symptom]
+//     )
+//   }
+
+//   const handleChange = (
+//     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+//   ) => {
+//     const { name, value } = e.target
+//     setFormData(prev => ({ ...prev, [name]: value }))
+
+//     if (name === 'animalType') {
+//       setSelectedSymptoms([])
+//     }
+//   }
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault()
+//     setSubmitted(true)
+//     alert('Report submitted successfully!')
+//   }
+
+//   return {
+//     formData,
+//     setFormData,
+//     selectedSymptoms,
+//     setSelectedSymptoms,
+//     locationMode,
+//     setLocationMode,
+//     submitted,
+//     symptoms,
+//     highSuspicion,
+//     toggleSymptom,
+//     handleChange,
+//     handleSubmit,
+//   }
+// }
+
 'use client'
 
 import { useState } from 'react'
 
+const DOG_SYMPTOMS = [
+  'Sudden aggression or unusual aggressive behavior',
+  'Repeated attempts to bite',
+  'Eating strange objects',
+  'Random running, noticeable nervous or behavioral disturbance',
+  'Voice change',
+  'Excessive drooling',
+  'Partial or complete paralysis',
+  'Sudden behavioral change (isolation or extreme agitation)',
+  'Difficulty swallowing',
+]
+
+const CAT_SYMPTOMS = [
+  'Sudden change in behavior (fear, extreme calmness, or unusual aggression)',
+  'Severe isolation or constant hiding',
+  'Loss of appetite',
+  'Unusual meowing or noticeable change in voice',
+  'Dilated pupils',
+  'Repeated biting or scratching attempts without reason',
+  'Random running or abnormal tension and movement',
+  'Extreme sensitivity to sound and light',
+  'Drooling or foam around the mouth',
+  'Difficulty swallowing and refusal to drink water or eat',
+  'Loss of balance or staggering',
+  'Partial paralysis, usually starting in the hind legs',
+  'Complete paralysis or inability to move',
+]
+
+const INITIAL_FORM = {
+  name: '',
+  phone: '',
+  governorate: '',
+  district: '',
+  animalType: 'Dog',
+  reportDate: '',
+  locationCity: '',
+  otherSymptom: '',
+}
+
 export function useDangerousAnimal() {
-  const DOG_SYMPTOMS = [
-    'Sudden aggression or unusual aggressive behavior',
-    'Repeated attempts to bite',
-    'Eating strange objects',
-    'Random running, noticeable nervous or behavioral disturbance',
-    'Voice change',
-    'Excessive drooling',
-    'Partial or complete paralysis',
-    'Sudden behavioral change (isolation or extreme agitation)',
-    'Difficulty swallowing',
-  ]
-
-  const CAT_SYMPTOMS = [
-    'Sudden change in behavior (fear, extreme calmness, or unusual aggression)',
-    'Severe isolation or constant hiding',
-    'Loss of appetite',
-    'Unusual meowing or noticeable change in voice',
-    'Dilated pupils',
-    'Repeated biting or scratching attempts without reason',
-    'Random running or abnormal tension and movement',
-    'Extreme sensitivity to sound and light',
-    'Drooling or foam around the mouth',
-    'Difficulty swallowing and refusal to drink water or eat',
-    'Loss of balance or staggering',
-    'Partial paralysis, usually starting in the hind legs',
-    'Complete paralysis or inability to move',
-  ]
-
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    governorate: '',
-    district: '',
-    animalType: 'Dog',
-    reportDate: '',
-    locationCity: '',
-    otherSymptom: '',
-  })
-
+  const [formData, setFormData] = useState(INITIAL_FORM)
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [locationMode, setLocationMode] = useState<'gps' | 'manual'>('manual')
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [submittedData, setSubmittedData] = useState<Record<string, unknown> | null>(null)
 
-  const symptoms =
-    formData.animalType === 'Dog' ? DOG_SYMPTOMS : CAT_SYMPTOMS
-
+  const symptoms = formData.animalType === 'Dog' ? DOG_SYMPTOMS : CAT_SYMPTOMS
   const highSuspicion = selectedSymptoms.length > 1
 
   const toggleSymptom = (symptom: string) => {
@@ -65,16 +161,53 @@ export function useDangerousAnimal() {
   ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-
-    if (name === 'animalType') {
-      setSelectedSymptoms([])
-    }
+    if (name === 'animalType') setSelectedSymptoms([])
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    alert('Report submitted successfully!')
+    setIsLoading(true)
+    setError(null)
+
+    const payload = {
+      ...formData,
+      symptoms: [
+        ...selectedSymptoms,
+        ...(formData.otherSymptom ? [formData.otherSymptom] : []),
+      ],
+      highSuspicion,
+      locationMode,
+    }
+
+    try {
+      const res = await fetch('/api/report/dangerous', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Submission failed')
+      }
+
+      const result = await res.json()
+      setSubmittedData(result.data ?? payload)
+      setSubmitted(true)
+
+      // Reset after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+        setSubmittedData(null)
+        setFormData(INITIAL_FORM)
+        setSelectedSymptoms([])
+        setLocationMode('manual')
+      }, 5000)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return {
@@ -85,6 +218,9 @@ export function useDangerousAnimal() {
     locationMode,
     setLocationMode,
     submitted,
+    submittedData,
+    isLoading,
+    error,
     symptoms,
     highSuspicion,
     toggleSymptom,
