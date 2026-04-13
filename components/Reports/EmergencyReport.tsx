@@ -35,7 +35,7 @@ export default function EmergencyReport() {
           <p className="text-muted">Relevant health authorities have been notified.</p>
           <p className="text-muted small">Form will reset automatically in a few seconds…</p>
         </Alert>
-
+ 
       </Container>
     )
   }
