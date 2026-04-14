@@ -16,6 +16,33 @@
 // module.exports = nextConfig
  
 
+// const nextConfig = {
+//   images: {
+//     unoptimized: true,
+//     remotePatterns: [
+//       {
+//         protocol: 'https',
+//         hostname: '**.ngrok-free.dev',
+//       },
+//       {
+//         protocol: 'https',
+//         hostname: '**.trycloudflare.com', // ← Cloudflare Tunnel
+//       },
+//       {
+//         protocol: 'https',
+//         hostname: '**.cloudflare.com',
+//       },
+//     ],
+//   },
+//     experimental: {
+//     serverActions: {
+//       bodySizeLimit: '10mb',
+//     },
+// }
+
+// module.exports = nextConfig
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     unoptimized: true,
@@ -26,7 +53,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.trycloudflare.com', // ← Cloudflare Tunnel
+        hostname: '**.trycloudflare.com',
       },
       {
         protocol: 'https',
@@ -34,6 +61,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  }, 
 }
 
 module.exports = nextConfig

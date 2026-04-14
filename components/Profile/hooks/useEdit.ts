@@ -1,24 +1,216 @@
 
 
+//workingg
+// 'use client'
+
+// import { useState, useEffect, ChangeEvent } from 'react'
+// import { useRouter } from 'next/navigation'
+
+// export function useEdit() {
+//   const router = useRouter()
+
+//   const [firstName,          setFirstName]          = useState('')
+//   const [lastName,           setLastName]           = useState('')
+//   const [email,              setEmail]              = useState('')
+//   const [phone,              setPhone]              = useState('')
+//   const [address,            setAddress]            = useState('')
+//   const [dateOfBirth,        setDateOfBirth]        = useState('')
+//   const [imageFile,          setImageFile]          = useState<File | null>(null)
+//   const [imagePreviewUrl,    setImagePreviewUrl]    = useState('/woman.png')
+//   const [emailNotifications, setEmailNotifications] = useState(true)
+
+//   const [currentPassword, setCurrentPassword] = useState('')
+//   const [newPassword,     setNewPassword]     = useState('')
+//   const [confirmPassword, setConfirmPassword] = useState('')
+//   const [newEmail,        setNewEmail]        = useState('')
+
+//   const [saving,     setSaving]     = useState(false)
+//   const [errorMsg,   setErrorMsg]   = useState('')
+//   const [successMsg, setSuccessMsg] = useState('')
+
+//   // ✅ Always from API — /api/auth/me is the correct endpoint
+//   const fetchProfile = async () => {
+//     try {
+//       const res = await fetch('/api/auth/me', { cache: 'no-store' })
+//       if (!res.ok) throw new Error('Failed to load profile')
+//       const data = await res.json()
+
+//       console.log('✅ Profile from API:', data)
+
+//       const parts = (data.name ?? '').split(' ')
+//       setFirstName(parts[0] ?? '')
+//       setLastName(parts.slice(1).join(' ') ?? '')
+//       setEmail(data.email ?? '')
+//       setPhone(data.phone ?? '')
+//       setAddress(data.address ?? '')
+//       setDateOfBirth(data.dateOfBirth ? data.dateOfBirth.split('T')[0] : '')
+
+//       const img = data.imageUrl ?? data.image
+//       if (img) {
+//         setImagePreviewUrl(
+//           img.startsWith('http')
+//             ? img
+//             : `${process.env.NEXT_PUBLIC_API_URL}${img}`
+//         )
+//       } else {
+//         setImagePreviewUrl('/woman.png')
+//       }
+//     } catch (err) {
+//       console.error('Failed to load profile:', err)
+//     }
+//   }
+
+//   useEffect(() => { fetchProfile() }, [])
+
+//   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0]
+//     if (!file) return
+//     setImageFile(file)
+//     setImagePreviewUrl(URL.createObjectURL(file)) // temp preview only
+//   }
+
+//   const handleToggleNotifications = () => setEmailNotifications(prev => !prev)
+
+//   const handleSaveAll = async () => {
+//     setSaving(true)
+//     setErrorMsg('')
+//     setSuccessMsg('')
+//     try {
+//       // 1. Save profile fields
+//       const profileRes = await fetch('/api/user/profile', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           name: `${firstName} ${lastName}`.trim(),
+//           phone,
+//           address,
+//           dateOfBirth: dateOfBirth || null,
+//         }),
+//       })
+//       if (!profileRes.ok) throw new Error(await profileRes.text())
+
+//       // 2. Upload image if selected
+//       if (imageFile) {
+//         const formData = new FormData()
+//         formData.append('file', imageFile)
+
+//         const imgRes = await fetch('/api/user/upload-image', {
+//           method: 'POST',
+//           body: formData,
+//         })
+
+//         const text = await imgRes.text()
+//         let imgData: any
+//         try { imgData = JSON.parse(text) } catch { imgData = { message: text } }
+
+//         console.log('📸 Upload response:', imgData)
+//         if (!imgRes.ok) throw new Error(imgData?.error ?? imgData?.message ?? 'Image upload failed')
+//       }
+
+//       // ✅ Re-fetch from API — single source of truth
+//       await fetchProfile()
+//       setImageFile(null)
+//       setSuccessMsg('Changes saved successfully!')
+//     } catch (e: any) {
+//       setErrorMsg(e.message ?? 'Something went wrong')
+//     } finally {
+//       setSaving(false)
+//     }
+//   }
+
+//   const handleChangePassword = async () => {
+//     if (newPassword !== confirmPassword) {
+//       setErrorMsg('Passwords do not match')
+//       return
+//     }
+//     setSaving(true)
+//     setErrorMsg('')
+//     try {
+//       const res = await fetch('/api/user/change-password', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ currentPassword, newPassword }),
+//       })
+//       if (!res.ok) throw new Error(await res.text())
+//       setSuccessMsg('Password changed successfully!')
+//       setCurrentPassword('')
+//       setNewPassword('')
+//       setConfirmPassword('')
+//     } catch (e: any) {
+//       setErrorMsg(e.message ?? 'Password change failed')
+//     } finally {
+//       setSaving(false)
+//     }
+//   }
+
+//   const handleChangeEmail = async () => {
+//     setSaving(true)
+//     setErrorMsg('')
+//     try {
+//       const res = await fetch('/api/user/change-email', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ newEmail }),
+//       })
+//       if (!res.ok) throw new Error(await res.text())
+//       await fetchProfile()
+//       setNewEmail('')
+//       setSuccessMsg('Email changed successfully!')
+//     } catch (e: any) {
+//       setErrorMsg(e.message ?? 'Email change failed')
+//     } finally {
+//       setSaving(false)
+//     }
+//   }
+
+//   const handleCancel = () => {
+//     setErrorMsg('')
+//     setSuccessMsg('')
+//     router.back()
+//   }
+
+//   return {
+//     firstName,    setFirstName,
+//     lastName,     setLastName,
+//     email,
+//     phone,        setPhone,
+//     address,      setAddress,
+//     dateOfBirth,  setDateOfBirth,
+//     imageFile,
+//     imagePreviewUrl,
+//     emailNotifications,
+//     currentPassword, setCurrentPassword,
+//     newPassword,     setNewPassword,
+//     confirmPassword, setConfirmPassword,
+//     newEmail,        setNewEmail,
+//     saving,
+//     errorMsg,
+//     successMsg,
+//     handleImageChange,
+//     handleToggleNotifications,
+//     handleSaveAll,
+//     handleChangePassword,
+//     handleChangeEmail,
+//     handleCancel,
+//   }
+// }
+
 'use client'
 
 import { useState, useEffect, ChangeEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
-const API = process.env.NEXT_PUBLIC_API_URL
-const getHeaders = (token: string) => ({
-  Authorization: `Bearer ${token}`,
-  'ngrok-skip-browser-warning': 'true',
-})
-
 export function useEdit() {
-  const { data: session, update } = useSession()
-  const token = (session?.user as any)?.accessToken ?? ''
+  const router = useRouter()
+  const { update } = useSession()
 
   const [firstName,          setFirstName]          = useState('')
   const [lastName,           setLastName]           = useState('')
   const [email,              setEmail]              = useState('')
   const [phone,              setPhone]              = useState('')
+  const [address,            setAddress]            = useState('')
+  const [dateOfBirth,        setDateOfBirth]        = useState('')
   const [imageFile,          setImageFile]          = useState<File | null>(null)
   const [imagePreviewUrl,    setImagePreviewUrl]    = useState('/woman.png')
   const [emailNotifications, setEmailNotifications] = useState(true)
@@ -32,29 +224,41 @@ export function useEdit() {
   const [errorMsg,   setErrorMsg]   = useState('')
   const [successMsg, setSuccessMsg] = useState('')
 
-  useEffect(() => {
-    if (!token) return
-    fetch(`${API}/api/user/profile`, {
-      headers: getHeaders(token),
-    })
-      .then(res => res.json())
-      .then(data => {
-        const parts = (data.name ?? '').split(' ')
-        setFirstName(parts[0] ?? '')
-        setLastName(parts.slice(1).join(' ') ?? '')
-        setEmail(data.email ?? '')
-        setPhone(data.phone ?? '')
-        setImagePreviewUrl(data.image ?? '/woman.png')
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch('/api/auth/me', { cache: 'no-store' })
+      if (!res.ok) throw new Error('Failed to load profile')
+      const data = await res.json()
 
-    const img = data.image ?? data.imageUrl
-  if (img) {
-    setImagePreviewUrl(img.startsWith('http') ? img : `${API}${img}`)
-  } else {
-    setImagePreviewUrl('/woman.png')
+      console.log('✅ Profile from API:', data)
+
+      const parts = (data.name ?? '').split(' ')
+      setFirstName(parts[0] ?? '')
+      setLastName(parts.slice(1).join(' ') ?? '')
+      setEmail(data.email ?? '')
+      setPhone(data.phone ?? '')
+      setAddress(data.address ?? '')
+      setDateOfBirth(data.dateOfBirth ? data.dateOfBirth.split('T')[0] : '')
+
+      const img = data.imageUrl ?? data.image
+      if (img) {
+        setImagePreviewUrl(
+          img.startsWith('http')
+            ? img
+            : `${process.env.NEXT_PUBLIC_API_URL}${img}`
+        )
+      } else {
+        setImagePreviewUrl('/woman.png')
+      }
+
+      return data // ✅ return data so handleSaveAll can use it
+    } catch (err) {
+      console.error('Failed to load profile:', err)
+      return null
+    }
   }
-      })
-      .catch(err => console.error('Failed to load profile:', err))
-  }, [token])
+
+  useEffect(() => { fetchProfile() }, [])
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -65,108 +269,77 @@ export function useEdit() {
 
   const handleToggleNotifications = () => setEmailNotifications(prev => !prev)
 
-  const handleSave = async () => {
+  const handleSaveAll = async () => {
     setSaving(true)
     setErrorMsg('')
     setSuccessMsg('')
     try {
-      const res = await fetch(`${API}/api/user/profile`, {
+      // 1. Save profile fields
+      const profileRes = await fetch('/api/user/profile', {
         method: 'PUT',
-        headers: {
-          ...getHeaders(token),
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: `${firstName} ${lastName}`.trim(),
           phone,
+          address,
+          dateOfBirth: dateOfBirth || null,
         }),
       })
-      if (!res.ok) throw new Error(await res.text())
-      setSuccessMsg('Profile updated successfully!')
+      if (!profileRes.ok) throw new Error(await profileRes.text())
+
+      // 2. Upload image if selected
+      let newImageUrl: string | undefined
+      if (imageFile) {
+        const formData = new FormData()
+        formData.append('file', imageFile)
+
+        const imgRes = await fetch('/api/user/upload-image', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const text = await imgRes.text()
+        let imgData: any
+        try { imgData = JSON.parse(text) } catch { imgData = { message: text } }
+
+        console.log('📸 Upload response:', imgData)
+        if (!imgRes.ok) throw new Error(imgData?.error ?? imgData?.message ?? 'Image upload failed')
+
+        // ✅ Grab the returned image URL from whichever field the API uses
+        const rawUrl = imgData?.imageUrl ?? imgData?.url ?? imgData?.image ?? imgData?.filePath
+        if (rawUrl) {
+          newImageUrl = rawUrl.startsWith('http')
+            ? rawUrl
+            : `${process.env.NEXT_PUBLIC_API_URL}${rawUrl}`
+        }
+      }
+
+      // 3. Re-fetch profile to sync local state
+      const freshData = await fetchProfile()
+      setImageFile(null)
+
+      // 4. ✅ Update NextAuth session so Navbar + any useSession() consumer
+      //    immediately reflects the new name & image — no page refresh needed
+      const resolvedImage =
+        newImageUrl ??
+        (() => {
+          const img = freshData?.imageUrl ?? freshData?.image
+          if (!img) return undefined
+          return img.startsWith('http') ? img : `${process.env.NEXT_PUBLIC_API_URL}${img}`
+        })()
+
+      await update({
+        name:  `${firstName} ${lastName}`.trim(),
+        ...(resolvedImage ? { image: resolvedImage } : {}),
+      })
+
+      setSuccessMsg('Changes saved successfully!')
     } catch (e: any) {
       setErrorMsg(e.message ?? 'Something went wrong')
     } finally {
       setSaving(false)
     }
   }
-
-
-// const handleUploadImage = async () => {
-//   if (!imageFile) return
-//   setSaving(true)
-//   setErrorMsg('')
-//   setSuccessMsg('')
-//   try {
-//     const formData = new FormData()
-//     formData.append('file', imageFile)
-
-//     const res = await fetch(`${API}/api/user/upload-image`, {
-//       method: 'POST',
-//       headers: getHeaders(token),
-//       body: formData,
-//     })
-
-//     console.log('Upload status:', res.status)
-
-//     // ← نقري الـ response كـ text مش JSON
-//     const rawText = await res.text()
-//     console.log('Raw response:', rawText)
-
-//     if (!res.ok) throw new Error(rawText)
-
-//     // لو وصلنا هنا يبقى نجح
-//     setSuccessMsg('Image uploaded successfully!')
-//     await update()
-
-//   } catch (e: any) {
-//     setErrorMsg(e.message ?? 'Image upload failed')
-//   } finally {
-//     setSaving(false)
-//   }
-// }
-
-const handleUploadImage = async () => {
-  if (!imageFile) return
-  setSaving(true)
-  setErrorMsg('')
-  setSuccessMsg('')
-  try {
-    const formData = new FormData()
-    formData.append('file', imageFile)
-
-    const res = await fetch(`${API}/api/user/upload-image`, {
-      method: 'POST',
-      headers: getHeaders(token),
-      body: formData,
-    })
-
-    const responseData = await res.json() // ← parse JSON مش text
-    console.log('Upload response:', responseData)
-
-    if (!res.ok) throw new Error(responseData?.message ?? 'Upload failed')
-
-  const newImageUrl = responseData?.imageUrl
-if (newImageUrl) {
-  const fullUrl = newImageUrl.startsWith('http') 
-    ? newImageUrl 
-    : `${API}${newImageUrl}`
-  setImagePreviewUrl(fullUrl)
-}
-
-    setSuccessMsg('Image uploaded successfully!')
-
-    // ← حدّث الـ session بالـ image الجديدة
-    await update({ image: newImageUrl })
-
-  } catch (e: any) {
-    setErrorMsg(e.message ?? 'Image upload failed')
-  } finally {
-    setSaving(false)
-    setImageFile(null) // ← reset الملف
-  }
-}
-
-
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
@@ -176,12 +349,9 @@ if (newImageUrl) {
     setSaving(true)
     setErrorMsg('')
     try {
-      const res = await fetch(`${API}/api/user/change-password`, {
+      const res = await fetch('/api/user/change-password', {
         method: 'PUT',
-        headers: {
-          ...getHeaders(token),
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ currentPassword, newPassword }),
       })
       if (!res.ok) throw new Error(await res.text())
@@ -200,19 +370,19 @@ if (newImageUrl) {
     setSaving(true)
     setErrorMsg('')
     try {
-      const res = await fetch(`${API}/api/user/change-email`, {
+      const res = await fetch('/api/user/change-email', {
         method: 'PUT',
-        headers: {
-          ...getHeaders(token),
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ newEmail }),
       })
       if (!res.ok) throw new Error(await res.text())
-      setSuccessMsg('Email changed successfully!')
-      setEmail(newEmail)
+
+      // ✅ Sync session email too
+      await update({ email: newEmail })
+
+      await fetchProfile()
       setNewEmail('')
-      await update()
+      setSuccessMsg('Email changed successfully!')
     } catch (e: any) {
       setErrorMsg(e.message ?? 'Email change failed')
     } finally {
@@ -223,13 +393,16 @@ if (newImageUrl) {
   const handleCancel = () => {
     setErrorMsg('')
     setSuccessMsg('')
+    router.back()
   }
 
   return {
     firstName,    setFirstName,
     lastName,     setLastName,
-    email,        setEmail,
+    email,
     phone,        setPhone,
+    address,      setAddress,
+    dateOfBirth,  setDateOfBirth,
     imageFile,
     imagePreviewUrl,
     emailNotifications,
@@ -242,11 +415,9 @@ if (newImageUrl) {
     successMsg,
     handleImageChange,
     handleToggleNotifications,
-    handleSave,
-    handleUploadImage,
+    handleSaveAll,
     handleChangePassword,
     handleChangeEmail,
     handleCancel,
   }
 }
-
