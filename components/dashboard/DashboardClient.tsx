@@ -8,6 +8,7 @@ import ArticleManagementDash from './Management/ArticleManagemenrDash'
 import ReportAnimal from './ReportAnimal'
 import ClinicManagementDash from './Management/ClinicManagementDash'
 import ReportManagement from './ReportManagement'
+import ShelterManagementDash from './Management/ShelterManagementDash'
 
 export default function DashboardClient() {
   return (
@@ -41,6 +42,9 @@ export default function DashboardClient() {
           </Col>
           <Col lg={4}>
             <ReportAnimal />
+          </Col>
+          <Col lg={4}>
+            <ShelterManagementDash />
           </Col>
         </Row>
       </Container>

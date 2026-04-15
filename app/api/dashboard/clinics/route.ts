@@ -7,7 +7,7 @@ export async function GET() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics`,
     {
-      headers: { "ngrok-skip-browser-warning": "true" },
+      // headers: { "ngrok-skip-browser-warning": "true" },
       cache: "no-store",
     }
   );
@@ -26,14 +26,14 @@ export const dynamic = 'force-dynamic'
 
 
 export async function POST(request: Request) {
-  // ✅ استقبل FormData وبعتها للـ .NET زي ما هي
+
   const formData = await request.formData()
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics`,
     {
       method: "POST",
-      headers: { "ngrok-skip-browser-warning": "true" },
+      // headers: { "ngrok-skip-browser-warning": "true" },
       body: formData,
     }
   );
@@ -54,6 +54,7 @@ export async function POST(request: Request) {
 
   try { 
     return NextResponse.json(JSON.parse(text));
+    
   } catch {
     return NextResponse.json({ success: true });
   }

@@ -12,7 +12,7 @@ export async function PUT(
     `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics/${id}`,
     {
       method: "PUT",
-      headers: { "ngrok-skip-browser-warning": "true" },
+      // headers: { "ngrok-skip-browser-warning": "true" },
       body: formData, // ✅ FormData like POST, not JSON
     }
   );
@@ -48,7 +48,7 @@ export async function DELETE(
     `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics/${id}`,
     {
       method: "DELETE",
-      headers: { "ngrok-skip-browser-warning": "true" },
+      // headers: { "ngrok-skip-browser-warning": "true" },
     }
   );
 
@@ -77,7 +77,7 @@ export async function PATCH(
     `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics/${id}/image`,
     {
       method: "POST",
-      headers: { "ngrok-skip-browser-warning": "true" },
+      // headers: { "ngrok-skip-browser-warning": "true" },
       body: formData,
     }
   );

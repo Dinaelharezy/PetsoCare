@@ -107,7 +107,7 @@ export async function GET(
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${params.id}?lang=${lang}`,
       {
-        headers: { "ngrok-skip-browser-warning": "true" },
+        // headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",
       }
     );

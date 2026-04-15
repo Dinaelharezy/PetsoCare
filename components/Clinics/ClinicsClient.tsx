@@ -6,6 +6,7 @@ import Card from './Card'
 import Pagination from '../Pagination'
 import { useClinics } from './hooks/useClinics'
 import LoadingSpin from '../LoadingSpin'
+import SheltersClient from '../Shelters/SheltersClient'
 
 
 const ClINICS_PER_PAGE = 4
@@ -57,6 +58,13 @@ export default function ClinicsClient() {
                   <Card Clinic={Clinic} />
                 </Col>
               ))}
+            </Row>
+
+            <Row className="g-4">
+              <Row className="mt-5">
+  <h3 className="mb-4">Shelters</h3>
+  <SheltersClient />
+</Row>
             </Row>
 
             {/* Pagination - only show if more than 8 articles */}

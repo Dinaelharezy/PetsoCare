@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles`,
       {
-        headers: { "ngrok-skip-browser-warning": "true" },
+        // headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",
       }
     );
