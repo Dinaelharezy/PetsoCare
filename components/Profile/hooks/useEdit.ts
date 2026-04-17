@@ -366,6 +366,29 @@ export function useEdit() {
     }
   }
 
+  const handleChangePhone = async () => {
+  setSaving(true)
+  setErrorMsg('')
+  setSuccessMsg('')
+
+  try {
+    const res = await fetch('/api/auth/update-phone', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone }),
+    })
+
+    if (!res.ok) throw new Error(await res.text())
+
+    await fetchProfile() // refresh data
+    setSuccessMsg('Phone updated successfully!')
+  } catch (e: any) {
+    setErrorMsg(e.message ?? 'Phone update failed')
+  } finally {
+    setSaving(false)
+  }
+}
+
   const handleChangeEmail = async () => {
     setSaving(true)
     setErrorMsg('')
@@ -413,6 +436,7 @@ export function useEdit() {
     saving,
     errorMsg,
     successMsg,
+  handleChangePhone,
     handleImageChange,
     handleToggleNotifications,
     handleSaveAll,

@@ -92,24 +92,117 @@
 //   }
 // }
 
-// hooks/useProfile.ts
+// // hooks/useProfile.ts
+// 'use client'
+
+// import { useSession, signOut } from 'next-auth/react'
+// import { useRouter } from 'next/navigation'
+// import { useEffect, useState } from 'react'
+// const API = process.env.NEXT_PUBLIC_API_URL
+// export interface Vaccine {
+//   name: string
+//   pet: string
+//   date: string
+// }
+
+// interface ProfileData {
+//   id: string
+//   name: string
+//   email: string
+//   image: string
+//   role: string
+//   phone?: string
+// }
+
+// export function useProfile() {
+//   const { data: session, status } = useSession()
+//   const router = useRouter()
+//   const [profileData, setProfileData] = useState<ProfileData | null>(null)
+//   const [loadingData, setLoadingData] = useState(true)
+
+//   useEffect(() => {
+//     if (status === 'unauthenticated') router.push('/login')
+//   }, [status, router])
+
+//   // ✅ GET /api/user/profile
+//   useEffect(() => {
+//     if (status === 'authenticated') {
+//       setLoadingData(true)
+//       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
+//         headers: {
+//           Authorization: `Bearer ${(session?.user as any)?.accessToken ?? ''}`,
+//           'ngrok-skip-browser-warning': 'true',
+//         },
+//       })
+//         .then(res => res.json())
+//         // .then(data => setProfileData(data))
+//         .then(data => {
+//   console.log('Full profile keys:', Object.keys(data))
+//   console.log('image value:', data.image)
+//   console.log('imageUrl value:', data.imageUrl)
+//   console.log('ALL DATA:', JSON.stringify(data))
+//   setProfileData(data)
+// })
+//         .catch(err => console.error('Failed to fetch profile:', err))
+//         .finally(() => setLoadingData(false))
+//     }
+//   }, [status, session])
+
+//   const isLoading = status === 'loading' || loadingData
+
+//   const userName  = profileData?.name  ?? session?.user?.name  ?? ''
+//   const userEmail = profileData?.email ?? session?.user?.email ?? ''
+//   // const userImage = profileData?.image ?? session?.user?.image ?? '/woman.png'
+//   const userImage = profileData?.image
+//   ? profileData.image.startsWith('http')
+//     ? profileData.image                   
+//     : `${API}${profileData.image}`         
+//   : session?.user?.image ?? '/woman.png'
+//   const userRole  = profileData?.role  ?? (session?.user as any)?.role ?? 'User'
+
+//   const vaccines: Vaccine[] = [
+//     { name: 'Rabies Booster',  pet: 'Moly',     date: '2024-08-15' },
+//     { name: 'Feline Leukemia', pet: 'Whiskers', date: '2024-09-01' },
+//     { name: 'Distemper',       pet: 'Flopsy',   date: '2024-09-20' },
+//   ]
+
+//   const handleLogout = async () => {
+//     await signOut({ callbackUrl: '/login' })
+//   }
+
+//   const handleEditProfile = () => {
+//     router.push('/main/EditProfile')
+//   }
+
+//   return {
+//     isLoading,
+//     userName,
+//     userEmail,
+//     userImage,
+//     userRole,
+//     vaccines,
+//     handleLogout,
+//     handleEditProfile,
+//   }
+// }
+
 'use client'
+// hooks/useProfile.ts  — FIXED: image now persists after edit by combining
+// server-fetched profile with the session-updated image URL.
 
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+// import { useVaccine } from '../../Vaccine/hooks/useVaccine'
+
 const API = process.env.NEXT_PUBLIC_API_URL
-export interface Vaccine {
-  name: string
-  pet: string
-  date: string
-}
 
 interface ProfileData {
   id: string
   name: string
   email: string
-  image: string
+  image?: string
+  imageUrl?: string
   role: string
   phone?: string
 }
@@ -124,47 +217,49 @@ export function useProfile() {
     if (status === 'unauthenticated') router.push('/login')
   }, [status, router])
 
-  // ✅ GET /api/user/profile
   useEffect(() => {
-    if (status === 'authenticated') {
-      setLoadingData(true)
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
-        headers: {
-          Authorization: `Bearer ${(session?.user as any)?.accessToken ?? ''}`,
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
-        .then(res => res.json())
-        // .then(data => setProfileData(data))
-        .then(data => {
-  console.log('Full profile keys:', Object.keys(data))
-  console.log('image value:', data.image)
-  console.log('imageUrl value:', data.imageUrl)
-  console.log('ALL DATA:', JSON.stringify(data))
-  setProfileData(data)
-})
-        .catch(err => console.error('Failed to fetch profile:', err))
-        .finally(() => setLoadingData(false))
-    }
+    if (status !== 'authenticated') return
+
+    setLoadingData(true)
+    fetch(`${API}/api/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${(session?.user as any)?.accessToken ?? ''}`,
+        'ngrok-skip-browser-warning': 'true',
+      },
+      cache: 'no-store',
+    })
+      .then(res => res.json())
+      .then(data => setProfileData(data))
+      .catch(err => console.error('Failed to fetch profile:', err))
+      .finally(() => setLoadingData(false))
   }, [status, session])
 
   const isLoading = status === 'loading' || loadingData
 
   const userName  = profileData?.name  ?? session?.user?.name  ?? ''
   const userEmail = profileData?.email ?? session?.user?.email ?? ''
-  // const userImage = profileData?.image ?? session?.user?.image ?? '/woman.png'
-  const userImage = profileData?.image
-  ? profileData.image.startsWith('http')
-    ? profileData.image                   
-    : `${API}${profileData.image}`         
-  : session?.user?.image ?? '/woman.png'
   const userRole  = profileData?.role  ?? (session?.user as any)?.role ?? 'User'
 
-  const vaccines: Vaccine[] = [
-    { name: 'Rabies Booster',  pet: 'Moly',     date: '2024-08-15' },
-    { name: 'Feline Leukemia', pet: 'Whiskers', date: '2024-09-01' },
-    { name: 'Distemper',       pet: 'Flopsy',   date: '2024-09-20' },
-  ]
+  /**
+   * Image priority (fixes the "resets to default after edit" bug):
+   * 1. Session image — updated immediately by `update()` in useEdit after save
+   * 2. Server profile image — from the backend fetch
+   * 3. Default fallback
+   *
+   * This ensures that when a user edits their photo and the session is updated,
+   * the new image is shown right away without needing a page reload.
+   */
+  const resolveImageUrl = (raw?: string) => {
+    if (!raw) return null
+    return raw.startsWith('http') ? raw : `${API}${raw}`
+  }
+
+  const userImage =
+    resolveImageUrl(session?.user?.image ?? undefined) ??
+    resolveImageUrl(profileData?.imageUrl ?? profileData?.image) ??
+    '/woman.png'
+
+  // const vaccines = [] // vaccines are now handled by useVaccines hook
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/login' })
@@ -180,7 +275,7 @@ export function useProfile() {
     userEmail,
     userImage,
     userRole,
-    vaccines,
+    // vaccines,
     handleLogout,
     handleEditProfile,
   }

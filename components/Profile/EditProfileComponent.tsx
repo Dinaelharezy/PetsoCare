@@ -298,6 +298,7 @@ export default function EditProfileClient() {
     newPassword,     setNewPassword,
     confirmPassword, setConfirmPassword,
     handleChangePassword,
+  handleChangePhone,
   } = useEdit()
 
   const [showCurrent, setShowCurrent] = useState(false)
@@ -361,14 +362,38 @@ export default function EditProfileClient() {
               <small className="text-muted">To change email, use the Change Email section below.</small>
             </div>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <FieldLabel>Phone Number</FieldLabel>
               <IconInput icon={<PhoneIcon />}>
                 <input type="tel" className="form-control bg-light border-start-0 ps-0"
                   value={phone} placeholder="Enter your phone number"
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)} />
               </IconInput>
-            </div>
+            </div> */}
+            <div className="mb-3">
+  <FieldLabel>Phone Number</FieldLabel>
+
+  <IconInput icon={<PhoneIcon />}>
+    <input
+      type="tel"
+      className="form-control bg-light border-start-0 ps-0"
+      value={phone}
+      placeholder="Enter your phone number"
+      onChange={(e: ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
+    />
+  </IconInput>
+
+  <div className="d-flex justify-content-end mt-2">
+    <button
+      style={{ backgroundColor: '#8ae68d' }}
+      className="btn btn-sm px-3 fw-semibold"
+      disabled={saving || !phone}
+      onClick={handleChangePhone}
+    >
+      {saving ? 'Updating...' : 'Update Phone'}
+    </button>
+  </div>
+</div>
 
             <div className="mb-3">
               <FieldLabel>Address</FieldLabel>
