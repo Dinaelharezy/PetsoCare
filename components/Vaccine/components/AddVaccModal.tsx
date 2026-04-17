@@ -85,7 +85,9 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             <Button
               type="submit"
               disabled={submitting}
-              style={{ backgroundColor: '#8ae68d', border: 'none', color: '#333', fontWeight: 600 }}
+              // style={{ backgroundColor: '#8ae68d', border: 'none', color: '#333', fontWeight: 600 }}
+          className='background-for-app'
+
             >
               {submitting ? 'Adding…' : 'Add Vaccine'}
             </Button>

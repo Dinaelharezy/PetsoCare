@@ -63,6 +63,7 @@ import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import Providers from '../components/Providers'  // ✅ استخدم Providers بدل SessionProvider
 import Chatbot from '../components/chatbot';
+import 'leaflet/dist/leaflet.css'
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

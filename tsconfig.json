@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "components/Map/PetMap.jsx"
+    "components/Map/PetMap.tsx"
   ],
   "exclude": [
     "node_modules"

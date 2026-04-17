@@ -6,16 +6,25 @@ import { Container, Row, Col, Card, Button, Modal, Form, Badge, Alert } from 're
 import Image from 'next/image'
 import { clinicsApi } from '../../data/api/Clinic'
 import { Clinic } from '../../types/Clinic'
-
-
+import 'leaflet/dist/leaflet.css'
+import MapPickerModal from './components/MapPickerModal'
 
 
 export default function ClinicManagementClient() {
   const [clinics, setClinics] = useState<Clinic[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [selectedLatLng, setSelectedLatLng] = useState<{
+  lat: number | null
+  lng: number | null
+}>({
+  lat: null,
+  lng: null
+})
+
   const [editingClinic, setEditingClinic] = useState<Clinic | null>(null)
   const [successMessage, setSuccessMessage] = useState('')
+  const [showMapPicker, setShowMapPicker] = useState(false)
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 
@@ -38,17 +47,31 @@ const getImageSrc = (src?: string): string | null => {
 
   return null
 }
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   address: '',
+  //   governorate: '',
+  //   phone: '',
+  //   facebookPage: '',
+  //   imageUrl: '',
+  //   bookingPrice: '',
+  //   workingDays: '',
+  //   workingHours: '',
+  // })
+
   const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    governorate: '',
-    phone: '',
-    facebookPage: '',
-    imageUrl: '',
-    bookingPrice: '',
-    workingDays: '',
-    workingHours: '',
-  })
+  name: '',
+  address: '',
+  governorate: '',
+  phone: '',
+  facebookPage: '',
+  imageUrl: '',
+  bookingPrice: '',
+  workingDays: '',
+  workingHours: '',
+  latitude: '',
+  longitude: '',
+})
 
   const governorates = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
@@ -90,6 +113,9 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
         bookingPrice: clinic.bookingPrice?.toString() || '',
         workingDays: clinic.workingDays || '',
         workingHours: clinic.workingHours || '',
+         latitude: clinic.latitude?.toString() || '',
+  longitude: clinic.longitude?.toString() || '',
+
       })
     } else {
       setEditingClinic(null)
@@ -103,6 +129,9 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
         bookingPrice: '',
         workingDays: '',
         workingHours: '',
+        latitude: '',
+       longitude: '',
+        
       })
     }
     setShowModal(true)
@@ -162,6 +191,7 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
       }
     }
   }
+  
 
   if (loading) {
     return (
@@ -313,8 +343,53 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
                   </Form.Select>
                 </Form.Group>
               </Col>
-            </Row>
 
+            </Row>
+{/* <Row>
+  <Col md={6}>
+    <Form.Group className="mb-3">
+      <Form.Label>Latitude</Form.Label>
+      <Form.Control
+        type="text"
+        value={formData.latitude}
+        readOnly
+      />
+    </Form.Group>
+  </Col>
+
+  <Col md={6}>
+    <Form.Group className="mb-3">
+      <Form.Label>Longitude</Form.Label>
+      <Form.Control
+        type="text"
+        value={formData.longitude}
+        readOnly
+      />
+    </Form.Group>
+  </Col>
+</Row> */}
+<Row>
+  <Col md={12}>
+    <Form.Group className="mb-3">
+      <Form.Label>Location</Form.Label>
+      <div className="d-flex gap-2 align-items-center">
+        <Button
+          type="button"
+          variant="outline-secondary"
+          onClick={() => setShowMapPicker(true)}
+        >
+          <i className="bi bi-geo-alt me-2" />
+          {formData.latitude && formData.longitude
+            ? `${parseFloat(formData.latitude).toFixed(4)}, ${parseFloat(formData.longitude).toFixed(4)}`
+            : 'Pick on Map'}
+        </Button>
+        {formData.latitude && formData.longitude && (
+          <span className="text-muted small">Location selected</span>
+        )}
+      </div>
+    </Form.Group>
+  </Col>
+</Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
@@ -374,6 +449,20 @@ return () => window.removeEventListener('clinicsUpdated', handleClinicUpdated)
           </Modal.Footer>
         </Form>
       </Modal>
+
+      <MapPickerModal
+  show={showMapPicker}
+  onHide={() => setShowMapPicker(false)}
+  initialLat={formData.latitude ? parseFloat(formData.latitude) : undefined}
+  initialLng={formData.longitude ? parseFloat(formData.longitude) : undefined}
+  onConfirm={(lat, lng) => {
+    setFormData(prev => ({
+      ...prev,
+      latitude: lat.toString(),
+      longitude: lng.toString(),
+    }))
+  }}
+/>
     </Container>
   )
 }
