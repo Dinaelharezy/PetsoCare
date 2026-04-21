@@ -21,4 +21,6 @@ export interface Report {
   district: string;
   adminResponse?: string;
   details: any;
+    latitude?: number;   // ← زود دول
+  longitude?: number;
 }

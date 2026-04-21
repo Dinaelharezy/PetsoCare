@@ -14,6 +14,27 @@
   color: var(--text-primary) !important;
 }
 
+.custom-img {
+  max-height: 30rem;   /* تتحكمي في الطول */
+  width: 100%;
+  /* object-fit: cover;    */
+}
+.custom-img2 {
+  max-height: 20rem;   /* تتحكمي في الطول */
+  width: 30%;
+  /* object-fit: cover;    */
+}
+.custom-img3 {
+  max-height: 30rem;   /* تتحكمي في الطول */
+  width: 30%;
+  /* object-fit: cover;    */
+}
+.custom-img4 {
+  max-height: 20rem;   /* تتحكمي في الطول */
+  width: 70%;
+  /* object-fit: cover;    */
+}
+
 /* الـ body */
 body {
   background-color: var(--bg-primary);

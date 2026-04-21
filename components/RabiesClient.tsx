@@ -270,7 +270,13 @@ export default function RabiesClient() {
             {/* 1. Overview */}
             <SectionCard id="overview" icon="bi-info-circle-fill" title="Simplified Overview of the Disease">
               <div className="row g-3">
-                <div className="col-md-8">
+                <div className="col-md-6">
+                   <img
+                    src="/rabies.png"
+                    alt="Rabies overview"
+                  // className="img-fluid rounded mb-3 custom-img"
+                    className="img-fluid rounded mb-5 mx-5 custom-img4"
+                  />
                   <h6 className="fw-bold text-success mb-2">What is Rabies?</h6>
                   <p style={{ fontSize: '0.93rem' }}>
                     Rabies is a <strong>fatal viral disease</strong> transmitted between animals and humans. It affects
@@ -317,6 +323,12 @@ export default function RabiesClient() {
             <SectionCard id="transmission" icon="bi-arrow-left-right" title="Transmission Between Animals and Humans">
               <div className="row g-3">
                 <div className="col-md-6">
+                    <img
+                    src="/symp 2.png"
+                    alt="Rabies overview"
+                    className="img-fluid rounded mb-4 mx-5 custom-img4"
+                    
+                  />
                   <h6 className="fw-bold mb-2">Main Routes of Transmission</h6>
                   <ul style={{ fontSize: '0.9rem' }}>
                     <li>Bites or scratches from stray/wild dogs, cats, bats, or foxes</li>
@@ -350,6 +362,11 @@ export default function RabiesClient() {
               <div className="alert-orange mt-3">
                 <i className="bi bi-bandaid me-2"></i>
                 <strong>Any suspected exposure requires immediate wound cleansing and post-exposure vaccination (PEP).</strong>
+                <img
+                    src="/pep.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 mx-5 custom-img3"
+                  />
               </div>
             </SectionCard>
 
@@ -414,6 +431,22 @@ export default function RabiesClient() {
                   </div>
                 ))}
               </div>
+               <img
+                    src="/symp 3.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 custom-img2"
+                  />
+               <img
+                    src="/symptoms human.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 mx-5 custom-img2"
+                  />
+               <img
+                    src="/symp 2.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 custom-img2"
+                  />
+
               <div className="alert-red mt-3">
                 <i className="bi bi-clock me-2"></i>
                 <strong>Early intervention and vaccination are crucial for survival.</strong> No effective treatment exists once the advanced stage is reached.
@@ -445,8 +478,15 @@ export default function RabiesClient() {
                   </div>
                 ))}
               </div>
-            </SectionCard>
 
+            </SectionCard>
+ <div className="text-center" style={{ flex: '0 0 auto' }}>
+    <img
+      src="/firstAid.png"
+      alt="Rabies overview"
+      className="img-fluid rounded mx-2 my-3 custom-img3"
+    />
+  </div>
             {/* 6. Dangerous Practices */}
             <SectionCard id="dangerous" icon="bi-exclamation-triangle-fill" title="Dangerous Practices Related to Rabies Exposure">
               <div className="row g-3 mb-3">
@@ -492,6 +532,15 @@ export default function RabiesClient() {
                       <li>Travelers to high-risk regions</li>
                     </ul>
                   </div>
+                   <div className="col-md-6">
+                      <div className="text-center" >
+    <img
+      src="/hospital.png"
+      alt="Rabies overview"
+      className="img-fluid rounded custom-img3"
+    />
+  </div>
+                   </div>
                   <div className="col-md-6">
                     <div className="alert-green">
                       <strong>Schedule:</strong> 3 doses → Day 0, Day 7, Day 21 or 28<br /><br />
@@ -502,6 +551,7 @@ export default function RabiesClient() {
                     </div>
                   </div>
                 </div>
+    
               </Collapsible>
 
               <Collapsible title="2 — Post-Exposure Prophylaxis (PEP)" color="#e67e22">
@@ -591,6 +641,16 @@ export default function RabiesClient() {
                   Inject into the <strong>anterolateral thigh</strong> for younger children.
                   Gluteal region is <strong>not recommended</strong>.
                 </div>
+                  <img
+                    src="/whatToDo.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 mx-5 custom-img2"
+                  />
+                  <img
+                    src="/vaccLocations.png"
+                    alt="Rabies overview"
+                  className="img-fluid rounded my-3 custom-img2"
+                  />
               </Collapsible>
 
               <Collapsible title="3 — Urban Rabies Control" color="#16a085">
@@ -606,6 +666,7 @@ export default function RabiesClient() {
               </Collapsible>
 
               <Collapsible title="4 — Wildlife Rabies Control" color="#2980b9">
+                <div className="d-flex align-items-center flex-wrap text-center text-md-start">
                 <ul style={{ fontSize: '0.9rem' }}>
                   <li>Reduce or vaccinate stray dogs</li>
                   <li>Avoid handling bats</li>
@@ -613,17 +674,43 @@ export default function RabiesClient() {
                   <li>Vaccine distribution by air-dropping in remote areas</li>
                   <li>Investing in dog-source control is most cost-effective</li>
                 </ul>
+
+                 <div className="text-center " style={{ flex: '1 1 auto' }}>
+    <img
+      src="/vaccLocations.png"
+      alt="Rabies overview"
+      className="img-fluid rounded custom-img3"
+    />
+  </div>
+                </div>
               </Collapsible>
 
+
               <Collapsible title="5 — International Rabies Control" color="#8e44ad">
-                <ul style={{ fontSize: '0.9rem' }}>
-                  <li>Vaccinate animals before international travel</li>
-                  <li>Animal must be at least 12 weeks old before vaccination</li>
-                  <li>Wait 21 days after first dose before traveling to certain countries</li>
-                  <li>Animals must be microchipped before or at the time of vaccination</li>
-                  <li>Vaccines must be inactivated or recombinant and officially approved</li>
-                </ul>
-              </Collapsible>
+  
+  <div className="d-flex align-items-center flex-wrap text-center text-md-start">
+  
+  {/* النص */}
+  <ul style={{ fontSize: '0.9rem', flex: '1 1 300px' }} className="mb-3 mb-md-0">
+    <li>Vaccinate animals before international travel</li>
+    <li>Animal must be at least 12 weeks old before vaccination</li>
+    <li>Wait 21 days after first dose before traveling to certain countries</li>
+    <li>Animals must be microchipped before or at the time of vaccination</li>
+    <li>Vaccines must be inactivated or recombinant and officially approved</li>
+  </ul>
+
+  {/* الصورة */}
+  <div className="text-center" style={{ flex: '0 0 auto' }}>
+    <img
+      src="/vacc.png"
+      alt="Rabies overview"
+      className="img-fluid rounded custom-img2"
+    />
+  </div>
+
+</div>
+
+</Collapsible>
 
               <div className="mt-4 p-3 rounded" style={{ background: 'linear-gradient(135deg, #eefaf3, #e8f4fd)', border: '1px solid #b2dfdb' }}>
                 <h6 className="fw-bold text-success mb-2">
