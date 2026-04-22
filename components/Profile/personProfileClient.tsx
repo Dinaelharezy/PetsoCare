@@ -281,14 +281,21 @@ export default function PersonProfileClient() {
   } = useProfile()
 
   const {
+   vaccines,
     upcomingVaccines,
     completedVaccines,
-    loading: vaccLoading,
+    loading,
+    error,
     submitting,
     createVaccine,
     completeVaccine,
+    updateVaccine,
+    deleteVaccine,
+    refetch: fetchVaccines,
   } = useVaccines()
 
+
+  
   const [showModal, setShowModal] = useState(false)
 
   if (isLoading) return <LoadingSpin />
@@ -309,13 +316,13 @@ export default function PersonProfileClient() {
 
         {/* ── Main Content ── */}
         <Col lg={9} md={12}>
-          <UpcomingVaccines
-            vaccines={upcomingVaccines}
-            completedVaccines={completedVaccines}
-            loading={vaccLoading}
-            onComplete={completeVaccine}
-            onAdd={() => setShowModal(true)}
-          />
+        <UpcomingVaccines
+  vaccines={upcomingVaccines}
+  completedVaccines={completedVaccines}
+  loading={loading}
+  onComplete={completeVaccine}
+  onAdd={() => setShowModal(true)}
+/>
           <AccountSettings onLogout={handleLogout} />
         </Col>
       </Row>
@@ -471,7 +478,10 @@ interface VaccineItem {
   id: string
   name: string
   pet: string
-  date: string
+  vaccineType: string
+  exposureCategory: string
+  startDate: string
+  reminder: boolean
   completed: boolean
 }
 
@@ -483,13 +493,37 @@ interface UpcomingVaccinesProps {
   onAdd: () => void
 }
 
-function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, onAdd }: UpcomingVaccinesProps) {
+
+// function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, onAdd }: UpcomingVaccinesProps) {
+//   const [showCompleted, setShowCompleted] = useState(false)
+
+//   const formatDate = (iso: string) => {
+//     if (!iso) return ''
+//     try { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) }
+//     catch { return iso }
+//   }
+
+function UpcomingVaccines({
+  vaccines,
+  completedVaccines,
+  loading,
+  onComplete,
+  onAdd
+}: UpcomingVaccinesProps) {
+
   const [showCompleted, setShowCompleted] = useState(false)
 
   const formatDate = (iso: string) => {
     if (!iso) return ''
-    try { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) }
-    catch { return iso }
+    try {
+      return new Date(iso).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })
+    } catch {
+      return iso
+    }
   }
 
   return (
@@ -510,7 +544,7 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
           <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center">
             <div>
               <div className="fw-semibold mb-1">{vaccine.name}</div>
-              <div className="text-muted small">For {vaccine.pet} on {formatDate(vaccine.date)}</div>
+              <div className="text-muted small">For {vaccine.pet} on {formatDate(vaccine.startDate)}</div>
             </div>
             <button
               onClick={() => onComplete(vaccine.id)}
@@ -550,7 +584,7 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
                 <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center" style={{ opacity: 0.6 }}>
                   <div>
                     <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.name}</div>
-                    <div className="text-muted small">For {vaccine.pet} on {formatDate(vaccine.date)}</div>
+                    <div className="text-muted small">For {vaccine.pet} on {formatDate(vaccine.startDate)}</div>
                   </div>
                   <span className="badge" style={{ backgroundColor: '#8ae68d', color: '#333', fontSize: '11px' }}>
                     ✓ Done
