@@ -22,7 +22,6 @@
 //     return NextResponse.json({ error: String(error) }, { status: 500 });
 //   }
 // }
-
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -48,13 +47,23 @@ export async function GET(
       );
     }
 
-    const data = await response.json();
+    const a = await response.json();
 
-    return NextResponse.json(data);
+    // normalize هنا كمان
+    const normalized = {
+      id:          a.id          ?? a.Id,
+      title:       a.title       ?? a.Title       ?? '',
+      summary:     a.summary     ?? a.Summary     ?? '',
+      content:     a.content     ?? a.Content     ?? '',
+      source:      a.source      ?? a.Source      ?? '',
+      category:    a.category    ?? a.Category    ?? '',
+      publishDate: a.publishDate ?? a.PublishDate ?? '',
+      imageUrl:    a.imageUrl    ?? a.ImageUrl    ?? a.image ?? a.Image ?? '',
+      published:   a.published   ?? a.Published   ?? true,
+    };
+
+    return NextResponse.json(normalized);
   } catch (error) {
-    return NextResponse.json(
-      { error: String(error) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }

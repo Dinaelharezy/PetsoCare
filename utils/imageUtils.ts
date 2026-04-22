@@ -8,13 +8,25 @@ export const getImageSrc = (src?: string): string | null => {
   if (src.startsWith('http')) {
     return `/api/image?url=${encodeURIComponent(src)}`
   }
-
+  if (
+    src.startsWith('/Images') ||
+    src.startsWith('/images') ||
+    src.startsWith('/uploads') ||
+    src.startsWith('/api')
+  ) {
+    const full = BASE_URL ? `${BASE_URL}${src}` : src
+    return `/api/image?url=${encodeURIComponent(full)}`
+  }
   // لو path نسبي من الـ backend
   if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
     const full = BASE_URL ? `${BASE_URL}${src}` : src
     return `/api/image?url=${encodeURIComponent(full)}`
   }
 
+    if (src.includes('Images/') || src.includes('uploads/')) {
+    const full = BASE_URL ? `${BASE_URL}/${src}` : `/${src}`
+    return `/api/image?url=${encodeURIComponent(full)}`
+  }
   // لو صورة محلية في Next.js (public folder)
   if (src.startsWith('/')) return src
 

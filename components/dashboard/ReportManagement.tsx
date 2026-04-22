@@ -3,22 +3,10 @@
 
 import { useEffect, useState } from 'react'
 import { Button, Card, Modal, Spinner, Table, Form, Toast, ToastContainer } from 'react-bootstrap'
-
+import { Report } from '../../types/report'
 type ReportStatus = 'Pending' | 'Seen' | 'Approved' | 'InProgress' | 'Done' | 'Rejected'
 type ReportType   = 'Bite' | 'DangerousAnimal' | 'Complaint'
 
-interface Report {
-  id:             number
-  type:           ReportType
-  status:         ReportStatus
-  name?:          string
-  phone?:         string
-  governorate?:   string
-  district?:      string
-  createdAt?:     string
-  adminResponse?: string
-  [key: string]:  any
-}
 
 // ✅ Covers C# enum as both string and integer
 const mapStatus = (s: any): ReportStatus => {
@@ -461,6 +449,9 @@ export default function ReportManagement() {
         <Modal.Body className="p-4">
           {freshSelected && (
             <>
+      <pre style={{fontSize: 10, background: '#f5f5f5', padding: 8, borderRadius: 6, overflow: 'auto', maxHeight: 200}}>
+        {JSON.stringify(freshSelected, null, 2)}
+      </pre>
               <StatusTimeline current={freshSelected.status} />
               <div className="row g-3">
                 {([
@@ -470,7 +461,7 @@ export default function ReportManagement() {
                   ['District',    freshSelected.district    || '—'],
                   ['Type',        `${getType(freshSelected.type).icon} ${getType(freshSelected.type).label}`],
                   ['Status',      `${getStatus(freshSelected.status).icon} ${getStatus(freshSelected.status).label}`],
-                  ['Submitted',   freshSelected.createdAt ? new Date(freshSelected.createdAt).toLocaleString() : '—'],
+                  // ['Submitted',   freshSelected.createdAt ? new Date(freshSelected.createdAt).toLocaleString() : '—'],
                   ...(freshSelected.adminResponse ? [['Admin Response', freshSelected.adminResponse]] : []),
                 ] as [string, string][]).map(([label, value]) => (
                   <div key={label} className="col-md-6">

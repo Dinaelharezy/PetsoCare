@@ -1201,6 +1201,9 @@ export default function PetMap({ onSelectLocation, allowPinDrop = false }: Props
 
       // ── Reports: use getMapReports which returns lat/lng from server ──
       try {
+        const token = localStorage.getItem('token')
+        // const raw = await getMapReports(token!)
+        
         const raw = await getMapReports()
         const reports: any[] = Array.isArray(raw) ? raw : (raw?.data ?? [])
 

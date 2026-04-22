@@ -248,7 +248,7 @@ export function useArticleManagement() {
   const loadArticles = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/dashboard/articles?t=${Date.now()}`, {
+      const response = await fetch(`/api/dashboard/articles?lang=en&t=${Date.now()}`, {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         cache: 'no-store',
       })
@@ -431,6 +431,8 @@ export function useArticleManagement() {
       alert('Network error. Failed to delete article.')
     }
   }
+
+  
 
   return {
     articles, loading,

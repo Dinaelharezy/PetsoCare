@@ -52,15 +52,19 @@ export default function ArticleManagementClient() {
   const [error, setError] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
 
-  const [formData, setFormData] = useState({
-    Title: '',
-    Summary: '',
-    Content: '',
-    Source: '',
-    imageFile:'',
-    Category: '',
-    PublishDate: '',
-  })
+  // 1. أضف للـ formData state
+const [formData, setFormData] = useState({
+  Title: '',
+  Summary: '',
+  Content: '',
+  TitleEn: '',      // ✅ جديد
+  SummaryEn: '',    // ✅ جديد
+  ContentEn: '',    // ✅ جديد
+  Source: '',
+  imageFile: '',
+  Category: '',
+  PublishDate: '',
+})
 
   const categories = ['Prevention', 'Emergency Care', 'Awareness', 'Symptoms', 'Vaccination']
 
@@ -68,54 +72,76 @@ export default function ArticleManagementClient() {
     loadArticles()
   }, [])
 
+  // const loadArticles = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const response = await fetch('/api/dashboard/articles', {
+  //       headers: { 'ngrok-skip-browser-warning': 'true' }
+  //     })
+  //     const data = await response.json()
+  //     if (Array.isArray(data)) {
+  //       setArticles(data)
+  //     } else {
+  //       setArticles([])
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to load articles:', error)
+  //     setArticles([])
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
   const loadArticles = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch('/api/dashboard/articles', {
-        headers: { 'ngrok-skip-browser-warning': 'true' }
-      })
-      const data = await response.json()
-      if (Array.isArray(data)) {
-        setArticles(data)
-      } else {
-        setArticles([])
-      }
-    } catch (error) {
-      console.error('Failed to load articles:', error)
-      setArticles([])
-    } finally {
-      setLoading(false)
-    }
+  try {
+    setLoading(true)
+    const response = await fetch(`/api/dashboard/articles?lang=en&t=${Date.now()}`, {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+      cache: 'no-store',
+    })
+    const data = await response.json()
+    setArticles(Array.isArray(data) ? data : [])
+  } catch (error) {
+    console.error('Failed to load articles:', error)
+    setArticles([])
+  } finally {
+    setLoading(false)
   }
+}
 
-  const handleShowModal = (article?: article) => {
-    if (article) {
-      setEditingArticle(article)
-      setFormData({
-        Title: article.title,
-        Summary: article.summary,
-        Content: article.content,
-        imageFile: article.imageUrl,
-        Source: article.source,
-        Category: article.category,
-        PublishDate: article.publishDate?.split('T')[0] || '',
-      })
-    } else {
-      setEditingArticle(null)
-      setFormData({
-        Title: '',
-        Summary: '',
-        Content: '',
-        imageFile:'',
-        Source: '',
-        Category: '',
-        PublishDate: new Date().toISOString().split('T')[0],
-      })
-    }
-    setImageFile(null)
-    setError('')
-    setShowModal(true)
+ const handleShowModal = (article?: article) => {
+  if (article) {
+    setEditingArticle(article)
+    setFormData({
+      Title:       article.title,
+      Summary:     article.summary,
+      Content:     article.content,
+      TitleEn:     article.titleEn   ?? '',
+      SummaryEn:   article.summaryEn ?? '',
+      ContentEn:   article.contentEn ?? '',
+      Source:      article.source,
+      imageFile:   article.imageUrl,
+      Category:    article.category,
+      PublishDate: article.publishDate?.split('T')[0] || '',
+    })
+  } else {
+    setEditingArticle(null)
+    setFormData({
+      Title:       '',
+      Summary:     '',
+      Content:     '',
+      TitleEn:     '',   // ✅
+      SummaryEn:   '',   // ✅
+      ContentEn:   '',   // ✅
+      imageFile:   '',
+      Source:      '',
+      Category:    '',
+      PublishDate: new Date().toISOString().split('T')[0],
+    })
   }
+  setImageFile(null)
+  setError('')
+  setShowModal(true)
+}
 
   const handleCloseModal = () => {
     setShowModal(false)
@@ -239,26 +265,18 @@ export default function ArticleManagementClient() {
       setSuccessMessage('Article updated successfully!')
 
     } else {
-      // ✅ POST لسه FormData زي ما هو
-      // const formDataToSend = new FormData()
-      // formDataToSend.append('Title', formData.Title)
-      // formDataToSend.append('Summary', formData.Summary)
-      // formDataToSend.append('Content', formData.Content)
-      // formDataToSend.append('Category', formData.Category)
-      // formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
-      // formDataToSend.append('Source', formData.Source)
-      // formDataToSend.append('Published', 'true')
-      // if (imageFile) formDataToSend.append('Image', imageFile)
-      const formDataToSend = new FormData()
-formDataToSend.append('Title', formData.Title)
-formDataToSend.append('Summary', formData.Summary)
-formDataToSend.append('Content', formData.Content)
-formDataToSend.append('TitleEn', formData.TitleEn)
+//       
+const formDataToSend = new FormData()
+formDataToSend.append('Title',     formData.TitleEn)  
+formDataToSend.append('Summary',   formData.SummaryEn)
+formDataToSend.append('Content',   formData.ContentEn)
+formDataToSend.append('TitleEn',   formData.TitleEn)
 formDataToSend.append('SummaryEn', formData.SummaryEn)
 formDataToSend.append('ContentEn', formData.ContentEn)
-formDataToSend.append('Category', formData.Category)
+formDataToSend.append('Category',  formData.Category)
 formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
-formDataToSend.append('Source', formData.Source)
+formDataToSend.append('Source',    formData.Source)
+formDataToSend.append('Published', 'true')
 if (imageFile) formDataToSend.append('Image', imageFile)
 
       const response = await fetch('/api/dashboard/articles', {
@@ -417,17 +435,17 @@ if (imageFile) formDataToSend.append('Image', imageFile)
 
             <Form.Group className="mb-2">
               <Form.Label className="small fw-bold">Title *</Form.Label>
-              <Form.Control size="sm" type="text" name="Title" value={formData.Title} onChange={handleInputChange} required />
+              <Form.Control size="sm" type="text" name="TitleEn" value={formData.TitleEn} onChange={handleInputChange} required />
             </Form.Group>
 
             <Form.Group className="mb-2">
               <Form.Label className="small fw-bold">Summary *</Form.Label>
-              <Form.Control size="sm" as="textarea" name="Summary" value={formData.Summary} onChange={handleInputChange} rows={2} required />
+              <Form.Control size="sm" as="textarea" name="SummaryEn" value={formData.SummaryEn} onChange={handleInputChange} rows={2} required />
             </Form.Group>
 
             <Form.Group className="mb-2">
               <Form.Label className="small fw-bold">Content *</Form.Label>
-              <Form.Control size="sm" as="textarea" name="Content" value={formData.Content} onChange={handleInputChange} rows={5} required />
+              <Form.Control size="sm" as="textarea" name="ContentEn" value={formData.ContentEn} onChange={handleInputChange} rows={5} required />
             </Form.Group>
 
             <Form.Group className="mb-2">

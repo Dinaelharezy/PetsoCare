@@ -9,5 +9,9 @@ export interface article {
   category: string
   publishDate: string
   createdAt: string
+  // في article type
+titleEn?: string
+summaryEn?: string
+contentEn?: string
 }
 
