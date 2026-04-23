@@ -1,185 +1,161 @@
-// 'use client'
-// // hooks/useVaccines.ts
 
-// import { useState, useEffect, useCallback } from 'react'
-
-// export interface Vaccine {
-//   id: string
-//   name: string
-//   pet: string
-//   date: string        // ISO string
-//   reminder: boolean
-//   completed: boolean
-// }
-
-// export interface CreateVaccineDto {
-//   name: string
-//   pet: string
-//   date: string
-//   reminder: boolean
-// }
-
-// export function useVaccines() {
-//   const [vaccines, setVaccines]   = useState<Vaccine[]>([])
-//   const [loading, setLoading]     = useState(true)
-//   const [error, setError]         = useState('')
-//   const [submitting, setSubmitting] = useState(false)
-
-//   const fetchVaccines = useCallback(async () => {
-//     try {
-//       setLoading(true)
-//       const res = await fetch('/api/vaccine', { cache: 'no-store' })
-//       if (!res.ok) throw new Error('Failed to fetch vaccines')
-//       const data = await res.json()
-//       // normalize field names: backend returns Pascal-case from C#
-//      const normalized: Vaccine[] = (Array.isArray(data) ? data : []).map((v: any) => ({
-//   id:        v.id        ?? v.Id,
-//   name:      v.name      ?? v.Name      ?? '',
-//   pet:       v.pet       ?? v.Pet       ?? '',
-//   date:      v.startDate ?? v.StartDate ?? '', // ✅ FIX
-//   reminder:  v.reminder  ?? v.Reminder  ?? false,
-//   completed: v.completed ?? v.Completed ?? false,
-// }))
-//       setVaccines(normalized)
-//     } catch (e: any) {
-//       setError(e.message)
-//     } finally {
-//       setLoading(false)
-//     }
-//   }, [])
-
-//   useEffect(() => { fetchVaccines() }, [fetchVaccines])
-
-//   const createVaccine = async (dto: CreateVaccineDto) => {
-//     setSubmitting(true)
-//     setError('')
-//     try {
-//       const res = await fetch('/api/vaccine', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(dto),
-//       })
-//       if (!res.ok) throw new Error(await res.text())
-//       await fetchVaccines()
-//       return true
-//     } catch (e: any) {
-//       setError(e.message)
-//       return false
-//     } finally {
-//       setSubmitting(false)
-//     }
-//   }
-
-//   const completeVaccine = async (id: string) => {
-//     try {
-//       const res = await fetch('/api/vaccine/complete', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ id }),
-//       })
-//       if (!res.ok) throw new Error(await res.text())
-//       // Optimistic update
-//       setVaccines(prev =>
-//         prev.map(v => v.id === id ? { ...v, completed: true } : v)
-//       )
-//     } catch (e: any) {
-//       setError(e.message)
-//     }
-//   }
-
-//   const upcomingVaccines = vaccines.filter(v => !v.completed)
-//   const completedVaccines = vaccines.filter(v => v.completed)
-
-//   return {
-//     vaccines,
-//     upcomingVaccines,
-//     completedVaccines,
-//     loading,
-//     error,
-//     submitting,
-//     createVaccine,
-//     completeVaccine,
-//     refetch: fetchVaccines,
-//   }
-// }
 
 'use client'
-// hooks/useVaccine.ts
+import { useState, useCallback, useEffect } from 'react'
+import { VaccSchedule } from '../../../types/VaccSchedule'
+import { Vaccine, CreateVaccineDto, TakeDoseDto, UpdateVaccineDto } from '@/types/Vaccine'
 
-import { useState, useEffect, useCallback } from 'react'
-
-export interface Vaccine {
-  id: string
-  name: string
-  pet: string
-  vaccineType: string
-  exposureCategory: string
-  startDate: string   // ISO string
-  reminder: boolean
-  completed: boolean
+export function buildDoseDays(schedule: VaccSchedule): number[] {
+  return schedule.doses
+    .map(d => {
+      if (typeof d.day === 'number') return d.day
+      const match = String(d.day).match(/\d+/)
+      return match ? parseInt(match[0], 10) : null
+    })
+    .filter((d): d is number => d !== null)
 }
 
-export interface CreateVaccineDto {
-  name: string
-  pet: string
-  vaccineType: string
-  exposureCategory: string
-  startDate: string   // ISO string
-  reminder: boolean
-}
+export function useVaccine() {
+  const [vaccines,           setVaccines]           = useState<Vaccine[]>([])
+  const [loading,            setLoading]            = useState(false)
+  const [submitting,         setSubmitting]         = useState(false)
+  const [error,              setError]              = useState<string | null>(null)
 
-export interface UpdateVaccineDto {
-  id: string
-  date: string        // ISO string
-  reminder: boolean
-}
+  // ── derived lists ──
+  const upcomingVaccines   = vaccines.filter(v => !v.completed)
+  const completedVaccines  = vaccines.filter(v =>  v.completed)
 
-export function useVaccines() {
-  const [vaccines, setVaccines]     = useState<Vaccine[]>([])
-  const [loading, setLoading]       = useState(true)
-  const [error, setError]           = useState('')
-  const [submitting, setSubmitting] = useState(false)
-
-  /* ─── fetch ─── */
   const fetchVaccines = useCallback(async () => {
-    try {
-      setLoading(true)
-      const res = await fetch('/api/vaccine', { cache: 'no-store' })
-      if (!res.ok) throw new Error('Failed to fetch vaccines')
-      const data = await res.json()
+  setLoading(true)
+  setError(null)
+  try {
+    const res  = await fetch('/api/vaccine')
+    const text = await res.text()
+    const data = text ? JSON.parse(text) : {}
+    if (!res.ok) throw new Error(data.message ?? 'Failed to fetch vaccines')
 
-      const normalized: Vaccine[] = (Array.isArray(data) ? data : []).map((v: any) => ({
-        id:               v.id               ?? v.Id               ?? '',
-        name:             v.name             ?? v.Name             ?? '',
-        pet:              v.pet              ?? v.Pet              ?? '',
-        vaccineType:      v.vaccineType      ?? v.VaccineType      ?? '',
-        exposureCategory: v.exposureCategory ?? v.ExposureCategory ?? '',
-        startDate:        v.startDate        ?? v.StartDate        ?? '',
-        reminder:         v.reminder         ?? v.Reminder         ?? false,
-        completed:        v.completed        ?? v.Completed        ?? false,
-      }))
+    // ← map الـ doses للـ Vaccine shape
+    const doses = Array.isArray(data.doses) ? data.doses : []
+    const mapped: Vaccine[] = doses.map((d: any) => ({
+      id:        d.id,
+      name:      d.vaccineName ?? 'Vaccine',
+      pet:       d.petName     ?? '',
+      reminder:  false,
+      completed: d.isTaken     ?? false,
+      startDate: d.date,
+    }))
+    setVaccines(mapped)
+  } catch (e: any) {
+    setError(e.message)
+  } finally {
+    setLoading(false)
+  }
+}, [])
 
-      setVaccines(normalized)
-    } catch (e: any) {
-      setError(e.message)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
+  
+// const fetchVaccines = useCallback(async () => {
+//   setLoading(true)
+//   setError(null)
+//   try {
+//     const res  = await fetch('/api/vaccine')
+//     const text = await res.text()
+//     console.log('GET /api/vaccine response:', text)  // ← أضف ده
+//     const data = text ? JSON.parse(text) : []
+//     if (!res.ok) throw new Error(data.message ?? 'Failed to fetch vaccines')
+//     setVaccines(Array.isArray(data) ? data : [])
+//   } catch (e: any) {
+//     setError(e.message)
+//   } finally {
+//     setLoading(false)
+//   }
+// }, [])
+  // auto-fetch on mount
   useEffect(() => { fetchVaccines() }, [fetchVaccines])
 
-  /* ─── create ─── */
-  const createVaccine = async (dto: CreateVaccineDto): Promise<boolean> => {
+  // ── POST /api/vaccine ── (AddVaccineModal)
+  const createVaccine = useCallback(async (dto: CreateVaccineDto): Promise<boolean> => {
     setSubmitting(true)
-    setError('')
+    setError(null)
     try {
-      const res = await fetch('/api/vaccine', {
-        method: 'POST',
+      const res  = await fetch('/api/vaccine', {
+        method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dto),
+        body:    JSON.stringify(dto),
       })
-      if (!res.ok) throw new Error(await res.text())
+      const text = await res.text()
+      const data = text ? JSON.parse(text) : {}
+      if (!res.ok) throw new Error(data.message ?? 'Failed to add vaccine')
+      await fetchVaccines()   // refresh list
+      return true
+    } catch (e: any) {
+      setError(e.message)
+      return false
+    } finally {
+      setSubmitting(false)
+    }
+  }, [fetchVaccines])
+
+  // alias for backward compat
+  const addVaccine = createVaccine
+
+  // ── POST /api/vaccine  ── from schedule
+  const addVaccineFromSchedule = useCallback(
+    async (
+      schedule: VaccSchedule,
+      opts: { pet: string; startDate: string; reminder?: boolean },
+    ): Promise<boolean> => {
+      setSubmitting(true)
+      setError(null)
+      try {
+        const dto: CreateVaccineDto = {
+          name:             schedule.title,
+          pet:              opts.pet,
+          vaccineType:      schedule.id,
+          exposureCategory: '',
+          startDate:        opts.startDate,
+          reminder:         opts.reminder ?? false,
+        }
+       const res = await fetch('/api/vaccine/custom', {   // ← custom مش /api/vaccine
+  method:  'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body:    JSON.stringify({
+    name:      schedule.title,
+    pet:       opts.pet,
+    doseDays:  buildDoseDays(schedule),
+    startDate: opts.startDate,
+    reminder:  opts.reminder ?? false,
+  }),
+})
+        const text = await res.text()
+        const data = text ? JSON.parse(text) : {}
+        if (!res.ok) throw new Error(data.message ?? 'Failed to save schedule')
+        await fetchVaccines()   // refresh list
+        return true
+      } catch (e: any) {
+        setError(e.message)
+        return false
+      } finally {
+        setSubmitting(false)
+      }
+    },
+    [fetchVaccines],
+  )
+
+
+
+  // ── POST /api/vaccine/take ──
+  const takeDose = useCallback(async (dto: TakeDoseDto): Promise<boolean> => {
+    setSubmitting(true)
+    setError(null)
+    try {
+      const res  = await fetch('/api/vaccine/take', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ id: dto.id, date: dto.date ?? new Date().toISOString() }),
+      })
+      const text = await res.text()
+      const data = text ? JSON.parse(text) : {}
+      if (!res.ok) throw new Error(data.message ?? 'Failed to record dose')
       await fetchVaccines()
       return true
     } catch (e: any) {
@@ -188,72 +164,99 @@ export function useVaccines() {
     } finally {
       setSubmitting(false)
     }
-  }
+  }, [fetchVaccines])
 
-  /* ─── take (mark completed) ─── */
-  const completeVaccine = async (id: string): Promise<void> => {
-    try {
-      const res = await fetch('/api/vaccine/take', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      })
-      if (!res.ok) throw new Error(await res.text())
-      // optimistic update
-      setVaccines(prev =>
-        prev.map(v => v.id === id ? { ...v, completed: true } : v)
-      )
-    } catch (e: any) {
-      setError(e.message)
+ // في useVaccine.ts - دالة updateVaccine
+const updateVaccine = useCallback(async (id: string, date?: string, reminder?: boolean): Promise<boolean> => {
+  setSubmitting(true);
+  setError(null);
+  try {
+    const body = { id, date, reminder };
+
+    const res = await fetch('/api/vaccine/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('Server error:', res.status, errorText);
+      throw new Error(`Server returned ${res.status}`);
     }
-  }
 
-  /* ─── update ─── */
-  const updateVaccine = async (dto: UpdateVaccineDto): Promise<boolean> => {
+    const data = await res.json();
+    await fetchVaccines();
+    return true;
+  } catch (e: any) {
+    console.error('Update error:', e);
+    setError(e.message);
+    return false;
+  } finally {
+    setSubmitting(false);
+  }
+}, [fetchVaccines]);
+
+
+  // ── DELETE /api/vaccine/[id] ──
+  const deleteVaccine = useCallback(async (id: string): Promise<boolean> => {
     setSubmitting(true)
-    setError('')
-    try {
-      const res = await fetch('/api/vaccine/update', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dto),
-      })
-      if (!res.ok) throw new Error(await res.text())
-      await fetchVaccines()
-      return true
-    } catch (e: any) {
-      setError(e.message)
-      return false
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  /* ─── delete ─── */
-  const deleteVaccine = async (id: string): Promise<void> => {
+    setError(null)
     try {
       const res = await fetch(`/api/vaccine/${id}`, { method: 'DELETE' })
-      if (!res.ok) throw new Error(await res.text())
-      setVaccines(prev => prev.filter(v => v.id !== id))
+      if (!res.ok) {
+        const text = await res.text()
+        const data = text ? JSON.parse(text) : {}
+        throw new Error(data.message ?? 'Failed to delete vaccine')
+      }
+      await fetchVaccines()
+      return true
     } catch (e: any) {
       setError(e.message)
+      return false
+    } finally {
+      setSubmitting(false)
     }
+  }, [fetchVaccines])
+const completeVaccine = useCallback(async (id: string): Promise<boolean> => {
+  setSubmitting(true)
+  setError(null)
+  try {
+    const res = await fetch('/api/vaccine/take', {   // ← take مش complete
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ id }),
+    })
+    const text = await res.text()
+    const data = text ? JSON.parse(text) : {}
+    if (!res.ok) throw new Error(data.message ?? 'Failed to complete vaccine')
+    await fetchVaccines()
+    return true
+  } catch (e: any) {
+    setError(e.message)
+    return false
+  } finally {
+    setSubmitting(false)
   }
-
-  const upcomingVaccines  = vaccines.filter(v => !v.completed)
-  const completedVaccines = vaccines.filter(v =>  v.completed)
-
+}, [fetchVaccines])
   return {
+    // state
     vaccines,
     upcomingVaccines,
     completedVaccines,
     loading,
-    error,
     submitting,
+    error,
+    // actions
+    refetch:                fetchVaccines,
     createVaccine,
+    addVaccine,
+    addVaccineFromSchedule,
     completeVaccine,
+    takeDose,
     updateVaccine,
     deleteVaccine,
-    refetch: fetchVaccines,
   }
 }

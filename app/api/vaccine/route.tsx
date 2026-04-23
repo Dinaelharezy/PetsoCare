@@ -67,13 +67,37 @@ export async function GET() {
   return NextResponse.json(data, { status: res.status })
 }
 
+
+
+// export async function POST(req: NextRequest) {
+//   const session = await auth()
+//   if (!session)
+//     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+//   const body = await req.json()
+
+//   const res = await fetch(`${API}/api/vaccine`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${session.user.accessToken}`,
+//       'ngrok-skip-browser-warning': 'true',
+//     },
+//     body: JSON.stringify(body),
+//   })
+
+//   // ✅ اتعامل مع empty response
+//   const text = await res.text()
+//   const data = text ? JSON.parse(text) : { success: true }
+
+//   return NextResponse.json(data, { status: res.status })
+// }
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session)
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  // body shape: { name, pet, vaccineType, exposureCategory, startDate, reminder }
 
   const res = await fetch(`${API}/api/vaccine`, {
     method: 'POST',
@@ -85,6 +109,7 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify(body),
   })
 
-  const data = await res.json()
+  const text = await res.text()                          // ← text مش json
+  const data = text ? JSON.parse(text) : { success: true }
   return NextResponse.json(data, { status: res.status })
 }

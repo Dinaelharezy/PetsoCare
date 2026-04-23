@@ -1,16 +1,7 @@
 'use client'
 
 import { FiCheckCircle, FiEdit2, FiTrash2, FiClock, FiBell } from 'react-icons/fi'
-
-interface Vaccine {
-  id: string
-  pet: string
-  name: string
-  date: Date
-  reminder: boolean
-  completed: boolean
-}
-
+import {Vaccine } from '../../../types/Vaccine'
 interface VaccineListProps {
   title: string
   vaccines: Vaccine[]
