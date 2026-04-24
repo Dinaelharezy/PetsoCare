@@ -32,13 +32,14 @@ export function useVaccine() {
     const res  = await fetch('/api/vaccine')
     const text = await res.text()
     const data = text ? JSON.parse(text) : {}
+    console.log (data)
     if (!res.ok) throw new Error(data.message ?? 'Failed to fetch vaccines')
 
     // ← map الـ doses للـ Vaccine shape
     const doses = Array.isArray(data.doses) ? data.doses : []
     const mapped: Vaccine[] = doses.map((d: any) => ({
       id:        d.id,
-      name:      d.vaccineName ?? 'Vaccine',
+    name: d.name ?? 'Vaccine',
       pet:       d.petName     ?? '',
       reminder:  false,
       completed: d.isTaken     ?? false,
@@ -53,22 +54,7 @@ export function useVaccine() {
 }, [])
 
   
-// const fetchVaccines = useCallback(async () => {
-//   setLoading(true)
-//   setError(null)
-//   try {
-//     const res  = await fetch('/api/vaccine')
-//     const text = await res.text()
-//     console.log('GET /api/vaccine response:', text)  // ← أضف ده
-//     const data = text ? JSON.parse(text) : []
-//     if (!res.ok) throw new Error(data.message ?? 'Failed to fetch vaccines')
-//     setVaccines(Array.isArray(data) ? data : [])
-//   } catch (e: any) {
-//     setError(e.message)
-//   } finally {
-//     setLoading(false)
-//   }
-// }, [])
+
   // auto-fetch on mount
   useEffect(() => { fetchVaccines() }, [fetchVaccines])
 

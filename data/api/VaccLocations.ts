@@ -1,70 +1,144 @@
+import { VaccLocation, VaccLocationForm, formToPayload } from '../../types/VaccLocation'
 
-import { VaccLocation } from '../../types/VaccLocation'
+const BASE_URL = '/api/admin/locations'
 
-const BASE_URL = '/api/location'
+// ─── GET ALL (with optional filters) ─────────────────────────────────────────
+// data/api/VaccLocations.ts - الجزء الخاص بـ getAllLocations
+export async function getAllLocations(params?: {
+  type?:        number | string
+  governorate?: string
+  serviceType?: number | string
+  isActive?:    boolean  // لازم يبقى موجود وبيشتغل
+}): Promise<VaccLocation[]> {
+  const query = new URLSearchParams()
+  if (params?.type        != null) query.set('type',        String(params.type))
+  if (params?.governorate)         query.set('governorate', params.governorate)
+  if (params?.serviceType != null) query.set('serviceType', String(params.serviceType))
+  if (params?.isActive    != null) query.set('isActive',    String(params.isActive))
 
-// 🔸 GET ALL
-export async function getAllLocations(type?: string): Promise<VaccLocation[]> {
-  const url = type
-    ? `${BASE_URL}?type=${encodeURIComponent(type)}`
-    : BASE_URL
+  const url = query.toString() 
+    ? `/api/user/locations?${query}`
+    : '/api/user/locations'
 
   const res = await fetch(url)
   if (!res.ok) throw new Error('Failed to fetch locations')
-
   return res.json()
 }
+// export async function getAllLocations(params?: {
+//   type?:        number | string
+//   governorate?: string
+//   serviceType?: number | string
+//   isActive?:    boolean
+// }): Promise<VaccLocation[]> {
+//   const query = new URLSearchParams()
+//   if (params?.type        != null) query.set('type',        String(params.type))
+//   if (params?.governorate)         query.set('governorate', params.governorate)
+//   if (params?.serviceType != null) query.set('serviceType', String(params.serviceType))
+//   if (params?.isActive    != null) query.set('isActive',    String(params.isActive))
 
-// // 🔸 GET BY ID
-// export async function getLocationById(id: number): Promise<VaccLocation> {
-//   const res = await fetch(`${BASE_URL}/${id}`)
-//   if (!res.ok) throw new Error('Failed to fetch location')
+//   // تصحيح المسار - إزالة الـ $ وإضافة الـ api كاملة
+//   const url = query.toString() 
+//     ? `/api/user/locations?${query}`  // تغيير: إزالة $ و/main/
+//     : '/api/user/locations'           // تغيير: إزالة $ و/main/
 
+//   const res = await fetch(url)
+//   if (!res.ok) throw new Error('Failed to fetch locations')
 //   return res.json()
 // }
 
-// 🔸 CREATE
+
+// ─── CREATE ───────────────────────────────────────────────────────────────────
 export async function createLocation(
-  data: Partial<VaccLocation>
+  form: VaccLocationForm
 ): Promise<{ message: string }> {
   const res = await fetch(BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(formToPayload(form)),
   })
-
   if (!res.ok) throw new Error('Failed to create location')
-
   return res.json()
 }
 
-// // 🔸 UPDATE (important 👀)
-// export async function updateLocation(
-//   id: number,
-//   data: Partial<VaccLocation>
-// ): Promise<{ message: string }> {
-//   const res = await fetch(`${BASE_URL}/${id}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data),
-//   })
+// ─── UPDATE ───────────────────────────────────────────────────────────────────
+// data/api/VaccLocations.ts
 
-//   if (!res.ok) throw new Error('Failed to update location')
-
-//   return res.json()
-// }
-
-// 🔸 DELETE
-export async function deleteLocation(id: number): Promise<{ message: string }> {
+// ─── UPDATE ───────────────────────────────────────────────────────────────────
+export async function updateLocation(
+  id:   number,
+  form: VaccLocationForm
+): Promise<{ message: string }> {
+  // تأكدي إن الداتا متحولة بشكل صحيح
+  const payload = {
+    name: form.name,
+    type: Number(form.type),           // تأكدي إنها رقم
+    governorate: form.governorate,
+    address: form.address,
+    phone: form.phone || null,
+    hours: form.hours || null,
+    note: form.note || null,
+    providesVaccine: form.providesVaccine,
+    serviceType: Number(form.serviceType),  // تأكدي إنها رقم
+    isActive: form.isActive
+  }
+  
+  console.log('Updating location:', { id, payload })  // للـ debugging
+  
   const res = await fetch(`${BASE_URL}/${id}`, {
-    method: 'DELETE',
+    method:  'PUT',
+    headers: { 
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(payload),  // من غير { id } زيادة
   })
-
-  if (!res.ok) throw new Error('Failed to delete location')
-
+  
+  if (!res.ok) {
+    const errorText = await res.text()
+    console.error('Update failed:', res.status, errorText)
+    throw new Error(`Failed to update location: ${res.status}`)
+  }
   return res.json()
+}
+
+// ─── DELETE ───────────────────────────────────────────────────────────────────
+export async function deleteLocation(id: number): Promise<{ message: string }> {
+  const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Failed to delete location')
+  return res.json()
+}
+
+// ─── TOGGLE isActive ──────────────────────────────────────────────────────────
+// data/api/VaccLocations.ts - تعديل toggleLocation
+export async function toggleLocation(id: number): Promise<{ message: string }> {
+  try {
+    console.log('Toggling location:', id)
+    
+    const res = await fetch(`${BASE_URL}/${id}/toggle`, { 
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    
+    const text = await res.text()
+    console.log('Toggle response:', text)
+    
+    if (!res.ok) {
+      throw new Error(`Failed to toggle location: ${res.status}`)
+    }
+    
+    // لو الـ response فاضي، ارجعي success
+    if (!text || text.trim() === '') {
+      return { message: 'Location toggled successfully' }
+    }
+    
+    try {
+      return JSON.parse(text)
+    } catch {
+      return { message: 'Location toggled successfully' }
+    }
+  } catch (error) {
+    console.error('Toggle error:', error)
+    throw error
+  }
 }
