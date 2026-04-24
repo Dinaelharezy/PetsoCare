@@ -618,9 +618,15 @@ export default function DashboardVaccineLocations() {
                     {loc.type && (
                       <Badge bg="secondary">{LOCATION_TYPE_LABELS[loc.type]}</Badge>
                     )}
-                    {!loc.isActive && (
-                      <Badge bg="danger">Inactive</Badge>
-                    )}
+                     {loc.isActive ? (
+          <Badge bg="success" style={{ backgroundColor: '#198754' }}>
+            <i className="bi bi-check-circle me-1" /> Active
+          </Badge>
+        ) : (
+          <Badge bg="secondary" style={{ backgroundColor: '#6c757d' }}>
+            <i className="bi bi-x-circle me-1" /> Inactive
+          </Badge>
+        )}
                     {loc.serviceType === ServiceType.InquiryOnly && (
                       <Badge bg="warning" text="dark">Inquiry Only</Badge>
                     )}
@@ -663,14 +669,29 @@ export default function DashboardVaccineLocations() {
                   <Button variant="outline-secondary" size="sm" onClick={() => openEdit(loc)}>
                     <i className="bi bi-pencil me-1" />Edit
                   </Button>
-                  <Button
-  variant={loc.isActive ? 'outline-warning' : 'outline-success'}
-  size="sm"
-  onClick={() => handleToggle(loc.id)}
->
-  <i className={`bi bi-toggle-${loc.isActive ? 'on' : 'off'} me-1`} />
-  {loc.isActive ? 'Deactivate' : 'Activate'}
-</Button>
+                  
+             {loc.isActive ? (
+        <Button 
+          variant="outline-danger" 
+          size="sm" 
+          onClick={() => handleToggle(loc.id)}
+          title="Deactivate this location (will be hidden from public)"
+        >
+          <i className="bi bi-toggle-off me-1" />
+          Deactivate
+        </Button>
+      ) : (
+        <Button 
+          variant="outline-success" 
+          size="sm" 
+          onClick={() => handleToggle(loc.id)}
+          title="Activate this location (will appear to public)"
+        >
+          <i className="bi bi-toggle-on me-1" />
+          Activate
+        </Button>
+      )}
+      
                   <Button variant="outline-danger" size="sm" onClick={() => handleDelete(loc.id)}>
                     <i className="bi bi-trash me-1" />Delete
                   </Button>

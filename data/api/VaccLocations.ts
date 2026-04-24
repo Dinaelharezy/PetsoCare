@@ -64,32 +64,35 @@ export async function createLocation(
 // data/api/VaccLocations.ts
 
 // ─── UPDATE ───────────────────────────────────────────────────────────────────
+// data/api/VaccLocations.ts
+
 export async function updateLocation(
-  id:   number,
+  id: number,
   form: VaccLocationForm
 ): Promise<{ message: string }> {
-  // تأكدي إن الداتا متحولة بشكل صحيح
   const payload = {
+    id: id,  // بعض APIs بتحتاج الـ id جوه البادي
     name: form.name,
-    type: Number(form.type),           // تأكدي إنها رقم
+    type: Number(form.type),  // لازم يكون رقم (1,2,3,4,5)
+    location: form.address,   // ⚠️ الـ Backend بيطلب 'location' مش 'address'
     governorate: form.governorate,
-    address: form.address,
+    address: form.address,    // لو محتاج الاتنين
     phone: form.phone || null,
     hours: form.hours || null,
     note: form.note || null,
     providesVaccine: form.providesVaccine,
-    serviceType: Number(form.serviceType),  // تأكدي إنها رقم
+    serviceType: Number(form.serviceType),  // لازم يكون رقم (1,2,3,4)
     isActive: form.isActive
   }
   
-  console.log('Updating location:', { id, payload })  // للـ debugging
+  console.log('Sending payload:', payload)  // للتأكد
   
   const res = await fetch(`${BASE_URL}/${id}`, {
-    method:  'PUT',
+    method: 'PUT',
     headers: { 
       'Content-Type': 'application/json' 
     },
-    body: JSON.stringify(payload),  // من غير { id } زيادة
+    body: JSON.stringify(payload),
   })
   
   if (!res.ok) {

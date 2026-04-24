@@ -11,9 +11,9 @@ export enum LocationType {
 }
 
 export enum ServiceType {
-  StrayAnimalCampaign = 1,
+  StrayAnimalCampaign = 3,
   AnimalRabiesVaccine = 2,
-  HumanPEP            = 3,
+  HumanPEP            = 1,
   InquiryOnly         = 4,
 }
 
