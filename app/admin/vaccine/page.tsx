@@ -1,5 +1,5 @@
 import DashboardVaccineLocations from "../../../components/dashboard/DashboardVaccineLocations";
 
-export default function AdminShelters (){
+export default function AdminVaccine (){
     return <DashboardVaccineLocations />
 }

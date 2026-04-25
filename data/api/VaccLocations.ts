@@ -8,7 +8,7 @@ export async function getAllLocations(params?: {
   type?:        number | string
   governorate?: string
   serviceType?: number | string
-  isActive?:    boolean  // لازم يبقى موجود وبيشتغل
+  isActive?:    boolean  
 }): Promise<VaccLocation[]> {
   const query = new URLSearchParams()
   if (params?.type        != null) query.set('type',        String(params.type))
@@ -24,27 +24,7 @@ export async function getAllLocations(params?: {
   if (!res.ok) throw new Error('Failed to fetch locations')
   return res.json()
 }
-// export async function getAllLocations(params?: {
-//   type?:        number | string
-//   governorate?: string
-//   serviceType?: number | string
-//   isActive?:    boolean
-// }): Promise<VaccLocation[]> {
-//   const query = new URLSearchParams()
-//   if (params?.type        != null) query.set('type',        String(params.type))
-//   if (params?.governorate)         query.set('governorate', params.governorate)
-//   if (params?.serviceType != null) query.set('serviceType', String(params.serviceType))
-//   if (params?.isActive    != null) query.set('isActive',    String(params.isActive))
 
-//   // تصحيح المسار - إزالة الـ $ وإضافة الـ api كاملة
-//   const url = query.toString() 
-//     ? `/api/user/locations?${query}`  // تغيير: إزالة $ و/main/
-//     : '/api/user/locations'           // تغيير: إزالة $ و/main/
-
-//   const res = await fetch(url)
-//   if (!res.ok) throw new Error('Failed to fetch locations')
-//   return res.json()
-// }
 
 
 // ─── CREATE ───────────────────────────────────────────────────────────────────
@@ -70,37 +50,37 @@ export async function updateLocation(
   id: number,
   form: VaccLocationForm
 ): Promise<{ message: string }> {
+  // ✅ البايولود حسب الـ schema المطلوب
   const payload = {
-    id: id,  // بعض APIs بتحتاج الـ id جوه البادي
+    id: id,
     name: form.name,
-    type: Number(form.type),  // لازم يكون رقم (1,2,3,4,5)
-    location: form.address,   // ⚠️ الـ Backend بيطلب 'location' مش 'address'
+    type: Number(form.type),
     governorate: form.governorate,
-    address: form.address,    // لو محتاج الاتنين
-    phone: form.phone || null,
-    hours: form.hours || null,
-    note: form.note || null,
-    providesVaccine: form.providesVaccine,
-    serviceType: Number(form.serviceType),  // لازم يكون رقم (1,2,3,4)
-    isActive: form.isActive
+    address: form.address,
+    phone: form.phone || "",
+    providesVaccine: form.providesVaccine === true,
+    serviceType: Number(form.serviceType),
+    isActive: form.isActive === true
   }
-  
-  console.log('Sending payload:', payload)  // للتأكد
-  
+
+  console.log('📤 Sending payload:', JSON.stringify(payload, null, 2))
+
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
-    headers: { 
-      'Content-Type': 'application/json' 
+    headers: {
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload),
   })
-  
+
+  const responseText = await res.text()
+  console.log('📥 Response:', res.status, responseText)
+
   if (!res.ok) {
-    const errorText = await res.text()
-    console.error('Update failed:', res.status, errorText)
     throw new Error(`Failed to update location: ${res.status}`)
   }
-  return res.json()
+
+  return responseText ? JSON.parse(responseText) : { message: 'Location updated successfully' }
 }
 
 // ─── DELETE ───────────────────────────────────────────────────────────────────

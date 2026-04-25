@@ -4075,3 +4075,48 @@ footer, footer * {
 *, *::before, *::after {
   transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease;
 }
+
+.content-type-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  justify-content: center; 
+}
+
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1px solid #d0e8b8;
+  background: white;
+  color: #67ab27;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.type-pill:hover {
+  background: #f0fce0;
+}
+
+.active-pill {
+  background: #0f3d1a !important;
+  color: #adf178 !important;
+  border-color: #0f3d1a !important;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green { background: #adf178; }
+.dot-blue  { background: #378ADD; }
+
+.active-pill .dot-blue,
+.active-pill .dot-green { background: #adf178; }

@@ -39,29 +39,30 @@ export const SERVICE_TYPE_LABELS: Record<ServiceType, string> = {
 export interface VaccLocation {
   id:              number
   name:            string
-  type:            LocationType          // integer 1-5
+  type:            LocationType        
   governorate:     string
   address:         string
   phone:           string | null
   hours?:          string | null
   note?:           string | null
   providesVaccine: boolean
-  serviceType:     ServiceType           // integer 1-4
+  serviceType:     ServiceType           
   isActive:        boolean
+  status?:         string 
 }
 
 // ─── Form shape (strings before conversion) ───────────────────────────────────
 
 export interface VaccLocationForm {
   name:            string
-  type:            string                // will be cast to LocationType int
+  type:            string                
   governorate:     string
   address:         string
   phone:           string
   hours:           string
   note:            string
   providesVaccine: boolean
-  serviceType:     string               // will be cast to ServiceType int
+  serviceType:     string               
   isActive:        boolean
 }
 

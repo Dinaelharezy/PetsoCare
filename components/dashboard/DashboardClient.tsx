@@ -10,6 +10,7 @@ import ClinicManagementDash from './Management/ClinicManagementDash'
 import ReportManagement from './ReportManagement'
 import ShelterManagementDash from './Management/ShelterManagementDash'
 import VaccineLocationsManagement from './Management/VaccineLocationsManagement'
+import VideoManagementDash from './Management/VideoManagementDash'
 
 export default function DashboardClient() {
   return (
@@ -49,6 +50,9 @@ export default function DashboardClient() {
           </Col>
           <Col lg={4}>
             <VaccineLocationsManagement />
+          </Col>
+          <Col lg={4}>
+            <VideoManagementDash />
           </Col>
         </Row>
       </Container>
