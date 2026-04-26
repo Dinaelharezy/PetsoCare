@@ -101,7 +101,7 @@ export const useAppointment = (clinicId: string) => {
     const fetchTimes = async () => {
       setLoadingTimes(true)
       try {
-        const res = await fetch(`/api/Appointment/${clinicId}/available-times?date=${selectedDate}`)
+        const res = await fetch(`/api/Appointments/${clinicId}/available-times?date=${selectedDate}`)
         if (!res.ok) throw new Error()
         const data = await res.json()
         const times = Array.isArray(data) ? data : data.times ?? data.data ?? []

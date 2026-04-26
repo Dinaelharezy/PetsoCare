@@ -44,66 +44,172 @@ export function Appointment() {
   } = useAppointment(clinicId)
 
   // Fetch available times when date changes
-  useEffect(() => {
-    if (!selectedDate || !clinicId) return
-    const fetchTimes = async () => {
-      setLoadingTimes(true)
-      setSelectedTime('')
-      setError('')
-      try {
-        const res = await fetch(`/api/Appointment/${clinicId}/available-times?date=${selectedDate}`, {
-          headers: { 'ngrok-skip-browser-warning': 'true' }
-        })
-        if (!res.ok) throw new Error()
-        const data = await res.json()
-        const times = Array.isArray(data) ? data : data.times ?? data.data ?? []
-        setAvailableTimes(times)
-      } catch {
-        // Fallback times if API fails
-        setAvailableTimes(['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])
-      } finally {
-        setLoadingTimes(false)
-      }
-    }
-    fetchTimes()
-  }, [selectedDate, clinicId])
+  // useEffect(() => {
+  //   if (!selectedDate || !clinicId) return
+  //   const fetchTimes = async () => {
+  //     setLoadingTimes(true)
+  //     setSelectedTime('')
+  //     setError('')
+  //     try {
+  //       const res = await fetch(`/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
+  //         headers: { 'ngrok-skip-browser-warning': 'true' }
+  //       })
+  //       if (!res.ok) throw new Error()
+  //       const data = await res.json()
+  //       const times = Array.isArray(data) ? data : data.times ?? data.data ?? []
+  //       setAvailableTimes(times)
+  //     } catch {
+  //       // Fallback times if API fails
+  //       setAvailableTimes(['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])
+  //     } finally {
+  //       setLoadingTimes(false)
+  //     }
+  //   }
+  //   fetchTimes()
+  // }, [selectedDate, clinicId])
 
-  const handleConfirmAppointment = async () => {
-    if (!selectedDate || !selectedTime || !customerName.trim() || !phone.trim()) return
-    setBooking(true)
+// Fetch available times when date changes
+useEffect(() => {
+  if (!selectedDate || !clinicId) return
+  const fetchTimes = async () => {
+    setLoadingTimes(true)
+    setSelectedTime('')
     setError('')
     try {
-      const payload: AvailableTime = {
-        ClinicId: clinicId,
-        date: selectedDate,
-        time: selectedTime,
-        CustomerName: customerName.trim(),
-        Phone: phone.trim(),
-      }
-      const res = await fetch('/api/Appointment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
-        },
-        body: JSON.stringify(payload)
+      const res = await fetch(`/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
+        headers: { 
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json'
+        }
       })
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        setError(err.error || `Booking failed (${res.status})`)
-        return
+        const errorData = await res.json().catch(() => ({}))
+        console.error("Error fetching times:", errorData)
+        throw new Error()
       }
-      setStep('done')
-      window.dispatchEvent(new CustomEvent('newAppointment', {
-        detail: { clinicId, date: selectedDate, time: selectedTime, customerName }
-      }))
-    } catch {
-      setError('Failed to book. Please try again.')
+      const data = await res.json()
+      const times = Array.isArray(data) ? data : data.times ?? data.data ?? []
+      setAvailableTimes(times.length > 0 ? times : ['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])
+    } catch (err) {
+      console.error("Failed to fetch times, using fallback")
+      setAvailableTimes(['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])
     } finally {
-      setBooking(false)
+      setLoadingTimes(false)
     }
   }
+  fetchTimes()
+}, [selectedDate, clinicId])
 
+
+// ✅ Convert time display format to TimeSpan
+const convertToTimeSpan = (timeStr: string): string => {
+  try {
+    const date = new Date(`2000-01-01 ${timeStr}`)
+    if (isNaN(date.getTime())) {
+      // لو فشل التحويل، جرب format تاني
+      const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i)
+      if (match) {
+        let hours = parseInt(match[1])
+        const minutes = match[2]
+        const period = match[3].toUpperCase()
+        if (period === 'PM' && hours !== 12) hours += 12
+        if (period === 'AM' && hours === 12) hours = 0
+        return `${hours.toString().padStart(2, '0')}:${minutes}:00`
+      }
+      return "12:00:00"
+    }
+    return date.toTimeString().split(' ')[0]
+  } catch {
+    return "12:00:00"
+  }
+}
+const handleConfirmAppointment = async () => {
+  if (!selectedDate || !selectedTime || !customerName.trim() || !phone.trim()) return;
+  setBooking(true);
+  setError("");
+  try {
+    const timeSpan = convertToTimeSpan(selectedTime);
+
+    // ✅ التجربة 1: بدون dto (كأنك بتتكلم مع الـ Controller مباشرة)
+    const payloadFlat = {
+      ClinicId: String(clinicId),
+      Date: selectedDate,
+      Time: timeSpan,
+      CustomerName: customerName.trim(),
+      Phone: phone.trim(),
+    };
+
+    // ✅ التجربة 2: مع dto (لو أول واحد فشل)
+    const payloadWithDto = {
+      dto: {
+        ClinicId: String(clinicId),
+        Date: selectedDate,
+        Time: timeSpan,
+        CustomerName: customerName.trim(),
+        Phone: phone.trim(),
+      },
+    };
+
+    console.log("📤 Trying flat payload:", JSON.stringify(payloadFlat, null, 2));
+
+    let res = await fetch("/api/Appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+      body: JSON.stringify(payloadFlat),
+    });
+
+    // لو فشل الأول، جرب الـ dto
+    if (!res.ok) {
+      console.log("⚠️ Flat payload failed, trying with dto...");
+      res = await fetch("/api/Appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+        body: JSON.stringify(payloadWithDto),
+      });
+    }
+
+    const responseText = await res.text();
+    console.log("📥 Response:", responseText);
+
+    if (!res.ok) {
+      try {
+        const err = JSON.parse(responseText);
+        setError(err.error || err.title || `Booking failed (${res.status})`);
+      } catch {
+        setError(`Booking failed: ${responseText}`);
+      }
+      return;
+    }
+
+    // ✅ بعد النجاح، خزن البيانات بالشكل اللي يتناسب مع الـ Type
+    const newAppointment = {
+      id: Date.now(),
+      customerName: customerName.trim(),
+      phone: phone.trim(),
+      date: selectedDate,
+      time: selectedTime,
+      status: "Pending" as const,
+    };
+
+    setStep("done");
+    window.dispatchEvent(
+      new CustomEvent("newAppointment", {
+        detail: newAppointment,
+      })
+    );
+  } catch (err) {
+    console.error("Booking error:", err);
+    setError("Failed to book. Please try again.");
+  } finally {
+    setBooking(false);
+  }
+};
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr)
     return {
