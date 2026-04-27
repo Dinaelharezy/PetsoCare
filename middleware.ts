@@ -1,5 +1,5 @@
 
-// // middleware.ts sh8al kwys bs by2fl fe weshy fe developmet hayb2a kwys fr produtcion
+// // middleware.ts
 // import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
 
@@ -21,39 +21,43 @@
 // export async function middleware(req: NextRequest) {
 //   const { pathname } = req.nextUrl;
 
-//   // ✅ Static files — صور وملفات
+//   // ✅ Static files
 //   if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|json|txt|woff|woff2|ttf|avif)$/)) {
 //     return NextResponse.next();
 //   }
+
+//   // ✅ DEV BYPASS — في development اعمل كأنك Admin وعدّي على طول
+//   // if (process.env.NODE_ENV === "development") {
+//   //   return NextResponse.next();
+//   // }
 
 //   // ✅ Public pages
 //   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
 //     return NextResponse.next();
 //   }
 
+
 //   const token = await getToken({
-//     req,
-//     secret: process.env.NEXTAUTH_SECRET,
-//   });
+//   req,
+//   secret: process.env.NEXTAUTH_SECRET,
+// });
 
-//   // ── مش logged in → /login
-//   if (!token) {
-//     const loginUrl = new URL("/login", req.url);
-//     loginUrl.searchParams.set("callbackUrl", pathname);
-//     return NextResponse.redirect(loginUrl);
-//   }
+// if (!token) {
+//   const loginUrl = new URL("/login", req.url);
+//   loginUrl.searchParams.set("callbackUrl", pathname);
+//   return NextResponse.redirect(loginUrl);
+// }
+// console.log("🔍 TOKEN:", JSON.stringify(token, null, 2));
+// const userRole: string = (token.role as string) ?? "User"; // ✅ role مش roles
 
-//   const userRoles: string[] = (token.roles as string[]) ?? ["User"];
-
-//   // ── Role-based protection
-//   for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
-//     if (pathname.startsWith(route)) {
-//       const hasAccess = allowed.some((r) => userRoles.includes(r));
-//       if (!hasAccess) {
-//         return NextResponse.redirect(new URL("/forbidden", req.url));
-//       }
+// for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
+//   if (pathname.startsWith(route)) {
+//     const hasAccess = allowed.includes(userRole); // ✅
+//     if (!hasAccess) {
+//       return NextResponse.redirect(new URL("/forbidden", req.url));
 //     }
 //   }
+// }
 
 //   return NextResponse.next();
 // }
@@ -63,10 +67,8 @@
 //     "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.ico).*)",
 //   ],
 // };
-
-// middleware.ts
+import { auth } from "./lib/auth"; // ✅ import من auth.ts بتاعك
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 
 const ROUTE_ROLES: Record<string, string[]> = {
   "/admin":  ["Admin"],
@@ -86,39 +88,33 @@ const PUBLIC_PATHS = [
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ✅ Static files
   if (pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|json|txt|woff|woff2|ttf|avif)$/)) {
     return NextResponse.next();
   }
 
-  // ✅ DEV BYPASS — في development اعمل كأنك Admin وعدّي على طول
-  if (process.env.NODE_ENV === "development") {
-    return NextResponse.next();
-  }
-
-  // ✅ Public pages
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
   }
 
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  // ✅ بدل getToken
+  const session = await auth();
 
-  // ── مش logged in → /login
-  if (!token) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+  console.log("🔍 SESSION:", JSON.stringify(session, null, 2));
 
-  const userRoles: string[] = (token.roles as string[]) ?? ["User"];
+if (!session?.user) {
+  const loginUrl = new URL("/login", req.url);
+  loginUrl.searchParams.set("callbackUrl", pathname);
+  return NextResponse.redirect(loginUrl); 
 
-  // ── Role-based protection
+}
+ 
+const userRole = (session.user.role as string) ?? "User";
+
+  console.log("👤 ROLE:", userRole);
+
   for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
     if (pathname.startsWith(route)) {
-      const hasAccess = allowed.some((r) => userRoles.includes(r));
+      const hasAccess = allowed.includes(userRole);
       if (!hasAccess) {
         return NextResponse.redirect(new URL("/forbidden", req.url));
       }

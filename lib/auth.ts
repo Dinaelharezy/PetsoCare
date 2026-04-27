@@ -190,16 +190,7 @@ declare module "next-auth" {
     email: string;
     role: string;
     accessToken: string;
-    image?: string; // ✅ added
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    role: string;
-    accessToken: string;
-    picture?: string;
+    image?: string;
   }
 }
 
@@ -209,6 +200,15 @@ const HEADERS = {
   "Content-Type": "application/json",
   "ngrok-skip-browser-warning": "true",
 };
+
+// ── Helper: decode JWT ─────────────────────────────────────────────
+function parseJwt(token: string): Record<string, unknown> {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch {
+    return {};
+  }
+}
 
 // ── Helper: fetch profile image after login ────────────────────────
 async function fetchProfileImage(token: string): Promise<string | undefined> {
@@ -258,16 +258,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const data = await res.json();
 
-          // ✅ Fetch profile image right after login using the new token
+          // ✅ decode الـ JWT بتاع الـ backend عشان تجيب الـ role
+          const decoded = parseJwt(data.token);
+          const role =
+            (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as string)
+            ?? "User";
+
           const image = await fetchProfileImage(data.token);
 
           return {
             id:          String(data.id),
             name:        data.name,
             email:       data.email,
-            role:        data.role ?? "User",
+            role,        // ✅ من الـ JWT مباشرة
             accessToken: data.token,
-            image,        // ✅ now persisted in JWT from the very first login
+            image,
           };
         } catch (e) {
           console.error("Login error:", e);
@@ -303,14 +308,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           const data = await res.json();
+
+          // ✅ decode role for Google users too
+          const decoded = parseJwt(data.token);
+          const role =
+            (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as string)
+            ?? "User";
+
           user.id          = String(data.id);
-          user.role        = data.role ?? "User";
+          user.role        = role;
           user.accessToken = data.token;
 
-          // ✅ Also fetch image for Google users (they may have a custom uploaded image)
           const uploadedImage = await fetchProfileImage(data.token);
           if (uploadedImage) user.image = uploadedImage;
-          // else keep the Google profile picture that NextAuth sets automatically
 
         } catch (e) {
           console.error("Google signIn error:", e);
@@ -321,17 +331,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async jwt({ token, user, trigger, session }) {
-      // On initial sign-in — populate token from user object
       if (user) {
         token.id          = user.id;
         token.role        = user.role ?? "User";
         token.accessToken = user.accessToken;
         token.name        = user.name;
         token.email       = user.email;
-        if (user.image) token.picture = user.image; // ✅ image from authorize()
+        if (user.image) token.picture = user.image;
       }
 
-      // When useEdit calls await update({ name, image, email })
       if (trigger === "update" && session) {
         if (session.name)  token.name    = session.name;
         if (session.image) token.picture = session.image;
@@ -342,13 +350,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async session({ session, token }) {
-      session.user.id          = token.id;
-      session.user.role        = token.role;
-      session.user.accessToken = token.accessToken;
-      session.user.name        = token.name  ?? session.user.name;
-      session.user.email       = token.email ?? session.user.email;
-      // session.user.image       = token.picture ?? session.user.image ?? null;
-      session.user.image = token.picture ?? session.user.image ?? undefined;
+      session.user.id          = (token.id as string)          ?? "";
+      session.user.role        = (token.role as string)        ?? "User";
+      session.user.accessToken = (token.accessToken as string) ?? "";
+      session.user.name        = (token.name as string)        ?? session.user.name;
+      session.user.email       = (token.email as string)       ?? session.user.email;
+      session.user.image       = (token.picture as string)     ?? session.user.image ?? undefined;
 
       return session;
     },
