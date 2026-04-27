@@ -133,6 +133,7 @@ import {
   Navbar as BSNavbar, Container, Nav, NavDropdown
 } from 'react-bootstrap'
 import useTheme from '../hooks/usetheme'
+import NotificationBell from '../components/Vaccine/Notification/NotificationBell'
 
 export default function NavBar() {
   const { theme, toggleTheme } = useTheme()
@@ -203,7 +204,7 @@ export default function NavBar() {
                     </svg>
                   )}
                 </button>
-
+<NotificationBell />
                 {/* ✅ Only show profile dropdown when session exists AND status is authenticated */}
                 {status === 'authenticated' && session ? (
                   <NavDropdown
@@ -220,6 +221,18 @@ export default function NavBar() {
                     <NavDropdown.Item as={Link} href="/main/PersonProfile">
                       My Profile
                     </NavDropdown.Item>
+                 
+{session?.user?.role === 'Admin' && (
+  <NavDropdown.Item as={Link} href="/admin/dashboard">
+    🛡️ Dashboard
+  </NavDropdown.Item>
+)}
+
+{(session?.user?.role === 'Clinic' || session?.user?.role === 'Admin') && (
+  <NavDropdown.Item as={Link} href="/clinic">
+    🏥 Clinic Panel
+  </NavDropdown.Item>
+)}
                     <NavDropdown title="Reports" id="reports-dropdown" align="end">
                       <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Emergency Report</NavDropdown.Item>
                       <NavDropdown.Item as={Link} href="/main/reports/DangerousAnimal">Dangerous Animal Report</NavDropdown.Item>

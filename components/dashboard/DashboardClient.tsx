@@ -11,7 +11,7 @@ import ReportManagement from './ReportManagement'
 import ShelterManagementDash from './Management/ShelterManagementDash'
 import VaccineLocationsManagement from './Management/VaccineLocationsManagement'
 import VideoManagementDash from './Management/VideoManagementDash'
-
+import RatingStatsCard from '../Rating/RatingStatsCard'
 export default function DashboardClient() {
   return (
     <>
@@ -24,7 +24,7 @@ export default function DashboardClient() {
         {/* Top Row: Notifications and Statistics */}
         <Row className="g-4 mb-5">
           <Col lg={6}>
-            <NotificationsCard />
+            <RatingStatsCard />
           </Col>
           <Col lg={6}>
             <StatisticsCard />

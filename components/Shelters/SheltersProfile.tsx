@@ -166,7 +166,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import { Shelter } from "@/types/shelter";
+import { Shelter } from "../../types/Shelter";
 
 export default function ShelterProfile() {
   const params = useParams();

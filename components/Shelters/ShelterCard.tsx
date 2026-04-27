@@ -1,7 +1,7 @@
 
 'use client'
 
-import { Shelter } from '@/types/shelter'
+import { Shelter } from '../../types/Shelter'
 import { useRouter } from 'next/navigation'
 
 interface Props {

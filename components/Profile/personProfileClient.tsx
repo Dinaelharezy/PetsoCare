@@ -12,6 +12,8 @@ import AddVaccineModal from '../Vaccine/components/AddVaccModal'
 import LoadingSpin from '../LoadingSpin'
 import { Vaccine } from '../../types/Vaccine'
 import EditVaccineModal from '../Vaccine/components/EditVaccineModal';
+import { useCheckDanger } from '../Vaccine/Notification/hook/useCheckDanger'
+import RatingWidget from '../Rating/RatingWidget'
 
 export default function PersonProfileClient() {
   const {
@@ -23,7 +25,7 @@ export default function PersonProfileClient() {
     handleLogout,
     handleEditProfile,
   } = useProfile()
-
+useCheckDanger()
   const {
     vaccines,
     upcomingVaccines,
@@ -63,7 +65,8 @@ export default function PersonProfileClient() {
 
   return (
     <Container className="py-5 px-5">
-      <Row>
+      <Row> 
+
         <Col lg={3} md={12} className="mb-4">
           <ProfileCard
             userName={userName}
@@ -102,8 +105,7 @@ export default function PersonProfileClient() {
         onUpdate={handleUpdateVaccine}
         submitting={submitting}
       />
-
-      <button className="chat-button">💬</button>
+<RatingWidget />   
     </Container>
   )
 }

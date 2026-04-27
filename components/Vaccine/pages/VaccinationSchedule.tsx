@@ -5,7 +5,7 @@ import { useVaccSchedule, EXPOSURE_CATEGORIES } from '../hooks/useVaccSchedule'
 import { ScheduleCard } from '../components/Cards/ScheduleCard'
 import Link from 'next/link'
 import { Container, Alert, Badge, Table } from 'react-bootstrap'
- 
+// import NotificationBell from '../Notification/NotificationBell'
 
 export default function VaccinationSchedule() {
   const {tab, setTab,visibleSchedules} = useVaccSchedule();

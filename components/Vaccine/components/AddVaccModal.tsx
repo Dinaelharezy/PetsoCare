@@ -6,7 +6,7 @@
 import { useState, ChangeEvent, FormEvent, useRef, useEffect } from 'react'
 import { Modal, Button, Form, Alert } from 'react-bootstrap'
 import { CreateVaccineDto } from '../../../types/Vaccine'
-
+import RatingWidget from '@/components/Rating/RatingWidget'
 /* ── Vaccine name suggestions ───────────────────────────────────────── */
 const VACCINE_SUGGESTIONS = [
   'Rabies PrEP — WHO Protocol',
@@ -46,7 +46,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
   const [startDate,        setStartDate]        = useState('')
   const [reminder,         setReminder]         = useState(false)
   const [err,              setErr]              = useState('')
-
+  const [showRating, setShowRating] = useState(false)  
   // autocomplete
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showSugs,    setShowSugs]    = useState(false)
@@ -59,6 +59,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
       setExposureCategory('N/A'); setStartDate('')
       setReminder(false); setErr('')
       setSuggestions([]); setShowSugs(false)
+      setShowRating(false) 
     }
   }, [show])
 
@@ -98,7 +99,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
       startDate: new Date(startDate).toISOString(),
       reminder,
     })
-    if (ok) onClose()
+  setShowRating(true)
   }
 
   return (
@@ -240,6 +241,16 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
           </div>
 
         </Form>
+         {showRating && (
+        <div className="mt-3">
+          <RatingWidget fullWidth />
+          <div className="text-center mt-3">
+            <Button variant="link" className="text-muted small" onClick={onClose}>
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
       </Modal.Body>
     </Modal>
   )
