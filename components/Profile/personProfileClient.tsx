@@ -1,7 +1,5 @@
 
-
 'use client'
-// PersonProfileClient.tsx  — updated with real vaccine data + complete feature
 
 import { useState } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
@@ -11,10 +9,11 @@ import { useVaccine } from '../Vaccine/hooks/useVaccine'
 import AddVaccineModal from '../Vaccine/components/AddVaccModal'
 import LoadingSpin from '../LoadingSpin'
 import { Vaccine } from '../../types/Vaccine'
-import EditVaccineModal from '../Vaccine/components/EditVaccineModal';
+import EditVaccineModal from '../Vaccine/components/EditVaccineModal'
 import { useCheckDanger } from '../Vaccine/Notification/hook/useCheckDanger'
 import RatingWidget from '../Rating/RatingWidget'
-
+import { useMyReports } from '../Reports/hooks/useMyReports'
+import MyReportsSection from '../Reports/Myreportssection'
 export default function PersonProfileClient() {
   const {
     isLoading,
@@ -25,48 +24,54 @@ export default function PersonProfileClient() {
     handleLogout,
     handleEditProfile,
   } = useProfile()
-useCheckDanger()
+
+  useCheckDanger()
+
   const {
-    vaccines,
     upcomingVaccines,
     completedVaccines,
-    loading,
-    error,
+    loading: vaccineLoading,      // ← rename
     submitting,
     createVaccine,
     completeVaccine,
     updateVaccine,
     deleteVaccine,
-    refetch: fetchVaccines,
   } = useVaccine()
 
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
+  const {
+    reports,
+    loading: reportsLoading,      // ← rename
+    error:   reportsError,        // ← rename
+  } = useMyReports()
+
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null)
   const [showModal, setShowModal] = useState(false)
 
   const handleEditClick = (vaccine: Vaccine) => {
-    setSelectedVaccine(vaccine);
-    setShowEditModal(true);
-  };
+    setSelectedVaccine(vaccine)
+    setShowEditModal(true)
+  }
 
-  // دالة التعديل - تمرر التاريخ والتذكير فقط
   const handleUpdateVaccine = async (id: string, date: string, reminder: boolean) => {
-    return await updateVaccine(id, date, reminder);
-  };
+    return await updateVaccine(id, date, reminder)
+  }
 
-  // دالة الحذف - using deleteVaccine from hook
   const handleDeleteClick = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this vaccine?')) {
-      await deleteVaccine(id);
+      await deleteVaccine(id)
     }
-  };
+  }
 
   if (isLoading) return <LoadingSpin />
 
   return (
     <Container className="py-5 px-5">
-      <Row> 
 
+      {/* My Reports */}
+    
+
+      <Row>
         <Col lg={3} md={12} className="mb-4">
           <ProfileCard
             userName={userName}
@@ -77,11 +82,20 @@ useCheckDanger()
           />
         </Col>
 
+  <Col lg={9} md={12}>
+          <MyReportsSection 
+  reports={reports} 
+  loading={reportsLoading} 
+  error={reportsError}   // ✅ اكتبيها reportsError مش rereportsError
+/>
+
+</Col>
+
         <Col lg={9} md={12}>
           <UpcomingVaccines
             vaccines={upcomingVaccines}
             completedVaccines={completedVaccines}
-            loading={loading}
+            loading={vaccineLoading}
             onComplete={completeVaccine}
             onAdd={() => setShowModal(true)}
             onEdit={handleEditClick}
@@ -105,15 +119,13 @@ useCheckDanger()
         onUpdate={handleUpdateVaccine}
         submitting={submitting}
       />
-<RatingWidget />   
+
+      <RatingWidget />
     </Container>
   )
 }
 
-/* ─────────────────────────────────────────────
-   ProfileCard Component
-───────────────────────────────────────────── */
-
+/* ── ProfileCard ─────────────────────────────────────────────────────── */
 interface ProfileCardProps {
   userName: string
   userEmail: string
@@ -137,16 +149,13 @@ function ProfileCard({ userName, userEmail, userImage, userRole, onEditProfile }
       <Button variant="outline-secondary" size="sm" className="px-4 py-2" onClick={onEditProfile}>
         Edit Profile
       </Button>
-
       <hr style={{ borderColor: 'rgba(0,0,0,0.08)', margin: '1rem 0' }} />
-
       <SmartTagTracker />
     </div>
   )
 }
 
-/* ── SmartTag Tracker ─────────────────────────────────────────────────── */
-
+/* ── SmartTagTracker ─────────────────────────────────────────────────── */
 function SmartTagTracker() {
   const [status, setStatus] = useState('')
 
@@ -157,26 +166,21 @@ function SmartTagTracker() {
     if (isAndroid) {
       setStatus('Opening SmartThings...')
       let opened = false
-
       const fallback = setTimeout(() => {
         if (!opened) {
           setStatus('Redirecting to Play Store...')
           window.location.href = 'https://play.google.com/store/apps/details?id=com.samsung.android.oneconnect'
         }
       }, 2000)
-
       window.addEventListener('pagehide', () => {
         opened = true
         clearTimeout(fallback)
         setStatus('')
       }, { once: true })
-
       window.location.href = 'intent://find#Intent;scheme=smartthings;package=com.samsung.android.oneconnect;end'
-
     } else if (isIOS) {
       setStatus('Redirecting to App Store...')
       window.location.href = 'https://apps.apple.com/app/smartthings/id1222822904'
-
     } else {
       setStatus('Opening SmartThings Find...')
       window.open('https://smartthingsfind.samsung.com', '_blank')
@@ -186,60 +190,28 @@ function SmartTagTracker() {
 
   return (
     <div className="w-100">
-      <div style={{
-        background: 'rgba(199,242,167,0.25)',
-        borderRadius: 10,
-        padding: '10px 12px',
-        marginBottom: 10,
-        textAlign: 'left',
-      }}>
+      <div style={{ background: 'rgba(199,242,167,0.25)', borderRadius: 10, padding: '10px 12px', marginBottom: 10, textAlign: 'left' }}>
         <div style={{ fontSize: 11, color: '#666', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: '#35c268', display: 'inline-block',
-          }} />
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#35c268', display: 'inline-block' }} />
           SmartTag2 connected
         </div>
         <div style={{ fontSize: 13, fontWeight: 600 }}>My Dog's Collar</div>
         <div style={{ fontSize: 11, color: '#999' }}>Samsung SmartTag2</div>
       </div>
-
-      <button
-        onClick={openSmartThings}
-        className='background-for-app'
-        style={{
-          width: '100%',
-          padding: '10px',
-          borderRadius: 10,
-          border: 'none',
-          color: 'white',
-          fontSize: 13,
-          fontWeight: 500,
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 7,
-        }}
-      >
+      <button onClick={openSmartThings} className='background-for-app'
+        style={{ width: '100%', padding: '10px', borderRadius: 10, border: 'none', color: 'white', fontSize: 13, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
           <circle cx="12" cy="10" r="3" />
           <path d="M12 2C7.58 2 4 5.58 4 10c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8z" />
         </svg>
         Track My Dog
       </button>
-
-      {status && (
-        <p style={{ fontSize: 11, color: '#888', textAlign: 'center', marginTop: 6, marginBottom: 0 }}>
-          {status}
-        </p>
-      )}
+      {status && <p style={{ fontSize: 11, color: '#888', textAlign: 'center', marginTop: 6, marginBottom: 0 }}>{status}</p>}
     </div>
   )
 }
 
-/* ── UpcomingVaccines Component ─────────────────────────────────────── */
-
+/* ── UpcomingVaccines ────────────────────────────────────────────────── */
 interface UpcomingVaccinesProps {
   vaccines: Vaccine[]
   completedVaccines: Vaccine[]
@@ -250,38 +222,20 @@ interface UpcomingVaccinesProps {
   onDelete: (id: string) => void
 }
 
-function UpcomingVaccines({
-  vaccines,
-  completedVaccines,
-  loading,
-  onComplete,
-  onAdd,
-  onEdit,
-  onDelete
-}: UpcomingVaccinesProps) {
-
+function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, onAdd, onEdit, onDelete }: UpcomingVaccinesProps) {
   const [showCompleted, setShowCompleted] = useState(false)
 
   const formatDate = (iso?: string) => {
     if (!iso) return ''
-    try {
-      return new Date(iso).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      })
-    } catch {
-      return iso
-    }
+    try { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) }
+    catch { return iso }
   }
 
   return (
     <div className="vaccine-card">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h5 className="mb-0 fw-bold specializedFont">Upcoming Vaccines</h5>
-        <Button size="sm" className='background-for-app' onClick={onAdd}>
-          + Add Vaccine
-        </Button>
+        <Button size="sm" className='background-for-app' onClick={onAdd}>+ Add Vaccine</Button>
       </div>
 
       {loading ? (
@@ -293,71 +247,23 @@ function UpcomingVaccines({
           <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center">
             <div>
               <div className="fw-semibold mb-1">{vaccine.name}</div>
-              <div className="text-muted small">
-                For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}
-              </div>
+              <div className="text-muted small">For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
             </div>
-
-            {/* الأزرار الثلاثة */}
             <div className="d-flex gap-2">
-              {/* زر الإكمال */}
-              <button
-                onClick={() => onComplete(vaccine.id)}
-                title="Mark as completed"
-                style={{
-                  background: 'none',
-                  border: '2px solid #8ae68d',
-                  borderRadius: '50%',
-                  width: 32,
-                  height: 32,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              <button onClick={() => onComplete(vaccine.id)} title="Mark as completed"
+                style={{ background: 'none', border: '2px solid #8ae68d', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M5 13l4 4L19 7" stroke="#8ae68d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-
-              {/* زر التعديل */}
-              <button
-                onClick={() => onEdit(vaccine)}
-                title="Edit vaccine"
-                style={{
-                  background: 'none',
-                  border: '2px solid #ffc107',
-                  borderRadius: '50%',
-                  width: 32,
-                  height: 32,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              <button onClick={() => onEdit(vaccine)} title="Edit vaccine"
+                style={{ background: 'none', border: '2px solid #ffc107', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2">
                   <path d="M17 3l4 4-12 12H5v-4L17 3z" />
                 </svg>
               </button>
-
-              {/* زر الحذف */}
-              <button
-                onClick={() => onDelete(vaccine.id)}
-                title="Delete vaccine"
-                style={{
-                  background: 'none',
-                  border: '2px solid #dc3545',
-                  borderRadius: '50%',
-                  width: 32,
-                  height: 32,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              <button onClick={() => onDelete(vaccine.id)} title="Delete vaccine"
+                style={{ background: 'none', border: '2px solid #dc3545', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc3545" strokeWidth="2">
                   <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14H5zM9 3h6v4H9z" />
                 </svg>
@@ -369,10 +275,7 @@ function UpcomingVaccines({
 
       {completedVaccines.length > 0 && (
         <div className="mt-3">
-          <button
-            className="btn btn-link text-decoration-none p-0 small text-muted"
-            onClick={() => setShowCompleted(p => !p)}
-          >
+          <button className="btn btn-link text-decoration-none p-0 small text-muted" onClick={() => setShowCompleted(p => !p)}>
             {showCompleted ? '▲ Hide' : '▼ Show'} completed ({completedVaccines.length})
           </button>
           {showCompleted && (
@@ -383,9 +286,7 @@ function UpcomingVaccines({
                     <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.name}</div>
                     <div className="text-muted small">For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
                   </div>
-                  <span className="badge" style={{ backgroundColor: '#8ae68d', color: '#333', fontSize: '11px' }}>
-                    ✓ Done
-                  </span>
+                  <span className="badge" style={{ backgroundColor: '#8ae68d', color: '#333', fontSize: '11px' }}>✓ Done</span>
                 </div>
               ))}
             </div>
@@ -400,8 +301,7 @@ function UpcomingVaccines({
   )
 }
 
-/* ── AccountSettings Component ─────────────────────────────────────── */
-
+/* ── AccountSettings ─────────────────────────────────────────────────── */
 function AccountSettings({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="settings-card">
