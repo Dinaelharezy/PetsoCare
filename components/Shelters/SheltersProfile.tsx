@@ -167,6 +167,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { Shelter } from "../../types/Shelter";
+import { useAppStore } from '../../store/Appstore'
 
 export default function ShelterProfile() {
   const params = useParams();
@@ -175,7 +176,7 @@ export default function ShelterProfile() {
   const [shelter, setShelter] = useState<Shelter | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-
+const { getShelterProfile, setShelterProfile } = useAppStore()
   useEffect(() => {
     fetch(`/api/shelters/${params.id}`)
       .then((res) => {

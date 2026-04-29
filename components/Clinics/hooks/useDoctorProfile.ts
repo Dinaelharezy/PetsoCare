@@ -7,7 +7,7 @@ import { clinicsApi } from '../../../data/api/Clinic'
 import { Clinic } from '../../../types/Clinic'
 import { Review } from '../../../types/Review'
 import { FALLBACK_CLINICS } from '../../Home'
-
+import { useAppStore } from '../../../store/Appstore'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -107,7 +107,7 @@ export function useDoctorProfile() {
   const [newRating, setNewRating]             = useState(5)
   const [hoverRating, setHoverRating]         = useState(0)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
-
+const { getClinicProfile, setClinicProfile } = useAppStore()
   const weekDays = parseWorkingDays(clinic?.workingDays)
 
   // ── Fetch clinic ─────────────────────────────────────────────────────────
