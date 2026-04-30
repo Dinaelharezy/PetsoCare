@@ -1,9 +1,8 @@
+
 'use client'
 
 import { useState } from 'react'
 import { Report, ReportType, ReportStatus } from '../../types/report'
-
-// ── helpers ──────────────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<ReportStatus, { label: string; color: string; bg: string; dot: string }> = {
   Pending:    { label: 'Pending',     color: '#92693a', bg: '#fef3e2', dot: '#f59e0b' },
@@ -24,8 +23,6 @@ function parseJson(val?: string): string[] {
   if (!val) return []
   try { return JSON.parse(val) } catch { return [val] }
 }
-
-// ── sub-components ────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: ReportStatus }) {
   const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.Pending
@@ -74,11 +71,11 @@ function ReportDetails({ report }: { report: Report }) {
     const actions  = parseJson(b.initialActions)
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <InfoRow label="Animal Type"    value={b.animalType} />
-        <InfoRow label="Exposure Type"  value={b.exposureType} />
-        <InfoRow label="Severity"       value={b.severity} />
-        <InfoRow label="Date & Time"    value={b.exposureDateTime ? new Date(b.exposureDateTime).toLocaleString('en-GB') : undefined} />
-        <InfoRow label="City"           value={b.locationCity} />
+        <InfoRow label="Animal Type"   value={b.animalType} />
+        <InfoRow label="Exposure Type" value={b.exposureType} />
+        <InfoRow label="Severity"      value={b.severity} />
+        <InfoRow label="Date & Time"   value={b.exposureDateTime ? new Date(b.exposureDateTime).toLocaleString('en-GB') : undefined} />
+        <InfoRow label="City"          value={b.locationCity} />
         {bodyLocs.length > 0 && (
           <div style={{ display: 'flex', gap: 8, fontSize: 13 }}>
             <span style={{ color: '#999', minWidth: 110, flexShrink: 0 }}>Body Locations</span>
@@ -117,9 +114,9 @@ function ReportDetails({ report }: { report: Report }) {
     const c = report.complaintReport
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <InfoRow label="Email"    value={c.email} />
-        <InfoRow label="Subject"  value={c.subject} />
-        <InfoRow label="Urgency"  value={c.urgency} />
+        <InfoRow label="Email"   value={c.email} />
+        <InfoRow label="Subject" value={c.subject} />
+        <InfoRow label="Urgency" value={c.urgency} />
         {c.message && (
           <div style={{ fontSize: 13 }}>
             <span style={{ color: '#999', display: 'block', marginBottom: 4 }}>Message</span>
@@ -141,22 +138,16 @@ function ReportCard({ report }: { report: Report }) {
 
   return (
     <div style={{
-      border: '1px solid #eee',
-      borderRadius: 12,
-      overflow: 'hidden',
-      transition: 'box-shadow 0.2s',
-      background: '#fff',
+      border: '1px solid #eee', borderRadius: 12, overflow: 'hidden',
+      transition: 'box-shadow 0.2s', background: '#fff',
     }}
       onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)')}
       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
     >
-      {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 16px',
-        borderLeft: `3px solid ${typeCfg.accent}`,
-        cursor: 'pointer',
-        background: expanded ? '#fafafa' : '#fff',
+        padding: '12px 16px', borderLeft: `3px solid ${typeCfg.accent}`,
+        cursor: 'pointer', background: expanded ? '#fafafa' : '#fff',
       }} onClick={() => setExpanded(p => !p)}>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -173,19 +164,13 @@ function ReportCard({ report }: { report: Report }) {
         </div>
       </div>
 
-      {/* Expanded details */}
       {expanded && (
         <div style={{ padding: '14px 16px', borderTop: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {/* Common fields */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <InfoRow label="Name"        value={report.name} />
-            <InfoRow label="Phone"       value={report.phone} />
+            <InfoRow label="Name"  value={report.name} />
+            <InfoRow label="Phone" value={report.phone} />
           </div>
-
-          {/* Type-specific details */}
           <ReportDetails report={report} />
-
-          {/* Admin response */}
           {report.adminResponse && (
             <div style={{ marginTop: 4, padding: '10px 12px', background: '#f0f7ff', borderRadius: 8, borderLeft: '3px solid #3b82f6' }}>
               <div style={{ fontSize: 11, color: '#3b82f6', fontWeight: 600, marginBottom: 4 }}>Admin Response</div>
@@ -198,8 +183,6 @@ function ReportCard({ report }: { report: Report }) {
   )
 }
 
-// ── Main exported component ───────────────────────────────────────────────────
-
 interface MyReportsSectionProps {
   reports: Report[]
   loading: boolean
@@ -207,10 +190,12 @@ interface MyReportsSectionProps {
 }
 
 export default function MyReportsSection({ reports, loading, error }: MyReportsSectionProps) {
+  const [showAll, setShowAll] = useState(false)
+
   if (loading) {
     return (
       <div style={{ padding: '16px 0' }}>
-        {[1, 2].map(i => (
+        {[1, 2, 3].map(i => (
           <div key={i} style={{
             height: 56, borderRadius: 12, background: '#f0f0f0',
             marginBottom: 8, animation: 'pulse 1.5s ease-in-out infinite',
@@ -237,6 +222,10 @@ export default function MyReportsSection({ reports, loading, error }: MyReportsS
     )
   }
 
+  const LIMIT = 3
+  const visibleReports = showAll ? reports : reports.slice(0, LIMIT)
+  const hasMore = reports.length > LIMIT
+
   return (
     <div className="vaccine-card" style={{ marginBottom: 24 }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -248,9 +237,24 @@ export default function MyReportsSection({ reports, loading, error }: MyReportsS
           {reports.length} total
         </span>
       </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {reports.map(r => <ReportCard key={r.id} report={r} />)}
+        {visibleReports.map(r => <ReportCard key={r.id} report={r} />)}
       </div>
+
+      {hasMore && (
+        <button
+          onClick={() => setShowAll(p => !p)}
+          className="background-for-app"
+          style={{
+            marginTop: 12, width: '100%', padding: '8px',
+            borderRadius: 10, border: 'none', fontSize: 13,
+            color: 'white', fontWeight: 600, cursor: 'pointer',
+          }}
+        >
+          {showAll ? '▲ Show Less' : `▼ Show More (${reports.length - LIMIT} more)`}
+        </button>
+      )}
     </div>
   )
 }

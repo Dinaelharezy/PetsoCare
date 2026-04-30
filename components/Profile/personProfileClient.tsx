@@ -89,9 +89,6 @@ export default function PersonProfileClient() {
   error={reportsError}   // ✅ اكتبيها reportsError مش rereportsError
 />
 
-</Col>
-
-        <Col lg={9} md={12}>
           <UpcomingVaccines
             vaccines={upcomingVaccines}
             completedVaccines={completedVaccines}
@@ -206,6 +203,11 @@ function SmartTagTracker() {
         </svg>
         Track My Dog
       </button>
+      <div className='mt-2' style={{ background: 'rgba(199,242,167,0.25)', borderRadius: 10, padding: '10px 12px', marginBottom: 10, textAlign: 'left' }}>
+        <div style={{ fontSize: 11, color: '#666', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 5 }}>
+        </div>
+        <div style={{ fontSize: 13, fontWeight: 600 }}>One scan tells your dog's whole story — Get our App PetsoCare Now.</div>
+      </div>
       {status && <p style={{ fontSize: 11, color: '#888', textAlign: 'center', marginTop: 6, marginBottom: 0 }}>{status}</p>}
     </div>
   )
@@ -244,10 +246,12 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
         <p className="text-muted small">No upcoming vaccines. Add one above!</p>
       ) : (
         vaccines.map(vaccine => (
-          <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center">
+          // <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center">
+          <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center my-2"
+       style={{ padding: '12px 16px', borderRadius: 12, border: '1px solid #eee', background: '#fff', marginBottom: 8 }}>
             <div>
-              <div className="fw-semibold mb-1">{vaccine.name}</div>
-              <div className="text-muted small">For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+              <div className="fw-semibold mb-1 fs-6">{vaccine.name}</div>
+              <div className="text-muted small">{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
             </div>
             <div className="d-flex gap-2">
               <button onClick={() => onComplete(vaccine.id)} title="Mark as completed"
@@ -281,7 +285,7 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
           {showCompleted && (
             <div className="mt-2">
               {completedVaccines.map(vaccine => (
-                <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center" style={{ opacity: 0.6 }}>
+                <div key={vaccine.id} className="d-flex justify-content-between align-items-center" style={{ opacity: 0.6 }}>
                   <div>
                     <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.name}</div>
                     <div className="text-muted small">For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
@@ -309,7 +313,7 @@ function AccountSettings({ onLogout }: { onLogout: () => void }) {
       <div className="settings-item">
         <div className="d-flex align-items-center">
           <GearIcon />
-          <span className="specializedFont">General Preferences</span>
+          <span className="specializedFont">Settings</span>
         </div>
         <ChevronIcon />
       </div>

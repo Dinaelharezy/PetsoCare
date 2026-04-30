@@ -145,8 +145,8 @@ export default function Footer() {
             </h6>
             <ul className="list-unstyled footer-links">
               <li className="mb-2">
-                <Link href="/contact" className="text-muted text-decoration-none" style={{ fontSize: '0.9rem' }}>
-                  Contact Us
+                <Link href="/main/Contacts" className="text-muted text-decoration-none" style={{ fontSize: '0.9rem' }}>
+                  Contacts
                 </Link>
               </li>
               <li className="mb-2">
