@@ -110,12 +110,6 @@ export default function ChatBot() {
   const formatTime = (date: Date) =>
     date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
-  const quickReplies = [
-    { text: '💉 Rabies vaccine', query: 'Tell me about rabies vaccination for dogs' },
-    { text: '🏥 Find a vet', query: 'How do I find a veterinarian near me?' },
-    { text: '🚨 Emergency signs', query: 'What are emergency symptoms in pets?' },
-    { text: '📅 Set reminder', query: 'How do I set a vaccine reminder?' },
-  ]
 
   return (
     <>
@@ -192,26 +186,7 @@ export default function ChatBot() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Replies */}
-          {messages.length < 3 && (
-            <div className="quick-replies">
-              <p className="quick-label">Quick questions</p>
-              <div className="quick-grid">
-                {quickReplies.map((reply, i) => (
-                  <button
-                    key={i}
-                    className="quick-chip"
-                    onClick={() => {
-                      setInputText(reply.query)
-                      setTimeout(() => handleSendMessage(), 100)
-                    }}
-                  >
-                    {reply.text}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+       
 
           {/* Input Bar */}
           <div className="input-bar">
@@ -249,25 +224,24 @@ export default function ChatBot() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700&display=swap');
 
         /* ── FAB ── */
-        .chat-fab {
-          position: fixed;
-          bottom: 28px;
-          right: 28px;
-          width: 58px;
-          height: 58px;
-          border-radius: 18px;
-          background: linear-gradient(145deg, #a8f060, #6fc92e);
-          border: none;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          color: #1a4000;
-          box-shadow: 0 8px 24px rgba(108, 200, 45, 0.45), 0 2px 8px rgba(0,0,0,0.12);
-          transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
-          position: fixed;
-        }
+       .chat-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgb(199, 242, 167) !important;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  color: #1a4000;
+  box-shadow: 0 8px 24px rgba(108, 200, 45, 0.45), 0 2px 8px rgba(0,0,0,0.12);
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+}
         .chat-fab:hover {
           transform: translateY(-3px) scale(1.05);
           box-shadow: 0 12px 32px rgba(108, 200, 45, 0.55), 0 4px 12px rgba(0,0,0,0.15);
@@ -297,7 +271,7 @@ export default function ChatBot() {
           bottom: 100px;
           right: 28px;
           width: 390px;
-          height: 580px;
+          height: 480px;
           background: #ffffff;
           border-radius: 24px;
           box-shadow: 0 32px 64px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.08);

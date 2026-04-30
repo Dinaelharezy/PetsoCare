@@ -224,8 +224,113 @@ interface UpcomingVaccinesProps {
   onDelete: (id: string) => void
 }
 
+// function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, onAdd, onEdit, onDelete }: UpcomingVaccinesProps) {
+//   const [showCompleted, setShowCompleted] = useState(false)
+//   const [showAllVaccines, setShowAllVaccines] = useState(false)
+//   const LIMIT = 3
+//   const visibleVaccines = showAllVaccines ? vaccines : vaccines.slice(0, LIMIT)
+//   const hasMore = vaccines.length > LIMIT
+
+//   const formatDate = (iso?: string) => {
+//     if (!iso) return ''
+//     try { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) }
+//     catch { return iso }
+//   const formatDate = (iso?: string) => {
+//     if (!iso) return ''
+//     try { return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) }
+//     catch { return iso }
+//   }
+
+//    return (
+//     <div className="vaccine-card">
+//       <div className="d-flex justify-content-between align-items-center mb-4">
+//         <h5 className="mb-0 fw-bold specializedFont">Upcoming Vaccines</h5>
+//         <Button size="sm" className='background-for-app' onClick={onAdd}>+ Add Vaccine</Button>
+//       </div>
+
+//       {loading ? (
+//         <p className="text-muted small">Loading vaccines…</p>
+//       ) : vaccines.length === 0 ? (
+//         <p className="text-muted small">No upcoming vaccines. Add one above!</p>
+//       ) : (
+//         <>
+//           {visibleVaccines.map(vaccine => (
+//             <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center my-2"
+//               style={{ padding: '12px 16px', borderRadius: 12, border: '1px solid #eee', background: '#fff', marginBottom: 8 }}>
+//               <div>
+//                 <div className="fw-semibold mb-1 fs-6">{vaccine.name}</div>
+//                 <div className="text-muted small">{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+//               </div>
+//               <div className="d-flex gap-2">
+//                 <button onClick={() => onComplete(vaccine.id)} title="Mark as completed"
+//                   style={{ background: 'none', border: '2px solid #8ae68d', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+//                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+//                     <path d="M5 13l4 4L19 7" stroke="#8ae68d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+//                   </svg>
+//                 </button>
+//                 <button onClick={() => onEdit(vaccine)} title="Edit vaccine"
+//                   style={{ background: 'none', border: '2px solid #ffc107', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+//                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2">
+//                     <path d="M17 3l4 4-12 12H5v-4L17 3z" />
+//                   </svg>
+//                 </button>
+//                 <button onClick={() => onDelete(vaccine.id)} title="Delete vaccine"
+//                   style={{ background: 'none', border: '2px solid #dc3545', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+//                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc3545" strokeWidth="2">
+//                     <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14H5zM9 3h6v4H9z" />
+//                   </svg>
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+
+//           {hasMore && (
+//             <button
+//               onClick={() => setShowAllVaccines(p => !p)}
+//               className="background-for-app"
+//               style={{ width: '100%', padding: '8px', borderRadius: 10, border: 'none', fontSize: 13, color: 'white', fontWeight: 600, cursor: 'pointer', marginTop: 4 }}
+//             >
+//               {showAllVaccines ? '▲ Show Less' : `▼ Show More (${vaccines.length - LIMIT} more)`}
+//             </button>
+//           )}
+//         </>
+//       )}
+
+//       {completedVaccines.length > 0 && (
+//         <div className="mt-3">
+//           <button className="btn btn-link text-decoration-none p-0 small text-muted" onClick={() => setShowCompleted(p => !p)}>
+//             {showCompleted ? '▲ Hide' : '▼ Show'} completed ({completedVaccines.length})
+//           </button>
+//           {showCompleted && (
+//             <div className="mt-2">
+//               {completedVaccines.map(vaccine => (
+//                 <div key={vaccine.id} className="d-flex justify-content-between align-items-center" style={{ opacity: 0.6 }}>
+//                   <div>
+//                     <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.name}</div>
+//                     <div className="text-muted small">For {vaccine.pet}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+//                   </div>
+//                   <span className="badge" style={{ backgroundColor: '#8ae68d', color: '#333', fontSize: '11px' }}>✓ Done</span>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       )}
+
+//       <Button variant="link" className="text-decoration-none border specializedFont vacc-butt mt-3">
+//         View All Vaccines
+//       </Button>
+//     </div>
+//   )
+// }
+
 function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, onAdd, onEdit, onDelete }: UpcomingVaccinesProps) {
   const [showCompleted, setShowCompleted] = useState(false)
+  const [showAllVaccines, setShowAllVaccines] = useState(false)
+
+  const LIMIT = 3
+  const visibleVaccines = showAllVaccines ? vaccines : vaccines.slice(0, LIMIT)
+  const hasMore = vaccines.length > LIMIT
 
   const formatDate = (iso?: string) => {
     if (!iso) return ''
@@ -245,36 +350,47 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
       ) : vaccines.length === 0 ? (
         <p className="text-muted small">No upcoming vaccines. Add one above!</p>
       ) : (
-        vaccines.map(vaccine => (
-          // <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center">
-          <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center my-2"
-       style={{ padding: '12px 16px', borderRadius: 12, border: '1px solid #eee', background: '#fff', marginBottom: 8 }}>
-            <div>
-              <div className="fw-semibold mb-1 fs-6">{vaccine.name}</div>
-              <div className="text-muted small">{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+        <>
+          {visibleVaccines.map(vaccine => (
+            <div key={vaccine.id} className="vaccine-item d-flex justify-content-between align-items-center my-2"
+              style={{ padding: '12px 16px', borderRadius: 12, border: '1px solid #eee', background: '#fff', marginBottom: 8 }}>
+              <div>
+                <div className="fw-semibold mb-1 fs-6">{vaccine.name}</div>
+                <div className="text-muted small">{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+              </div>
+              <div className="d-flex gap-2">
+                <button onClick={() => onComplete(vaccine.id)} title="Mark as completed"
+                  style={{ background: 'none', border: '2px solid #8ae68d', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 13l4 4L19 7" stroke="#8ae68d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button onClick={() => onEdit(vaccine)} title="Edit vaccine"
+                  style={{ background: 'none', border: '2px solid #ffc107', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2">
+                    <path d="M17 3l4 4-12 12H5v-4L17 3z" />
+                  </svg>
+                </button>
+                <button onClick={() => onDelete(vaccine.id)} title="Delete vaccine"
+                  style={{ background: 'none', border: '2px solid #dc3545', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc3545" strokeWidth="2">
+                    <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14H5zM9 3h6v4H9z" />
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div className="d-flex gap-2">
-              <button onClick={() => onComplete(vaccine.id)} title="Mark as completed"
-                style={{ background: 'none', border: '2px solid #8ae68d', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 13l4 4L19 7" stroke="#8ae68d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <button onClick={() => onEdit(vaccine)} title="Edit vaccine"
-                style={{ background: 'none', border: '2px solid #ffc107', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffc107" strokeWidth="2">
-                  <path d="M17 3l4 4-12 12H5v-4L17 3z" />
-                </svg>
-              </button>
-              <button onClick={() => onDelete(vaccine.id)} title="Delete vaccine"
-                style={{ background: 'none', border: '2px solid #dc3545', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc3545" strokeWidth="2">
-                  <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14H5zM9 3h6v4H9z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        ))
+          ))}
+
+          {hasMore && (
+            <button
+              onClick={() => setShowAllVaccines(p => !p)}
+              className="background-for-app"
+              style={{ width: '100%', padding: '8px', borderRadius: 10, border: 'none', fontSize: 13, color: 'white', fontWeight: 600, cursor: 'pointer', marginTop: 4 }}
+            >
+              {showAllVaccines ? '▲ Show Less' : `▼ Show More (${vaccines.length - LIMIT} more)`}
+            </button>
+          )}
+        </>
       )}
 
       {completedVaccines.length > 0 && (
@@ -297,10 +413,6 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
           )}
         </div>
       )}
-
-      <Button variant="link" className="text-decoration-none border specializedFont vacc-butt mt-3">
-        View All Vaccines
-      </Button>
     </div>
   )
 }
