@@ -28,76 +28,53 @@ export async function getAllLocations(params?: {
 
 
 // ─── CREATE ───────────────────────────────────────────────────────────────────
+// export async function createLocation(
+//   form: VaccLocationForm
+// ): Promise<{ message: string }> {
+//   const res = await fetch(BASE_URL, {
+//     method:  'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body:    JSON.stringify(formToPayload(form)),
+//   })
+//   if (!res.ok) throw new Error('Failed to create location')
+//   return res.json()
+// }
 export async function createLocation(
-  form: VaccLocationForm
+  payload: any  // ✅ استخدم any أو Record<string, unknown>
 ): Promise<{ message: string }> {
   const res = await fetch(BASE_URL, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(formToPayload(form)),
+    body:    JSON.stringify(payload),
   })
   if (!res.ok) throw new Error('Failed to create location')
   return res.json()
 }
 
-// ─── UPDATE ───────────────────────────────────────────────────────────────────
-// data/api/VaccLocations.ts
+// UPDATE ---------------
 
-// ─── UPDATE ───────────────────────────────────────────────────────────────────
 export async function updateLocation(
   id: number,
-  form: VaccLocationForm
+  payload: Record<string, unknown>  // ✅ غير من VaccLocationForm لـ Record<string, unknown>
 ): Promise<{ message: string }> {
-  // ✅ 1: تحويل القيم للأرقام الصحيحة
-  const typeNum = Number(form.type);
-  const serviceTypeNum = Number(form.serviceType);
-
-  // ✅ 2: التحقق من صحة القيم قبل الإرسال
-  if (isNaN(typeNum) || typeNum < 1 || typeNum > 5) {
-    throw new Error('Invalid location type. Must be between 1 and 5');
-  }
-  if (isNaN(serviceTypeNum) || serviceTypeNum < 1 || serviceTypeNum > 4) {
-    throw new Error('Invalid service type. Must be between 1 and 4');
-  }
-  if (!form.address || form.address.trim() === '') {
-    throw new Error('Address is required');
-  }
-
-  // ✅ 3: بناء الـ payload بالشكل المطلوب
-  const payload = {
-    id: id,
-    name: form.name,
-    type: typeNum,                      // ✅ رقم صحيح
-    location: form.address,             // ✅ 'location' مش 'address'
-    governorate: form.governorate,
-    address: form.address,
-    phone: form.phone || "",
-    hours: form.hours || "",
-    note: form.note || "",
-    providesVaccine: form.providesVaccine === true,
-    serviceType: serviceTypeNum,        // ✅ رقم صحيح
-    isActive: form.isActive === true,
-  };
-
-  console.log("📤 Sending payload:", JSON.stringify(payload, null, 2));
-
   const res = await fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+    method:  'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  })
 
-  const responseText = await res.text();
-  console.log("📥 Response:", responseText);
+  const responseText = await res.text()
+  console.log('📥 Response:', responseText)
 
   if (!res.ok) {
-    throw new Error(`Failed to update location: ${res.status} - ${responseText}`);
+    throw new Error(`Failed to update location: ${res.status} - ${responseText}`)
   }
 
-  return responseText ? JSON.parse(responseText) : { message: "Location updated successfully" };
+  return responseText ? JSON.parse(responseText) : { message: 'Location updated successfully' }
 }
+
+
+
 // ─── DELETE ───────────────────────────────────────────────────────────────────
 export async function deleteLocation(id: number): Promise<{ message: string }> {
   const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' })

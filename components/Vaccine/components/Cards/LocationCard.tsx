@@ -179,12 +179,7 @@ export default function LocationCard({
               <span>📞</span> {loc.phone}
             </div>
           )}
-          
-          {loc.hours && (
-            <div className="text-muted small mt-1" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>🕐</span> {loc.hours}
-            </div>
-          )}
+       
           
           <div className="small mt-2">
             <span
@@ -206,7 +201,7 @@ export default function LocationCard({
         </div>
       </div>
 
-      {loc.note && (
+      {loc.governorate&& (
         <div
           className="small text-muted mt-3"
           style={{
@@ -216,7 +211,7 @@ export default function LocationCard({
             borderLeft: `3px solid ${accentColor}`,
           }}
         >
-          <span>ℹ️</span> {loc.note}
+          <span>ℹ️</span> {loc.status}
         </div>
       )}
 

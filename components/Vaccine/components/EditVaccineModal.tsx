@@ -18,7 +18,7 @@ export default function EditVaccineModal({ show, vaccine, onClose, onUpdate, sub
   const [reminder, setReminder] = useState(false);
   const [err, setErr] = useState('');
 
-  // تعبئة الفورم عند فتح المودال
+  
   useEffect(() => {
     if (show && vaccine) {
       setStartDate(vaccine.startDate ? vaccine.startDate.split('T')[0] : '');
@@ -54,13 +54,13 @@ export default function EditVaccineModal({ show, vaccine, onClose, onUpdate, sub
         <Form onSubmit={handleSubmit}>
           {/* معلومات ثابتة للعرض فقط */}
           <div className="mb-3 p-2 bg-light rounded">
-            <div><strong>Pet:</strong> {vaccine.pet}</div>
+            <div><strong>Name:</strong> {vaccine.pet}</div>
             <div><strong>Type:</strong> {vaccine.vaccineType || 'N/A'}</div>
           </div>
 
           <Form.Group className="mb-3">
             <Form.Label className="text-muted small fw-semibold text-uppercase">
-              Next Dose Date *
+              Next Dose Date 
             </Form.Label>
             <Form.Control
               type="date"
