@@ -3,7 +3,7 @@ import { VaccLocation, VaccLocationForm, formToPayload } from '../../types/VaccL
 const BASE_URL = '/api/admin/locations'
 
 // ─── GET ALL (with optional filters) ─────────────────────────────────────────
-// data/api/VaccLocations.ts - الجزء الخاص بـ getAllLocations
+
 export async function getAllLocations(params?: {
   type?:        number | string
   governorate?: string
@@ -28,17 +28,7 @@ export async function getAllLocations(params?: {
 
 
 // ─── CREATE ───────────────────────────────────────────────────────────────────
-// export async function createLocation(
-//   form: VaccLocationForm
-// ): Promise<{ message: string }> {
-//   const res = await fetch(BASE_URL, {
-//     method:  'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body:    JSON.stringify(formToPayload(form)),
-//   })
-//   if (!res.ok) throw new Error('Failed to create location')
-//   return res.json()
-// }
+
 export async function createLocation(
   payload: any  // ✅ استخدم any أو Record<string, unknown>
 ): Promise<{ message: string }> {
@@ -55,7 +45,7 @@ export async function createLocation(
 
 export async function updateLocation(
   id: number,
-  payload: Record<string, unknown>  // ✅ غير من VaccLocationForm لـ Record<string, unknown>
+  payload: Record<string, unknown>  
 ): Promise<{ message: string }> {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method:  'PUT',

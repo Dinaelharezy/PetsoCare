@@ -10,17 +10,6 @@ export default function DoctorProfileClient() {
     clinic,
     loading,
     error,
-    selectedDate,
-    setSelectedDate,
-    allReviews,
-    newComment,
-    setNewComment,
-    newRating,
-    setNewRating,
-    hoverRating,
-    setHoverRating,
-    reviewSubmitted,
-    handleSubmitReview,
     router,
   } = useDoctorProfile()
 
@@ -141,88 +130,6 @@ export default function DoctorProfileClient() {
       <p className="text-muted mb-4">
         <small><i className="bi bi-geo-alt-fill me-2"></i>{clinic.address}, {clinic.governorate}</small>
       </p>
-
-      {/* ── Reviews ─────────────────────────────────────────────────────────── */}
-      <div className="section-header mb-3">
-        <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Patient Reviews</h3>
-      </div>
-
-      {/* Add Review Form */}
-      <Card className="mb-3 p-4" style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.08)', borderRadius: '15px', border: 'none' }}>
-        <div className="d-flex align-items-center gap-2 mb-3">
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#7CB342', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: '1rem', flexShrink: 0 }}>
-            {getCurrentUserName().charAt(0)}
-          </div>
-          <div>
-            <div style={{ fontWeight: '600', fontSize: '0.95rem' }}>{getCurrentUserName()}</div>
-            <div style={{ fontSize: '0.8rem', color: '#999' }}>Writing as yourself</div>
-          </div>
-        </div>
-
-        <Form onSubmit={handleSubmitReview}>
-          <div className="mb-3">
-            <div style={{ display: 'flex', gap: '4px' }}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  onClick={() => setNewRating(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(0)}
-                  style={{ cursor: 'pointer', fontSize: '1.8rem', color: star <= (hoverRating || newRating) ? '#FFD700' : '#ddd', transition: 'color 0.15s' }}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <Form.Group className="mb-3">
-            <Form.Control
-              as="textarea"
-              placeholder="Share your experience..."
-              rows={3}
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              style={{ borderRadius: '10px', border: '1px solid #ddd' }}
-              required
-            />
-          </Form.Group>
-
-          {reviewSubmitted && (
-            <div className="alert alert-success py-2 mb-3" style={{ borderRadius: '10px' }}>
-              ✅ Review submitted successfully!
-            </div>
-          )}
-
-          <Button
-            type="submit"
-            style={{ backgroundColor: '#7CB342', border: 'none', padding: '10px 30px', borderRadius: '10px', fontWeight: '500' }}
-          >
-            Submit Review
-          </Button>
-        </Form>
-      </Card>
-
-      {/* Reviews List */}
-      {allReviews.map((review, index) => (
-        <Card key={index} className="mb-3 p-4" style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.08)', borderRadius: '15px', border: 'none' }}>
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <div className="d-flex align-items-center gap-2">
-              <div style={{ width: '38px', height: '38px', borderRadius: '50%', backgroundColor: '#e8f5e9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7CB342', fontWeight: '600', fontSize: '0.95rem', flexShrink: 0 }}>
-                {review.name.charAt(0)}
-              </div>
-              <div>
-                <h6 className="mb-0" style={{ fontWeight: '600' }}>{review.name}</h6>
-                <div style={{ color: '#FFD700', fontSize: '0.9rem' }}>
-                  {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                </div>
-              </div>
-            </div>
-            <span className="text-muted" style={{ fontSize: '0.85rem' }}>{review.date}</span>
-          </div>
-          <p className="mb-0" style={{ lineHeight: '1.6' }}>{review.comment}</p>
-        </Card>
-      ))}
 
     </Container>
   )

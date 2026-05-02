@@ -6,6 +6,10 @@ export async function getAllReports() {
   const res = await fetch(`/api/admin/reports`);
   return res.json();
 }
+export async function getAllApprovedReports() {
+  const res = await fetch(`/api/report/approved`);
+  return res.json();
+}
 
 export async function manageReport(id: number, data: any) {
   const res = await fetch(`/api/admin/reports/${id}`, {

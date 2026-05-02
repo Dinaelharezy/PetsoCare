@@ -4,9 +4,9 @@ export interface Vaccine {
   name: string
   reminder: boolean
   completed: boolean
-  vaccineType?:     string   // ← أضف
-  exposureCategory?: string  // ← أضف
-  startDate?:       string   // ← أضف
+  vaccineType?:     string  
+  exposureCategory?: string  
+  startDate?:       string   
 }
 
 export interface CreateVaccineDto {
