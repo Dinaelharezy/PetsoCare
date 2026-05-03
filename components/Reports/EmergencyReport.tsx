@@ -70,6 +70,58 @@ export default function EmergencyReport() {
         </Alert>
       )}
 
+
+<div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+  <img
+    src="/bite report.svg"
+    alt="Emergency bite report"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      objectPosition: 'center 55%',
+      display: 'block',
+    }}
+  />
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(220,53,69,0.65) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)',
+    }}
+  />
+  {/* Text */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+    <div style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, marginBottom: 6 }}>
+      🚨 Act Immediately After Any Bite
+    </div>
+    <div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 300, lineHeight: 1.6 }}>
+      Report the case and head to the nearest emergency department right away.
+    </div>
+  </div>
+</div> 
+
+
+
       <Card className="p-4">
         <Form onSubmit={handleSubmit}>
 

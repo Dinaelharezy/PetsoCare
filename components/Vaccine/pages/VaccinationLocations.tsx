@@ -39,6 +39,58 @@ export default function VaccinationLocations() {
         bitten or scratched.
       </Alert>
 
+<div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+    <img
+    src="/hospital2.svg"
+    alt="Emergency bite report"
+    style={{
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      height: '100%',
+      width: '30%',        // 👈 تاخد نص الـ container
+      objectFit: 'cover',
+      objectPosition: 'left 100%',
+    }}
+  />
+
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(220,53,69,0.65) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)',
+    }}
+  />
+  {/* Text */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+  <div style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, marginBottom: 6 }}>
+  🏥 Find Your Nearest Vaccination Center
+</div>
+<div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 300, lineHeight: 1.6 }}>
+  Verified clinics and hospitals offering rabies vaccines near you.
+</div>
+  </div>
+</div>
+
       {/* ── Tab Selector ── */}
       <div className="d-flex gap-3 mb-4 flex-wrap">
         {/* Animal Tab */}

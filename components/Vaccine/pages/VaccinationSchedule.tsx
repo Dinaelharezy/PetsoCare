@@ -45,6 +45,56 @@ export default function VaccinationSchedule() {
         ⚠️ <strong>Important Alert:</strong> Once rabies symptoms appear, there is no effective treatment. Start vaccination immediately after exposure.
       </Alert>
 
+<div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+  <img
+    src="/shield2.svg"
+    alt="Vaccination awareness"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+     objectPosition: '60% 30%',  
+      display: 'block',
+    }}
+  />
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(13,110,253,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)',
+    }}
+  />
+  {/* Text on image */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+    <div style={{ color: '#fff', fontSize: '1.15rem', fontWeight: 700, marginBottom: 6 }}>
+      🛡️ Prevention Saves Lives
+    </div>
+    <div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 320, lineHeight: 1.6 }}>
+      Rabies is 100% preventable with timely vaccination. Act immediately after any animal bite.
+    </div>
+  </div>
+</div>
+
+
       {/* Tab switcher */}
       <div className="d-flex gap-3 mb-4">
         <button
@@ -151,6 +201,56 @@ export default function VaccinationSchedule() {
           </div>
         </>
       )}
+
+<div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+  <img
+    src="/mastertux-syringe-5904302.jpg"
+    alt="Vaccination awareness"
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+     objectPosition: '50% 50%',  
+      display: 'block',
+    }}
+  />
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(13,110,253,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)',
+    }}
+  />
+  {/* Text on image */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+    <div style={{ color: '#fff', fontSize: '1.15rem', fontWeight: 700, marginBottom: 6 }}>
+      🛡️ Prevention Saves Lives
+    </div>
+    <div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 320, lineHeight: 1.6 }}>
+      Rabies is 100% preventable with timely vaccination. Act immediately after any animal bite.
+    </div>
+  </div>
+</div>
+
 
       {/* Animal tab */}
       {tab === 'animal' && (

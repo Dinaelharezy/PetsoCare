@@ -110,6 +110,59 @@ export default function DoctorProfileClient() {
       {/* ── Book Appointment ────────────────────────────────────────────────── */}
       <Appointment />
 
+
+
+<div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+    <img
+    src="/map.svg"
+    alt="map"
+    style={{
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      height: '90%',
+      width: '25%',        
+      objectFit: 'cover',
+      objectPosition: '50% 50%',
+    }}
+  />
+
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(61, 61, 61, 0.65) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)',
+    }}
+  />
+  {/* Text */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+  <div style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, marginBottom: 6 }}>
+  🏥 Find Your Nearest Clinic
+</div>
+<div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 300, lineHeight: 1.6 }}>
+  Verified clinics near to you.
+</div>
+  </div>
+</div>
       {/* ── Map ─────────────────────────────────────────────────────────────── */}
       <div className="section-header mb-3">
         <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Clinic Location</h3>

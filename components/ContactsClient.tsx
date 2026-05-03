@@ -132,6 +132,58 @@ export default function ContactsClient() {
         Egypt — national numbers
       </p>
 
+      
+      <div
+  style={{
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginBottom: 28,
+    height: 200,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+  }}
+>
+  <img
+    src="/phone.svg"
+    alt="Emergency bite report"
+    style={{ 
+    width: 870,     
+    height: 200,     
+    objectFit: 'contain',
+  
+  }}
+  />
+  {/* Gradient overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(220,53,69,0.65) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)',
+    }}
+  />
+  {/* Text */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: '0 28px',
+    }}
+  >
+   {/* Contacts */}
+<div style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, marginBottom: 6 }}>
+  📞 Reach the Right Authority Fast
+</div>
+<div style={{ color: 'rgba(255,255,255,0.88)', fontSize: '0.82rem', maxWidth: 300, lineHeight: 1.6 }}>
+  National and local contacts for human & veterinary health.
+</div>
+  </div>
+</div>
+
+
+
       <ContactCard iconBg="#e8f8f0" icon={<HealthIcon />} title="Human health" subtitle="Ministry of Health & Ambulance Authority">
         <CallEntry name="Ministry of Health hotline" sub="Egyptian Ministry of Health and Population" number="105" color="green" />
         <CallEntry name="Egyptian Ambulance Authority" sub="National emergency ambulance" number="123" color="green" />
