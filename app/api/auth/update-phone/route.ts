@@ -1,25 +1,30 @@
-// app/api/auth/update-phone/route.ts
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { auth } from '../../../../lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 const API = process.env.NEXT_PUBLIC_API_URL
 
-export async function PUT(req: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function PUT(req: NextRequest) { 
+  const session = await auth()
+  if (!session)
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+ 
   const body = await req.json()
 
   const res = await fetch(`${API}/api/auth/update-phone`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${(session.user as any).accessToken ?? ''}`,
+      Authorization: `Bearer ${session.user.accessToken}`,
+      'Content-Type': 'application/json',       
       'ngrok-skip-browser-warning': 'true',
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(body),                
   })
-  const data = await res.json()
-  return NextResponse.json(data, { status: res.status })
+
+  if (!res.ok) {
+    const text = await res.text()
+    return NextResponse.json({ error: text }, { status: res.status })
+  }
+
+  return NextResponse.json({ success: true }, { status: 200 })
 }

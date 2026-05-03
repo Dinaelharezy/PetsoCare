@@ -157,10 +157,11 @@ export function useProfile() {
     return raw.startsWith('http') ? raw : `${API}${raw}`
   }
 
-  const userImage =
-    resolveImageUrl(session?.user?.image ?? undefined) ??
-    resolveImageUrl(profileData?.imageUrl ?? profileData?.image) ??
-    '/woman.png'
+
+const userImage =
+  resolveImageUrl(profileData?.imageUrl ?? profileData?.image) ??  // ← profileData أحدث دايماً
+  resolveImageUrl(session?.user?.image ?? undefined) ??
+  '/woman.png'
 
   const handleLogout = async () => {
     clearProfile()                          // امسح الـ cache عند الـ logout

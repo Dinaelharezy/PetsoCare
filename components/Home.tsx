@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { Clinic } from '../types/Clinic'
 import { article as Article } from '../types/article'
 import { getImageSrc } from '../utils/imageUtils'
+import { useCheckDanger } from './Vaccine/Notification/hook/useCheckDanger'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
@@ -262,6 +263,8 @@ export default function HomePage() {
       setLoading(false)
     }
   }, [])
+
+ useCheckDanger()
 
   const fetchArticles = useCallback(async () => {
     try {
