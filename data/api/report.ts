@@ -7,7 +7,7 @@ export async function getAllReports() {
   return res.json();
 }
 export async function getAllApprovedReports() {
-  const res = await fetch(`/api/report/approved`);
+  const res = await fetch(`/api/report/approved_inprogress_done`);
   return res.json();
 }
 

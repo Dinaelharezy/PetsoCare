@@ -1,5 +1,4 @@
 
-
 'use client'
 
 import { Container, Row, Col, Form, Card } from 'react-bootstrap'
@@ -11,6 +10,7 @@ import { Clinic } from '../types/Clinic'
 import { article as Article } from '../types/article'
 import { getImageSrc } from '../utils/imageUtils'
 import { useCheckDanger } from './Vaccine/Notification/hook/useCheckDanger'
+import { useAppStore } from '../store/Appstore'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
@@ -234,9 +234,13 @@ function ArticleCard({ article }: { article: Article }) {
 export default function HomePage() {
   const [location, setLocation] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [Clinics, setClinics] = useState<Clinic[]>([])
   const [articles, setArticles] = useState<Article[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+
+  // ─── Zustand store ───────────────────────────────────────
+  const clinics        = useAppStore(s => s.clinics)
+  const setClinics     = useAppStore(s => s.setClinics)
+  const isClinicsStale = useAppStore(s => s.isClinicsStale)
 
   const slides: Slide[] = [
     { image: '/checkup-2.jpg', title: 'Awareness & Prevention', subtitle: 'Educating the community on how to prevent rabies and what to do when exposed' },
@@ -249,22 +253,28 @@ export default function HomePage() {
     { image: '/Dog-2.jpg', title: 'Report a Dangerous Animal or Emergency', subtitle: 'You can report a dangerous animal in your area or an emergency — and track its referral to clinics instantly' },
   ]
 
+  // ─── Fetch clinics only when cache is stale ──────────────
   const fetchClinics = useCallback(async () => {
+    if (!isClinicsStale()) return   // ✅ cache still fresh → skip fetch
+
     try {
       setLoading(true)
       const res = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error('API not working')
-      const data = await res.json()
-      setClinics(data)
+      const data: Clinic[] = await res.json()
+
+      const categories = ['Overview', ...Array.from(new Set(data.map(c => c.governorate)))]
+      setClinics(data, categories)  // ✅ write to store + stamp timestamp
     } catch (error) {
       console.error('Failed to fetch clinics:', error)
-      setClinics(FALLBACK_CLINICS)
+      if (clinics.length === 0) {
+        // only fall back if store is completely empty (very first load)
+        setClinics(FALLBACK_CLINICS, ['Overview', 'Cairo', 'Alexandria', 'Giza'])
+      }
     } finally {
       setLoading(false)
     }
-  }, [])
-
- useCheckDanger()
+  }, [isClinicsStale, setClinics, clinics.length])
 
   const fetchArticles = useCallback(async () => {
     try {
@@ -278,11 +288,20 @@ export default function HomePage() {
     }
   }, [])
 
+  useCheckDanger()
+
   useEffect(() => {
     fetchClinics()
     fetchArticles()
-    window.addEventListener('clinicsUpdated', fetchClinics)
-    return () => window.removeEventListener('clinicsUpdated', fetchClinics)
+
+    // invalidate store cache + re-fetch when another tab/component fires this event
+    const handleClinicsUpdated = () => {
+      useAppStore.setState({ clinicsLastFetched: null })  // force stale
+      fetchClinics()
+    }
+
+    window.addEventListener('clinicsUpdated', handleClinicsUpdated)
+    return () => window.removeEventListener('clinicsUpdated', handleClinicsUpdated)
   }, [fetchClinics, fetchArticles])
 
   useEffect(() => {
@@ -293,9 +312,10 @@ export default function HomePage() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
 
-  const locations = ['All Locations', ...Array.from(new Set(Clinics.map((c) => c.governorate)))]
-  const filteredClinics = Clinics.filter((clinic) => !location || location === 'All Locations' || clinic.governorate === location)
-  const previewClinics = filteredClinics.slice(0, 3)
+  // ─── Derive display data from store ─────────────────────
+  const locations       = ['All Locations', ...Array.from(new Set(clinics.map((c) => c.governorate)))]
+  const filteredClinics = clinics.filter((clinic) => !location || location === 'All Locations' || clinic.governorate === location)
+  const previewClinics  = filteredClinics.slice(0, 3)
   const previewArticles = (articles.length > 0 ? articles : FALLBACK_ARTICLES).slice(0, 3)
 
   return (

@@ -205,6 +205,9 @@ export default function NavBar() {
                   )}
                 </button>
 <NotificationBell />
+
+
+
                 {/* ✅ Only show profile dropdown when session exists AND status is authenticated */}
                 {status === 'authenticated' && session ? (
                   <NavDropdown

@@ -94,7 +94,7 @@ const formatValue = (val: any): string => {
 const INJECTED_CSS = `
   .report-mgmt .status-pill {
     display: inline-block !important;
-    border-radius: 20px !important;
+    border-radius: 40px !important;
     padding: 3px 10px !important;
     font-size: 12px !important;
     font-weight: 700 !important;
@@ -290,7 +290,7 @@ export default function ReportManagement() {
     if (isFinished) return <span className="text-muted" style={{ fontSize: 12 }}>Finalized</span>
 
     return (
-      <div className="d-flex gap-2 flex-wrap">
+      <div className="d-flex gap-2 flex-wrap " >
         {/* Pending → Seen or Reject */}
         {report.status === 'Pending' && (
           <>
@@ -350,7 +350,7 @@ export default function ReportManagement() {
         </Toast>
       </ToastContainer>
 
-      <Card className="h-100 border-0 shadow-sm" style={{ borderRadius: 16 }}>
+      <Card className="h-100 border-0 shadow-sm">
         <Card.Header className="d-flex justify-content-between align-items-center border-0" style={{
           background: 'linear-gradient(135deg, #82e594 0%, #6be72d 100%)',
           borderRadius: '16px 16px 0 0', padding: '16px 20px',

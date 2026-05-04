@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { Clinic } from '@/types/Clinic'
 import { Shelter } from '@/types/Shelter'
 
-const CACHE_DURATION = 5 * 60 * 1000  // 5 دقايق
+const CACHE_DURATION = 5 * 60 * 1000  
 
 interface CacheEntry<T> {
   data: T

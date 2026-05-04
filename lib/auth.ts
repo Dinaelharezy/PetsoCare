@@ -366,5 +366,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error:  "/login",
   },
 
-  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
+  // session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
+ session: { 
+    strategy: "jwt", 
+    maxAge: 24 * 60 * 60,  
+  },
+  
+  
+  jwt: {
+    maxAge: 24 * 60 * 60,  
+  },
+
+  
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 24 * 60 * 60, // 24 ساعة
+      },
+    },
+
+  },
 });

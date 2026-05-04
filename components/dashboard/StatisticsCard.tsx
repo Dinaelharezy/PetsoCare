@@ -1,186 +1,4 @@
 
-
-// 'use client'
-
-// import { Card, Row, Col, Table, Badge } from 'react-bootstrap'
-// import { useEffect, useState } from 'react'
-
-// interface UserVaccineData {
-//   userId: string
-//   taken: number
-//   pending: number
-//   risk: string | null
-//   needsRIG: boolean | null
-//   name: string
-// }
-
-// interface GlobalStats {
-//   totalUsers: number
-//   totalDoses: number
-//   takenDoses: number
-//   highRisk: number
-//    name: string
-// }
-
-// export default function StatisticsCard() {
-//   const [users, setUsers] = useState<UserVaccineData[]>([])
-//   const [stats, setStats] = useState<GlobalStats | null>(null)
-//   const [loading, setLoading] = useState(true)
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const res = await fetch('/api/admin/vaccine/users')
-//         const data = await res.json()
-//         setUsers(data.users || [])
-//         setStats(data.stats || null)
-//       } catch (err) {
-//         console.error('Error fetching stats:', err)
-//       } finally {
-//         setLoading(false)
-//       }
-//     }
-
-//     fetchData()
-//   }, [])
-
-//   if (loading) {
-//     return (
-//       <Card className="h-100 animate-card">
-//         <Card.Body>
-//           <div className="text-center py-4">Loading statistics...</div>
-//         </Card.Body>
-//       </Card>
-//     )
-//   }
-
-//   return (
-//     <Card className="h-100 animate-card">
-//       <Card.Body>
-//         <h5 className="card-title mb-4">📊 Vaccine Statistics</h5>
-
-//         {/* الإحصائيات العامة */}
-//         <Row className="g-3 mb-4">
-//           <Col md={3} sm={6}>
-//             <div className="stat-card text-center p-3 rounded-3 bg-light">
-//               <div className="stat-label text-muted small">Total Users</div>
-//               <div className="stat-value fw-bold fs-2 text-primary">
-//                 {stats?.totalUsers ?? 0}
-//               </div>
-//             </div>
-//           </Col>
-
-//           <Col md={3} sm={6}>
-//             <div className="stat-card text-center p-3 rounded-3 bg-light">
-//               <div className="stat-label text-muted small">Total Doses</div>
-//               <div className="stat-value fw-bold fs-2 text-info">
-//                 {stats?.totalDoses ?? 0}
-//               </div>
-//             </div>
-//           </Col>
-
-//           <Col md={3} sm={6}>
-//             <div className="stat-card text-center p-3 rounded-3 bg-light">
-//               <div className="stat-label text-muted small">Taken Doses</div>
-//               <div className="stat-value fw-bold fs-2 text-success">
-//                 {stats?.takenDoses ?? 0}
-//               </div>
-//             </div>
-//           </Col>
-
-//           <Col md={3} sm={6}>
-//             <div className="stat-card text-center p-3 rounded-3 bg-light">
-//               <div className="stat-label text-muted small">High Risk Users</div>
-//               <div className="stat-value fw-bold fs-2 text-danger">
-//                 {stats?.highRisk ?? 0}
-//               </div>
-//             </div>
-//           </Col>
-//         </Row>
-
-//         {/* جدول المستخدمين */}
-//         <h6 className="mb-3 mt-4">📋 Users Vaccine Status</h6>
-//         <div className="table-responsive">
-//           <Table striped hover className="align-middle">
-//             <thead className="table-light">
-//               <tr>
-//                 <th>User ID</th>
-//                 <th>Taken Doses</th>
-//                 <th>Pending Doses</th>
-//                 <th>Risk Status</th>
-//                 <th>Needs RIG</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {users.map((user) => (
-//                 <tr key={user.userId}>
-//                   <td className="fw-semibold">{user.userId}</td>
-//                   <td>
-//                     <Badge bg="success" className="px-3 py-2 rounded-pill">
-//                       ✓ {user.taken}
-//                     </Badge>
-//                   </td>
-//                   <td>
-//                     <Badge bg="success" className="px-3 py-2 rounded-pill">
-//                       ✓ {user.name}
-//                     </Badge>
-//                   </td>
-//                   <td>
-//                     <Badge bg="warning" className="px-3 py-2 rounded-pill">
-//                       ⏳ {user.pending}
-//                     </Badge>
-//                   </td>
-//                   <td>
-//                     {user.risk ? (
-//                       <Badge bg="danger" className="px-3 py-2 rounded-pill">
-//                         ⚠️ {user.risk}
-//                       </Badge>
-//                     ) : (
-//                       <Badge bg="secondary" className="px-3 py-2 rounded-pill">
-//                         Low Risk
-//                       </Badge>
-//                     )}
-//                   </td>
-//                   <td>
-//                     {user.needsRIG ? (
-//                       <Badge bg="danger" className="px-3 py-2 rounded-pill">
-//                         Needs RIG
-//                       </Badge>
-//                     ) : (
-//                       <Badge bg="secondary" className="px-3 py-2 rounded-pill">
-//                         No RIG
-//                       </Badge>
-//                     )}
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </Table>
-//         </div>
-
-//         {/* Progress bar للإنجاز الكلي */}
-//         {stats && (
-//           <div className="mt-4">
-//             <div className="d-flex justify-content-between mb-1 small">
-//               <span>Overall Completion Rate</span>
-//               <span className="fw-bold">
-//                 {Math.round((stats.takenDoses / stats.totalDoses) * 100)}%
-//               </span>
-//             </div>
-//             <div className="progress" style={{ height: '8px' }}>
-//               <div
-//                 className="progress-bar bg-success"
-//                 style={{
-//                   width: `${(stats.takenDoses / stats.totalDoses) * 100}%`,
-//                 }}
-//               />
-//             </div>
-//           </div>
-//         )}
-//       </Card.Body>
-//     </Card>
-//   )
-// }
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -231,11 +49,10 @@ export default function StatisticsCard() {
     { label: 'Total Users',     value: stats?.totalUsers ?? 0,  color: '#6366f1', bg: '#eef2ff', icon: '👥' },
     { label: 'Total Doses',     value: stats?.totalDoses ?? 0,  color: '#0ea5e9', bg: '#e0f2fe', icon: '💉' },
     { label: 'Taken Doses',     value: stats?.takenDoses ?? 0,  color: '#22c55e', bg: '#dcfce7', icon: '✅' },
-    { label: 'High Risk Users', value: stats?.highRisk ?? 0,    color: '#ef4444', bg: '#fee2e2', icon: '⚠️' },
   ]
 
   return (
-    <div style={s.card}>
+    <div style={s.card } >
 
       {/* ── Header ── */}
       <div style={s.header}>
@@ -432,11 +249,16 @@ export default function StatisticsCard() {
 // ── Styles ──────────────────────────────────────────────────────────────
 const s: Record<string, React.CSSProperties> = {
   card: {
-    background: '#fff',
-    borderRadius: 20,
-    padding: '28px 32px',
-    boxShadow: '0 4px 32px rgba(0,0,0,0.07)',
-    border: '1px solid #f0f0f0',
+     background: '#fff',
+  borderRadius: 20,
+  padding: '28px 32px',
+  boxShadow: '0 4px 32px rgba(0,0,0,0.07)',
+  border: '1px solid #f0f0f0',
+  height: '100%',
+  maxHeight: 600,
+  overflowY: 'auto',
+  display: 'flex',
+  flexDirection: 'column', 
   },
   header: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24,
@@ -470,7 +292,7 @@ const s: Record<string, React.CSSProperties> = {
     fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8',
     textTransform: 'uppercase', letterSpacing: '0.06em',
   },
-  tableBody: { display: 'flex', flexDirection: 'column', gap: 0 },
+ tableBody: { display: 'flex', flexDirection: 'column', gap: 0 },
   tableRow: {
     display: 'flex', alignItems: 'center', padding: '12px 16px',
     cursor: 'pointer', transition: 'background 0.15s', borderRadius: 0,

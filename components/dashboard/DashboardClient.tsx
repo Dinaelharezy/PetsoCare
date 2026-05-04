@@ -12,6 +12,7 @@ import ShelterManagementDash from './Management/ShelterManagementDash'
 import VaccineLocationsManagement from './Management/VaccineLocationsManagement'
 import VideoManagementDash from './Management/VideoManagementDash'
 import RatingStatsCard from '../Rating/RatingStatsCard'
+import ManagementActionsSection from './Management/ArticleManagemenrDash' 
 export default function DashboardClient() {
   return (
     <>
@@ -21,21 +22,32 @@ export default function DashboardClient() {
           <h1 className="page-title">Admin Dashboard</h1>
         </div>
 
-        {/* Top Row: Notifications and Statistics */}
-        <Row className="g-4 mb-5">
-          <Col lg={6}>
-            <RatingStatsCard />
-          </Col>
-          <Col lg={6}>
-            <StatisticsCard />
-          </Col>
-          <Col lg={6}>
-           <ReportManagement />
-          </Col>
-        </Row>
+        {/* Top Row: Report and Statistics */}
+  
+
+    <Row className="g-4 mb-5">
+  <Col lg={6}>
+    <ReportManagement /> 
+  </Col>
+  <Col lg={6}>
+    <StatisticsCard />
+  </Col>
+      </Row>
+
+          {/* * Rating  */}
+
+<Row className="g-4 mb-5">
+  <Col lg={12}>
+    <RatingStatsCard />
+  </Col>
+</Row>
+
+
+
+
 
         {/* Bottom Row: Action Sections */}
-        <Row className="g-">
+        {/* <Row className="g-">
           <Col lg={4}>
             <ArticleManagementDash />
           </Col>
@@ -54,7 +66,13 @@ export default function DashboardClient() {
           <Col lg={4}>
             <VideoManagementDash />
           </Col>
-        </Row>
+        </Row> */}
+
+        <div className="mb-4">
+          <h5 className="fw-bold mb-2" style={{ color: '#0f172a' }}>⚡ Management Actions</h5>
+          <p className="text-muted small mb-4">Open and manage all admin dashboard tools</p>
+          <ManagementActionsSection />
+        </div>
       </Container>
     </>
   )

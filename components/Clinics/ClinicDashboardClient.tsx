@@ -174,14 +174,14 @@ export default function ClinicDashboardClient() {
                   <div className="d-flex justify-content-between align-items-start gap-3">
                     <div style={{ minWidth: 0 }}>
                       <div className="d-flex align-items-center gap-2 flex-wrap">
-                        <span className="cd-name">{appt.patientName}</span>
+                        <span className="cd-name">{appt.customerName}</span>
                         <span className="cd-pill" style={{ background: cfg.bg, color: cfg.textColor }}>
                           <span className="cd-dot" style={{ background: cfg.color }}></span>
                           {appt.status}
                         </span>
                       </div>
                       <div className="cd-meta">
-                        <span><i className="bi bi-telephone"></i>{appt.patientPhone}</span>
+                        <span><i className="bi bi-telephone"></i>{appt.phone}</span>
                         <span><i className="bi bi-calendar3"></i>{appt.date}</span>
                         <span><i className="bi bi-clock"></i>{appt.time}</span>
                       </div>
