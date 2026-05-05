@@ -6,7 +6,7 @@ const API = process.env.NEXT_PUBLIC_API_URL
 // PUT /api/admin/locations/{id}
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session)
@@ -33,7 +33,7 @@ export async function PUT(
 // DELETE /api/admin/locations/{id}
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth()
   if (!session)

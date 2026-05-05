@@ -42,7 +42,7 @@ const API = process.env.NEXT_PUBLIC_API_URL
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()

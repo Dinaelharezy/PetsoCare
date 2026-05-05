@@ -8,7 +8,7 @@ const ALLOWED_ACTIONS = ['seen', 'approve', 'reject', 'in-progress', 'done']
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string; action: string } }
+  { params }: { params: Promise<{ id: string ; action: string }> }
 ) {
   const { id, action } = await params
 

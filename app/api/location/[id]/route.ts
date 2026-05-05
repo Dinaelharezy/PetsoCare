@@ -6,10 +6,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 // DELETE /api/location/{id}
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
 
     const res = await fetch(`${BASE_URL}/api/location/${id}`, {
       method: 'DELETE',
