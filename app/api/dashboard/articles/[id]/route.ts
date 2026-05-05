@@ -235,44 +235,19 @@ export async function DELETE(
   return NextResponse.json({ success: true });
 }
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = await auth() // 👈
-  const { id } = await params;
-  const formData = await request.formData();
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${id}/image`,
-    {
-      method: "POST",
-      headers: { 
-        "ngrok-skip-browser-warning": "true",
-        "Authorization": `Bearer ${session?.user?.accessToken ?? ''}`, // 👈
-      },
-      body: formData,
-    }
-  );
-
-  if (!response.ok) {
-    const text = await response.text();
-    return NextResponse.json({ error: text }, { status: response.status });
-  }
-
-  return NextResponse.json({ success: true });
-}
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+{ params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params
   try {
     const { searchParams } = new URL(request.url);
     const lang = searchParams.get("lang") ?? "en";
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${params.id}?lang=${lang}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${id}?lang=${lang}`,
       {
         headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",
