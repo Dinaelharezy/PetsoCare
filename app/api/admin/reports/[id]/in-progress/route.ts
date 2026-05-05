@@ -2,11 +2,11 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 
-export async function PUT(_req: Request, { params }: { params: { id: string } }) {
+export async function PUT(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
-
+ const { id } = await params
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${params.id}/in-progress`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${id}/in-progress`,
     {
       method: 'PUT',
       headers: {
