@@ -2,7 +2,6 @@
 
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
-import veterinaryData from '@/data/knowledge/veterinary-diseases.json'
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
