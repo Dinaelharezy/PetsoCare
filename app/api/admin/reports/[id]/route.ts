@@ -20,15 +20,16 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   return NextResponse.json(data)
 }
 
-// ✅ أضيفي ده
+
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const session = await auth()
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${params.id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${id}`,
     {
       method: 'GET',
       headers: {
