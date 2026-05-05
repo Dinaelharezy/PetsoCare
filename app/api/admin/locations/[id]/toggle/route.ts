@@ -50,7 +50,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const backendUrl = `${API}/api/admin/locations/${id}/toggle`
 
     const res = await fetch(backendUrl, {

@@ -256,31 +256,7 @@ export default function VaccinationLocations() {
         </p>
       )}
 
-      {/* ── Map Button ── */}
-      <div className="mt-4 text-center">
-        <button
-          style={{
-            background: '#fff',
-            border: '1.5px solid #dee2e6',
-            borderRadius: '10px',
-            padding: '10px 28px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#f8f9fa'
-            e.currentTarget.style.borderColor = '#198754'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#fff'
-            e.currentTarget.style.borderColor = '#dee2e6'
-          }}
-          onClick={() => alert('Map view coming soon')}
-        >
-          🗺️ View All Locations on Map
-        </button>
-      </div>
+    
     </Container>
   )
 }
