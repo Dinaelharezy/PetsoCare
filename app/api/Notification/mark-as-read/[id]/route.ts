@@ -47,14 +47,14 @@ import { auth } from '@/lib/auth'
 
 export async function POST(
   _request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { params } = context
+  const { id } = await params
 
   const session = await auth()
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/Notification/mark-as-read/${params.id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/Notification/mark-as-read/${id}`,
     {
       method: 'POST',
       headers: {
