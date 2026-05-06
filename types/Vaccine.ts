@@ -7,6 +7,8 @@ export interface Vaccine {
   vaccineType?:     string  
   exposureCategory?: string  
   startDate?:       string   
+   victimType?: string   
+  animalType?: string
 }
 
 export interface CreateVaccineDto {
@@ -16,14 +18,18 @@ export interface CreateVaccineDto {
   exposureCategory: string
   startDate:        string   // ISO string
   reminder:         boolean
+  victimType?: string
+  animalType?: string
 }
 
 export interface CreateCustomVaccineDto {
-  name:      string
-  pet:       string
-  doseDays:  number[]
-  startDate: string
-  reminder:  boolean
+  name:       string
+  pet:        string
+  doseDays:   number[]
+  startDate:  string
+  reminder:   boolean
+  victimType?: string  // ← زود
+  animalType?: string  // ← زود
 }
 
 export interface TakeDoseDto {

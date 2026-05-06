@@ -49,6 +49,7 @@ const handleSave = async () => {
     pet:       pet.trim(),
     startDate: new Date(startDate).toISOString(),
     reminder:  true,
+    victimType: 'human',
   })
 
   if (ok) {

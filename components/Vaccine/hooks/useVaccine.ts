@@ -85,48 +85,47 @@ export function useVaccine() {
   const addVaccine = createVaccine
 
   // ── POST /api/vaccine  ── from schedule
-  const addVaccineFromSchedule = useCallback(
-    async (
-      schedule: VaccSchedule,
-      opts: { pet: string; startDate: string; reminder?: boolean },
-    ): Promise<boolean> => {
-      setSubmitting(true)
-      setError(null)
-      try {
-        const dto: CreateVaccineDto = {
-          name:             schedule.title,
-          pet:              opts.pet,
-          vaccineType:      schedule.id,
-          exposureCategory: '',
-          startDate:        opts.startDate,
-          reminder:         opts.reminder ?? false,
-        }
-       const res = await fetch('/api/vaccine/custom', {   // ← custom مش /api/vaccine
-  method:  'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body:    JSON.stringify({
-    name:      schedule.title,
-    pet:       opts.pet,
-    doseDays:  buildDoseDays(schedule),
-    startDate: opts.startDate,
-    reminder:  opts.reminder ?? false,
-  }),
-})
-        const text = await res.text()
-        const data = text ? JSON.parse(text) : {}
-        if (!res.ok) throw new Error(data.message ?? 'Failed to save schedule')
-        await fetchVaccines()   // refresh list
-        return true
-      } catch (e: any) {
-        setError(e.message)
-        return false
-      } finally {
-        setSubmitting(false)
-      }
+const addVaccineFromSchedule = useCallback(
+  async (
+    schedule: VaccSchedule,
+    opts: { 
+      pet: string
+      startDate: string
+      reminder?: boolean
+      victimType?: string  // ← زود
+      animalType?: string  // ← زود
     },
-    [fetchVaccines],
-  )
-
+  ): Promise<boolean> => {
+    setSubmitting(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/vaccine/custom', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          name:       schedule.title,
+          pet:        opts.pet,
+          doseDays:   buildDoseDays(schedule),
+          startDate:  opts.startDate,
+          reminder:   opts.reminder ?? false,
+        victimType: opts.victimType?.toLowerCase(),  // ← lowercase
+          animalType: opts.animalType?.toLowerCase(),
+        }),
+      })
+      const text = await res.text()
+      const data = text ? JSON.parse(text) : {}
+      if (!res.ok) throw new Error(data.message ?? 'Failed to save schedule')
+      await fetchVaccines()
+      return true
+    } catch (e: any) {
+      setError(e.message)
+      return false
+    } finally {
+      setSubmitting(false)
+    }
+  },
+  [fetchVaccines],
+)
 
 
   // ── POST /api/vaccine/take ──
