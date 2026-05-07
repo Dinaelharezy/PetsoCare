@@ -34,17 +34,20 @@ export function useVaccine() {
     const data = text ? JSON.parse(text) : {}
     console.log (data)
     if (!res.ok) throw new Error(data.message ?? 'Failed to fetch vaccines')
-
-    // ← map الـ doses للـ Vaccine shape
     const doses = Array.isArray(data.doses) ? data.doses : []
-    const mapped: Vaccine[] = doses.map((d: any) => ({
-      id:        d.id,
-    name: d.name ?? 'Vaccine',
-      pet:       d.petName     ?? '',
-      reminder:  false,
-      completed: d.isTaken     ?? false,
-      startDate: d.date,
-    }))
+  const mapped: Vaccine[] = doses.map((d: any) => ({
+  id:               d.id,
+  userName:         d.userName        ?? '',
+  vaccineName:      d.vaccineName     ?? '',
+  pet:              d.pet             ?? '',
+  reminder:         false,
+  completed:        d.isTaken         ?? false,
+  startDate:        d.date,
+  vaccineType:      d.vaccineType     ?? '',
+  victimType:       d.victimType      ?? '',
+  animalType:       d.animalType      ?? '',
+  exposureCategory: d.exposureCategory ?? '',
+}))
     setVaccines(mapped)
   } catch (e: any) {
     setError(e.message)

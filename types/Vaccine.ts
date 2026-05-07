@@ -1,18 +1,19 @@
 export interface Vaccine {
   id: string
   pet: string
-  name: string
+  userName: string
   reminder: boolean
   completed: boolean
   vaccineType?:     string  
   exposureCategory?: string  
   startDate?:       string   
-   victimType?: string   
+  victimType?: string   
   animalType?: string
+  vaccineName?: string
 }
 
 export interface CreateVaccineDto {
-  name:             string
+  userName:             string
   pet:              string
   vaccineType:      string
   exposureCategory: string
@@ -20,6 +21,7 @@ export interface CreateVaccineDto {
   reminder:         boolean
   victimType?: string
   animalType?: string
+  vaccineName?: string
 }
 
 export interface CreateCustomVaccineDto {
@@ -28,8 +30,9 @@ export interface CreateCustomVaccineDto {
   doseDays:   number[]
   startDate:  string
   reminder:   boolean
-  victimType?: string  // ← زود
-  animalType?: string  // ← زود
+  victimType?: string  
+  animalType?: string  
+  userName:             string
 }
 
 export interface TakeDoseDto {
@@ -48,18 +51,4 @@ export interface UpdateVaccineDto {
   reminder?:        boolean
 }
 
-export interface TakeDoseDto {
-  id:       string
-  date?:    string   // ISO — defaults to now
-  reminder?: boolean
-}
 
-export interface UpdateVaccineDto {
-  id:               string
-  name?:            string
-  pet?:             string
-  vaccineType?:     string
-  exposureCategory?: string
-  startDate?:       string
-  reminder?:        boolean
-}

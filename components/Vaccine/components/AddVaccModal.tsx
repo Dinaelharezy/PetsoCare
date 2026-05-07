@@ -343,24 +343,47 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
   }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setErr('')
-    if (!name || !pet || !vaccineType || !startDate) {
-      setErr('Please fill in all required fields.')
-      return
-    }
-    const ok = await onSubmit({
-      name,
-      pet,
-      vaccineType,
-      exposureCategory,
-      startDate: new Date(startDate).toISOString(),
-      reminder,
-      victimType: victimType || undefined,    // ← NEW
-      animalType: animalType || undefined,    // ← NEW
-    })
-    setShowRating(true)
+  e.preventDefault()
+  setErr('')
+  if (!name || !pet || !vaccineType || !startDate) {
+    setErr('Please fill in all required fields.')
+    return
   }
+
+  // لو animal → بعت لـ /api/vaccine/custom
+  if (victimType === 'animal') {
+    const res = await fetch('/api/vaccine/custom', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        pet,
+        doseDays:   [0],   // dose واحدة يوم 0
+        startDate:  new Date(startDate).toISOString(),
+        reminder,
+        victimType: 'animal',
+        animalType: animalType || undefined,
+        username : pet
+      }),
+    })
+    if (res.ok) setShowRating(true)
+    else setErr('Failed to add vaccine')
+    return
+  }
+
+  // human → نفس الـ flow القديم
+  const ok = await onSubmit({
+    name,
+    pet,
+    vaccineType,
+    exposureCategory,
+    startDate: new Date(startDate).toISOString(),
+    reminder,
+    victimType: victimType || undefined,
+    animalType: animalType || undefined,
+  })
+  setShowRating(true)
+}
 
   return (
     <Modal show={show} onHide={onClose} centered>

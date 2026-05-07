@@ -125,12 +125,12 @@ export default function VideoPage() {
       <style jsx>{`
         .videos-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f5fce8 0%, #e8f5e0 100%);
+         background: linear-gradient(135deg, #f9f9f9 0%, #e9f3e3 100%);
           direction: rtl;
         }
 
         .hero-section {
-          background: linear-gradient(135deg, #f5fce8 0%, #d3e8c6 100%);
+             background: linear-gradient(135deg, #f9f9f9 0%, #e9f3e3 100%);
           padding: 60px 24px;
           text-align: center;
         }

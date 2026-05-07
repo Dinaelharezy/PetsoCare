@@ -749,8 +749,8 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
               style={{ padding: '12px 16px', borderRadius: 12, border: '1px solid #eee', background: '#fff', marginBottom: 8 }}
             >
               <div style={{ flex: 1 }}>
-                <div className="fw-semibold mb-1 fs-6">{vaccine.name}</div>
-                <div className="text-muted small mb-1">{vaccine.startDate ? `on ${formatDate(vaccine.startDate)}` : ''}</div>
+                <div className="fw-semibold mb-1 fs-6">{vaccine.vaccineName}</div>
+                <div className="text-muted small mb-1">for {vaccine.userName} {vaccine.startDate ? `on ${formatDate(vaccine.startDate)}` : ''}</div>
                 <div className="d-flex flex-wrap gap-2 mt-1">
                   {vaccine.victimType && (
                     <span style={{

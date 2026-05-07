@@ -87,15 +87,8 @@ const MANAGEMENT_ACTIONS: ManagementAction[] = [
     subtitle: 'Manage areas and vaccination locations',
     icon: 'bi bi-geo-alt-fill',
     color: '#8b5cf6', // primary color
-    route: '/admin/locations'
+    route: '/admin/vaccine'
   },
-  {
-    title: 'Reports Management',
-    subtitle: 'Review, approve, reject, and track user reports',
-    icon: 'bi bi-clipboard-check',
-    color: '#ef4444', // error color
-    route: '/admin/reports'
-  }
 ]
 
 export default function ManagementActionsSection() {
