@@ -23,17 +23,7 @@ import {
   isLocationActive,
   formToPayload,
 } from '../../types/VaccLocation'
-
-const LOCATION_TYPES = [
-  { val: '1', label: 'Area' },
-  { val: '2', label: 'Location' },
-]
-
-const SERVICE_TYPES = [
-  { val: '0', label: '—' },
-  { val: '1', label: 'Human Rabies Prevention' },
-  { val: '2', label: 'Animal Rabies Prevention' },
-]
+import { LOCATION_TYPES,SERVICE_TYPES } from '../../types/VaccLocation'
 
 export default function DashboardVaccineLocations() {
   const [locations, setLocations]       = useState<VaccLocation[]>([])

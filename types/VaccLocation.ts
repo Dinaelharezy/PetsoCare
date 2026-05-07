@@ -92,4 +92,17 @@ export function formToPayload(form: VaccLocationForm): Record<string, unknown> {
     serviceType:     Number(form.serviceType),
     providesVaccine: form.providesVaccine,
   }
-}
+} 
+
+// _____________________________
+
+export const LOCATION_TYPES = [
+  { val: '1', label: 'Area' },
+  { val: '2', label: 'Location' },
+]
+
+export const SERVICE_TYPES = [
+  { val: '0', label: '—' },
+  { val: '1', label: 'Human Rabies Prevention' },
+  { val: '2', label: 'Animal Rabies Prevention' },
+]
