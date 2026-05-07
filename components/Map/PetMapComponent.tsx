@@ -125,7 +125,7 @@ function buildDangerZones(
 
 // ── component ──────────────────────────────────────────────────────────────
 export default function PetMap({ onSelectLocation, allowPinDrop = false, currentUserId }: Props) {
-  const mapRef         = useRef<HTMLDivElement>(null)
+ const mapRef = useRef<HTMLDivElement & { _leaflet_id?: number }>(null)
   const modalMapRef    = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const modalMapInst   = useRef<any>(null)
@@ -286,7 +286,7 @@ export default function PetMap({ onSelectLocation, allowPinDrop = false, current
     const L   = (window as any).L
 
     // ✅ guard: map must exist and be fully loaded
-    // if (!map || !L || !map._loaded) return
+  
     if (!map || !L || !(map as any)._loaded) return;
 
     // clear old markers
