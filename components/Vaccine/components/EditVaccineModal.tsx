@@ -46,7 +46,7 @@ export default function EditVaccineModal({ show, vaccine, onClose, onUpdate, sub
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title className="fw-bold">Edit Vaccine: {vaccine.name}</Modal.Title>
+        <Modal.Title className="fw-bold">Edit Vaccine: {vaccine.vaccineName}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {err && <Alert variant="danger">{err}</Alert>}
