@@ -36,7 +36,8 @@ export interface VaccLocation {
   address:          string
   phone:            string
   serviceType:      number    // 0 | 1 | 2
-  status:           string    // "true" | "false"
+  status:           string  
+  isActive?:        boolean  // "true" | "false"
   providesVaccine?: boolean
 }
 
