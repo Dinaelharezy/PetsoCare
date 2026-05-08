@@ -1,5 +1,4 @@
-import MapComponent from "@/components/Mapp";
-import AnimalProfile from "@/components/petprofilee/AnimalProfile";
+
 import Image from "next/image";  
 import PersonProfile from "./main/PersonProfile/page";
 import HomePage from "./main/Home/page";
