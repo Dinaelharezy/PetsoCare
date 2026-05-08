@@ -2,35 +2,11 @@
 'use client'
 import { Clinic } from '../../types/Clinic'
 import Link from 'next/link'
-
+import { getImageSrc } from '@/utils/imageUtils'
 interface ClinicsCardProps {
   Clinic: Clinic
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
-
-export const getImageSrc = (src?: string): string | null => {
-  if (!src) return null
-
-  if (src.startsWith('http')) {
-    return `/api/image?url=${encodeURIComponent(src)}`
-  }
-
-  // ✅ أضف /images بحرف صغير
-  if (
-    src.startsWith('/Images') ||
-    src.startsWith('/images') ||
-    src.startsWith('/uploads') ||
-    src.startsWith('/api')
-  ) {
-    const full = BASE_URL ? `${BASE_URL}${src}` : src
-    return `/api/image?url=${encodeURIComponent(full)}`
-  }
-
-  if (src.startsWith('/')) return src
-
-  return null
-}
 
 export default function Card({ Clinic }: ClinicsCardProps) {
   return (
