@@ -126,11 +126,13 @@ export default function VaccinationAreas() {
         <span style={{ fontSize: '1.5rem' }}>✅</span>
         <div className="flex-grow-1">
           <div className="fw-semibold">{loc.name}</div>
+          <div className="fw-semibold">{loc.status}</div>
+          <div className="fw-semibold">{loc.phone}</div>
           {loc.address && (
             <div className="text-muted small mt-1">📍 {loc.address}</div>
           )}
-          {loc.note && (
-            <div className="text-muted small mt-1">{loc.note}</div>
+          {loc.governorate && (
+            <div className="text-muted small mt-1">{loc.governorate}</div>
           )}
           <div className="text-muted small mt-1">
             {SERVICE_TYPE_LABELS[loc.serviceType] ?? 'Campaign completed'}
