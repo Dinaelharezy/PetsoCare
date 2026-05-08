@@ -12,6 +12,51 @@ import { getImageSrc } from '../utils/imageUtils'
 import { useCheckDanger } from './Vaccine/Notification/hook/useCheckDanger'
 import { useAppStore } from '../store/Appstore'
 
+// ──── Icon Components ──────────────────────────────────────
+function CheckCircleIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  )
+}
+
+function MapPinIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  )
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  )
+}
+
+function ClockIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  )
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  )
+}
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 export const FALLBACK_CLINICS: Clinic[] = [
@@ -73,13 +118,29 @@ function SectionHeader({ title, href }: { title: string; href: string }) {
 
 function ClinicCard({ clinic }: { clinic: Clinic }) {
   return (
-    <Card
-      className="vet-card"
-      style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transition: 'transform 0.3s, box-shadow 0.3s', overflow: 'hidden', height: '100%' }}
-      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)' }}
-      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)' }}
+    <div
+      style={{
+        borderRadius: '16px',
+        border: '1px solid var(--card-border)',
+        backgroundColor: 'var(--card-bg)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+        transition: 'all 0.3s ease',
+        overflow: 'hidden',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-8px)'
+        e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.15)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)'
+      }}
     >
-      <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
+      {/* Image Section */}
+      <div style={{ height: '200px', overflow: 'hidden', backgroundColor: 'var(--bg-secondary)', position: 'relative' }}>
         {getImageSrc(clinic.imageUrl) ? (
           <img
             src={getImageSrc(clinic.imageUrl)!}
@@ -87,41 +148,78 @@ function ClinicCard({ clinic }: { clinic: Clinic }) {
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
           />
         ) : (
-          <div className="d-flex align-items-center justify-content-center h-100 bg-light">
-            <i className="bi bi-building text-secondary" style={{ fontSize: '4rem' }}></i>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-secondary)' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
           </div>
         )}
       </div>
-      <Card.Body style={{ padding: '20px' }}>
-        <h5 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '8px', color: '#333' }}>{clinic.name}</h5>
-        <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '15px' }}>{clinic.address}, {clinic.governorate}</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '15px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFD700" strokeWidth="2" />
-            </svg>
-            <span style={{ color: '#666' }}>
-              <strong style={{ color: '#333' }}>{clinic.phone}</strong>&nbsp;|&nbsp;{clinic.bookingPrice} EGP
+
+      {/* Content Section */}
+      <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '8px', color: 'var(--text-primary)' }}>{clinic.name}</h3>
+
+        {/* Location */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', color: 'var(--text-secondary)', fontSize: '0.9rem', alignItems: 'flex-start' }}>
+          <MapPinIcon />
+          <span>{clinic.address}, {clinic.governorate}</span>
+        </div>
+
+        {/* Info Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', color: 'var(--text-secondary)' }}>
+            <PhoneIcon />
+            <span>{clinic.phone}</span>
+          </div>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', color: 'var(--text-secondary)' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--accent-color)', backgroundColor: 'var(--primary-light)', padding: '4px 8px', borderRadius: '6px' }}>
+              {clinic.bookingPrice} EGP
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#666' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#4CAF50" />
-              <circle cx="12" cy="9" r="2.5" fill="white" />
-            </svg>
-            <span>{clinic.workingDays} , {clinic.workingHours}</span>
+          <div style={{ display: 'flex', gap: '6px', alignItems: 'center', color: 'var(--text-secondary)', gridColumn: '1 / -1' }}>
+            <ClockIcon />
+            <span style={{ fontSize: '0.85rem' }}>{clinic.workingDays}</span>
+          </div>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', gridColumn: '1 / -1' }}>
+            {clinic.workingHours}
           </div>
         </div>
+
+        {/* Button */}
         <Link
           href={`/main/Home/${clinic.id}`}
-          passHref
-          className="font-for-app"
-          style={{ display: 'block', width: '100%', textAlign: 'center', textDecoration: 'none', padding: '10px', backgroundColor: 'rgb(189, 242, 149)', color: 'white', borderRadius: '8px', fontWeight: '500', transition: 'all 0.3s', marginTop: '1.5rem' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '12px 16px',
+            backgroundColor: 'var(--primary-color)',
+            color: 'white',
+            borderRadius: '10px',
+            fontWeight: '600',
+            fontSize: '0.95rem',
+            textDecoration: 'none',
+            transition: 'all 0.3s ease',
+            marginTop: 'auto',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'var(--primary-dark)'
+            ;(e.target as HTMLElement).style.transform = 'translateX(2px)'
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'var(--primary-color)'
+            ;(e.target as HTMLElement).style.transform = 'translateX(0)'
+          }}
         >
-          View Clinic
+          View Details <ArrowRightIcon />
         </Link>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -193,41 +291,112 @@ Responsible pet care protects both animals and humans from rabies infection.
 
 function ArticleCard({ article }: { article: Article }) {
   return (
-    <Card
-      style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.08)', transition: 'transform 0.3s, box-shadow 0.3s', overflow: 'hidden', height: '100%' }}
-      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)' }}
-      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.08)' }}
+    <div
+      style={{
+        borderRadius: '16px',
+        border: '1px solid var(--card-border)',
+        backgroundColor: 'var(--card-bg)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+        transition: 'all 0.3s ease',
+        overflow: 'hidden',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-8px)'
+        e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.15)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)'
+      }}
     >
-      <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
+      {/* Image Section */}
+      <div style={{ height: '200px', overflow: 'hidden', backgroundColor: 'var(--bg-secondary)', position: 'relative' }}>
         {getImageSrc(article.imageUrl) ? (
           <img
             src={getImageSrc(article.imageUrl)!}
             alt={article.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           />
         ) : (
-          <div className="d-flex align-items-center justify-content-center h-100 bg-light">
-            <i className="bi bi-building text-secondary" style={{ fontSize: '4rem' }}></i>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-secondary)' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5" />
+            </svg>
           </div>
         )}
-        <span style={{ position: 'absolute', top: '12px', left: '12px', background: 'rgba(92,184,92,0.92)', color: '#fff', fontSize: '0.75rem', fontWeight: '600', padding: '4px 10px', borderRadius: '20px' }}>
+        {/* Category Badge */}
+        <span
+          style={{
+            position: 'absolute',
+            top: '12px',
+            left: '12px',
+            background: 'var(--primary-color)',
+            color: 'white',
+            fontSize: '0.7rem',
+            fontWeight: '700',
+            padding: '6px 12px',
+            borderRadius: '20px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}
+        >
           {article.category}
         </span>
       </div>
-      <Card.Body style={{ padding: '20px' }}>
-        <p style={{ color: '#aaa', fontSize: '0.8rem', marginBottom: '8px' }}>
-          {new Date(article.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+
+      {/* Content Section */}
+      <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {/* Date */}
+        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: '500' }}>
+          {new Date(article.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+        </span>
+
+        {/* Title */}
+        <h3 style={{ fontSize: '1.15rem', fontWeight: '700', marginBottom: '12px', color: 'var(--text-primary)', lineHeight: '1.4' }}>
+          {article.title}
+        </h3>
+
+        {/* Summary */}
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '16px', flex: 1 }}>
+          {article.summary}
         </p>
-        <h5 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '10px', color: '#222' }}>{article.title}</h5>
-        <p style={{ color: '#666', fontSize: '0.88rem', lineHeight: '1.6', marginBottom: '20px' }}>{article.summary}</p>
+
+        {/* Button */}
         <Link
           href={`/main/Articles/${article.id}`}
-          style={{ display: 'block', width: '100%', textAlign: 'center', textDecoration: 'none', padding: '10px', backgroundColor: 'rgb(189, 242, 149)', color: 'white', borderRadius: '8px', fontWeight: '500', transition: 'all 0.3s' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            padding: '12px 16px',
+            backgroundColor: 'var(--primary-color)',
+            color: 'white',
+            borderRadius: '10px',
+            fontWeight: '600',
+            fontSize: '0.95rem',
+            textDecoration: 'none',
+            transition: 'all 0.3s ease',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'var(--primary-dark)'
+            ;(e.target as HTMLElement).style.transform = 'translateX(2px)'
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'var(--primary-color)'
+            ;(e.target as HTMLElement).style.transform = 'translateX(0)'
+          }}
         >
-          Read Article
+          Read More <ArrowRightIcon />
         </Link>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -319,86 +488,334 @@ export default function HomePage() {
   const previewArticles = (articles.length > 0 ? articles : FALLBACK_ARTICLES).slice(0, 3)
 
   return (
-    <div className="vet-finder-page">
+    <div style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      {/* Hero Section */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, var(--primary-light) 0%, rgba(168, 230, 163, 0.2) 100%)',
+          padding: '60px 20px',
+          marginBottom: '60px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Decorative Elements */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-50px',
+            right: '-100px',
+            width: '300px',
+            height: '300px',
+            backgroundColor: 'var(--primary-color)',
+            borderRadius: '50%',
+            opacity: 0.1,
+            zIndex: 0,
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '-80px',
+            left: '-100px',
+            width: '250px',
+            height: '250px',
+            backgroundColor: 'var(--accent-color)',
+            borderRadius: '50%',
+            opacity: 0.08,
+            zIndex: 0,
+          }}
+        />
 
-      {/* Hero Carousel */}
-      <div className="hero-carousel-wrapper" style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
-        <div className="position-relative" style={{ height: '400px', borderRadius: '20px', overflow: 'hidden', boxShadow: '40px 10px 30px 30px rgba(0,0,0,0.1)' }}>
-          {slides.map((slide, index) => (
-            <div key={index} className="position-absolute w-100 h-100" style={{ opacity: index === currentSlide ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
-              <img src={slide.image} alt={slide.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%' }} />
-              <div className="position-absolute w-100 h-100" style={{ top: 0, left: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5))' }} />
-              <div className="position-absolute w-100 text-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', padding: '0 40px' }}>
-                <h1 style={{ fontSize: '2.5rem', fontWeight: '600', marginBottom: '20px', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>{slide.title}</h1>
-                <p className="font-for-app" style={{ fontSize: '1.5rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6', opacity: '0.95' }}>{slide.subtitle}</p>
+        <Container style={{ maxWidth: '1200px', position: 'relative', zIndex: 1 }}>
+          <Row alignItems="center" style={{ gap: '40px' }}>
+            <Col lg={6}>
+              <h1 style={{ fontSize: '2.8rem', fontWeight: '700', marginBottom: '20px', color: 'var(--text-primary)', lineHeight: '1.2' }}>
+                Care for Your Pets with Confidence
+              </h1>
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.7' }}>
+                Connect with trusted veterinary clinics, track vaccination schedules, and access expert pet care resources—all in one place.
+              </p>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                <Link
+                  href="/main/Clinics"
+                  style={{
+                    padding: '14px 32px',
+                    backgroundColor: 'var(--primary-color)',
+                    color: 'white',
+                    borderRadius: '10px',
+                    fontWeight: '600',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.target as HTMLElement).style.backgroundColor = 'var(--primary-dark)'
+                    ;(e.target as HTMLElement).style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.target as HTMLElement).style.backgroundColor = 'var(--primary-color)'
+                    ;(e.target as HTMLElement).style.transform = 'translateY(0)'
+                  }}
+                >
+                  Find a Clinic <ArrowRightIcon />
+                </Link>
+                <Link
+                  href="/main/Articles"
+                  style={{
+                    padding: '14px 32px',
+                    backgroundColor: 'white',
+                    color: 'var(--primary-color)',
+                    borderRadius: '10px',
+                    fontWeight: '600',
+                    textDecoration: 'none',
+                    transition: 'all 0.3s ease',
+                    border: '2px solid var(--primary-color)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.target as HTMLElement).style.backgroundColor = 'var(--primary-light)'
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.target as HTMLElement).style.backgroundColor = 'white'
+                  }}
+                >
+                  Learn More
+                </Link>
               </div>
-            </div>
-          ))}
-          <button onClick={prevSlide} className="position-absolute" style={{ left: '20px', top: '50%', transform: 'translateY(-50%)', width: '50px', height: '50px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.9)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </button>
-          <button onClick={nextSlide} className="position-absolute" style={{ right: '20px', top: '50%', transform: 'translateY(-50%)', width: '50px', height: '50px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.9)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </button>
-          <div className="position-absolute d-flex gap-2" style={{ bottom: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
-            {slides.map((_, index) => (
-              <button key={index} onClick={() => setCurrentSlide(index)} style={{ width: index === currentSlide ? '30px' : '10px', height: '10px', borderRadius: '5px', border: 'none', background: index === currentSlide ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)', cursor: 'pointer', transition: 'all 0.3s' }} />
-            ))}
-          </div>
-        </div>
+            </Col>
+            <Col lg={6} style={{ textAlign: 'center', display: 'none', on: 'lg' }}>
+              <div
+                style={{
+                  background: 'var(--card-bg)',
+                  borderRadius: '20px',
+                  padding: '40px',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                }}
+              >
+                <CheckCircleIcon />
+              </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
 
-      {/* Search Section */}
-      <Container className="search-section" style={{ marginTop: '60px' }}>
-        <h2 className="section-title" style={{ fontSize: '2rem', fontWeight: '600', marginBottom: '40px', color: '#333' }}>
-          Find Your Perfect Clinic & Educate Yourself with Our Articles
+      {/* Features Grid Section */}
+      <Container style={{ maxWidth: '1200px', marginBottom: '80px' }}>
+        <h2 style={{ fontSize: '2.2rem', fontWeight: '700', textAlign: 'center', marginBottom: '50px', color: 'var(--text-primary)' }}>
+          Why Choose PetsoCare?
         </h2>
-        <div className="search-bar-container mx-auto" style={{ maxWidth: '800px' }}>
-          <div className="search-filters d-flex gap-3">
-            <Form.Select
-              className="filter-select flex-fill"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              style={{ padding: '12px 20px', borderRadius: '10px', border: '1px solid #ddd', fontSize: '1rem' }}
-            >
-              {locations.map((loc) => (<option key={loc} value={loc}>{loc}</option>))}
-            </Form.Select>
-          </div>
-        </div>
-      </Container>
-
-      {/* Clinics */}
-      <Container className="vets-section" style={{ marginTop: '60px', marginBottom: '60px' }}>
-        <SectionHeader title="Our Clinics" href="/main/Clinics" />
-        {loading ? (
-          <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
-          </div>
-        ) : previewClinics.length > 0 ? (
-          <Row className="g-5">
-            {previewClinics.map((clinic) => (
-              <Col lg={4} md={6} sm={12} key={clinic.id}><ClinicCard clinic={clinic} /></Col>
-            ))}
-          </Row>
-        ) : (
-          <div className="text-center py-5">
-            <h4 className="text-muted">No clinics found</h4>
-            <p className="text-muted">Try adjusting your filters</p>
-          </div>
-        )}
-      </Container>
-
-      {/* Articles */}
-      <Container className="vets-section" style={{ marginTop: '0', marginBottom: '60px' }}>
-        <SectionHeader title="Latest Articles" href="/main/Articles" />
-        <Row className="g-5">
-          {previewArticles.map((article) => (
-            <Col lg={4} md={6} sm={12} key={article.id}><ArticleCard article={article} /></Col>
+        <Row style={{ gap: '20px' }}>
+          {[
+            { icon: '🏥', title: 'Find Clinics', desc: 'Discover verified veterinary clinics near you' },
+            { icon: '🗺️', title: 'Location Map', desc: 'Interactive map for easy clinic discovery' },
+            { icon: '💉', title: 'Vaccination Tracking', desc: 'Keep your pets vaccination schedules organized' },
+            { icon: '📚', title: 'Expert Articles', desc: 'Science-based pet care guidance and tips' },
+          ].map((feature, idx) => (
+            <Col lg={3} md={6} key={idx}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '30px 20px',
+                  borderRadius: '16px',
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--card-border)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)'
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>{feature.icon}</div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '10px', color: 'var(--text-primary)' }}>
+                  {feature.title}
+                </h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>{feature.desc}</p>
+              </div>
+            </Col>
           ))}
         </Row>
       </Container>
 
+      {/* Location Filter */}
+      <Container style={{ maxWidth: '1200px', marginBottom: '80px' }}>
+        <div
+          style={{
+            maxWidth: '500px',
+            margin: '0 auto',
+            marginBottom: '40px',
+          }}
+        >
+          <label style={{ display: 'block', marginBottom: '10px', fontWeight: '600', color: 'var(--text-primary)' }}>
+            Filter by Location
+          </label>
+          <Form.Select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            style={{
+              padding: '12px 16px',
+              borderRadius: '10px',
+              border: '1px solid var(--card-border)',
+              fontSize: '1rem',
+              backgroundColor: 'var(--card-bg)',
+              color: 'var(--text-primary)',
+            }}
+          >
+            {locations.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </Form.Select>
+        </div>
+      </Container>
+
+      {/* Clinics Section */}
+      <Container style={{ maxWidth: '1200px', marginBottom: '100px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '50px', flexWrap: 'wrap', gap: '20px' }}>
+          <div>
+            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)', margin: '0' }}>Featured Clinics</h2>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>Top-rated veterinary clinics in your area</p>
+          </div>
+          <Link
+            href="/main/Clinics"
+            style={{
+              padding: '12px 24px',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              borderRadius: '10px',
+              fontWeight: '600',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+              border: '1px solid var(--card-border)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLElement).style.backgroundColor = 'var(--primary-light)'
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLElement).style.backgroundColor = 'var(--bg-secondary)'
+            }}
+          >
+            View All <ArrowRightIcon />
+          </Link>
+        </div>
+
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ display: 'inline-block', width: '40px', height: '40px', border: '3px solid var(--card-border)', borderTop: '3px solid var(--primary-color)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+            <p style={{ marginTop: '20px', color: 'var(--text-secondary)' }}>Loading clinics...</p>
+          </div>
+        ) : previewClinics.length > 0 ? (
+          <Row style={{ gap: '24px' }}>
+            {previewClinics.map((clinic) => (
+              <Col lg={4} md={6} sm={12} key={clinic.id} style={{ marginBottom: '0' }}>
+                <ClinicCard clinic={clinic} />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: 'var(--bg-secondary)', borderRadius: '16px' }}>
+            <h4 style={{ color: 'var(--text-secondary)', marginBottom: '10px' }}>No clinics found</h4>
+            <p style={{ color: 'var(--text-secondary)' }}>Try adjusting your location filter</p>
+          </div>
+        )}
+      </Container>
+
+      {/* Articles Section */}
+      <Container style={{ maxWidth: '1200px', marginBottom: '100px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '50px', flexWrap: 'wrap', gap: '20px' }}>
+          <div>
+            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)', margin: '0' }}>Latest Articles</h2>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1rem' }}>Expert guidance on pet care and health</p>
+          </div>
+          <Link
+            href="/main/Articles"
+            style={{
+              padding: '12px 24px',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              borderRadius: '10px',
+              fontWeight: '600',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+              border: '1px solid var(--card-border)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLElement).style.backgroundColor = 'var(--primary-light)'
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLElement).style.backgroundColor = 'var(--bg-secondary)'
+            }}
+          >
+            View All <ArrowRightIcon />
+          </Link>
+        </div>
+
+        <Row style={{ gap: '24px' }}>
+          {previewArticles.map((article) => (
+            <Col lg={4} md={6} sm={12} key={article.id} style={{ marginBottom: '0' }}>
+              <ArticleCard article={article} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+
+      {/* CTA Section */}
+      <div style={{ backgroundColor: 'var(--primary-color)', padding: '80px 20px', marginBottom: '60px', borderRadius: '20px', marginLeft: '20px', marginRight: '20px' }}>
+        <Container style={{ maxWidth: '1200px', textAlign: 'center', color: 'white' }}>
+          <h2 style={{ fontSize: '2.4rem', fontWeight: '700', marginBottom: '20px' }}>Need Emergency Help?</h2>
+          <p style={{ fontSize: '1.1rem', marginBottom: '30px', opacity: 0.9, maxWidth: '600px', margin: '0 auto 30px' }}>
+            Our AI chatbot can provide immediate guidance. For serious cases, find the nearest clinic instantly.
+          </p>
+          <Link
+            href="/main/Map"
+            style={{
+              padding: '14px 32px',
+              backgroundColor: 'white',
+              color: 'var(--primary-color)',
+              borderRadius: '10px',
+              fontWeight: '600',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLElement).style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLElement).style.transform = 'translateY(0)'
+            }}
+          >
+            Find Nearby Clinic <ArrowRightIcon />
+          </Link>
+        </Container>
+      </div>
+
       <Chatbot />
+
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   )
 }

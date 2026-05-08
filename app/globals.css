@@ -1,6 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Fredoka:wght@600;700&display=swap');
 
+/* ──── Design Tokens ──────────────────────────────────────── */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #1a202c;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --navbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --primary-color: #16a34a;
+  --primary-dark: #15803d;
+  --primary-light: #dcfce7;
+  --accent-color: #fbbf24;
+  --danger-color: #ef4444;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border-color: #334155;
+  --navbar-bg: #1e293b;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+}
 
 /* الـ navbar */
 .navbar {
