@@ -1,13 +1,13 @@
 // utils/vaccineMapper.ts
-import { VaccineDose } from '../types/VaccSchedule';
-import { VaccineSchedule } from '../types/VaccSchedule';
+import { DoseDay } from '../types/VaccSchedule';
+import { VaccSchedule } from '../types/VaccSchedule';
 
 export function mapDoseToScheduleCard(
-  dose: VaccineDose,
-  schedule: VaccineSchedule,
+  dose: DoseDay,
+  schedule:  VaccSchedule,
   vaccineName: string = 'Rabies Vaccine'
 ): {
-  schedule: VaccineSchedule;
+  schedule:  VaccSchedule;
   doseId: string;
   doseNumber: number;
   date: string;
@@ -15,11 +15,12 @@ export function mapDoseToScheduleCard(
   isRegistered: boolean;
 } {
   return {
-    schedule: schedule,
-    doseId: dose.id,
-    doseNumber: dose.dose,
-    date: dose.date,
-    isTaken: dose.isTaken,
-    isRegistered: true
+    schedule,
+    doseId:       String(dose.day),      
+    doseNumber:   typeof dose.day === 'number' ? dose.day : parseInt(String(dose.day)) || 0,
+    date:         dose.label,            
+    isTaken:      false,                 
+    isRegistered: true,
   };
 }
+
