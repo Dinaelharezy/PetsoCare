@@ -1,12 +1,3 @@
-// export interface Appointment {
-//   id: number
-//   patientName: string
-//   patientPhone: string
-//   date: string
-//   time: string
-//   status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
-//   notes?: string
-// }
 
 export interface Appointment {
   id: number
@@ -17,3 +8,13 @@ export interface Appointment {
   status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
   notes?: string
 }
+
+export interface AdminAppointment {
+  id: number
+  patientName: string
+  clinicName: string
+  date: string
+  time: string
+  status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
+}
+

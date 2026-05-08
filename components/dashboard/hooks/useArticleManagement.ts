@@ -3,18 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { article } from '../../../types/article'
-
-export interface ArticleForm {
-  Title:       string
-  Summary:     string
-  Content:     string
-  TitleEn:     string
-  SummaryEn:   string
-  ContentEn:   string
-  Source:      string
-  Category:    string
-  PublishDate: string
-}
+import { ArticleForm } from '../../../types/article'
 
 export type SaveStatus = 'idle' | 'saving' | 'success' | 'error'
 

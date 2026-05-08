@@ -8,7 +8,8 @@ import { clinicsApi } from '../../data/api/Clinic'
 import { Clinic } from '../../types/Clinic'
 import LocationMapModal from '../Reports/modals/LocationMapModals'
 import { getImageSrc } from '@/utils/imageUtils'
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
+
+
 
 // export const getImageSrc = (src?: string): string | null => {
 //   if (!src) return null

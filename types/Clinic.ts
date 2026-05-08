@@ -17,3 +17,14 @@ export interface Clinic {
   createdAt?: string
 }
 
+export interface ClinicForm {
+  name:         string
+  address:      string
+  governorate:  string
+  phone:        string
+  facebookPage: string
+  imageUrl:     string
+  bookingPrice: string
+  workingDays:  string
+  workingHours: string
+}

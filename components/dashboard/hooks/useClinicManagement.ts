@@ -3,18 +3,7 @@
 import { useState, useEffect } from 'react'
 import { clinicsApi } from '../../../data/api/Clinic'
 import { Clinic } from '../../../types/Clinic'
-
-export interface ClinicForm {
-  name:         string
-  address:      string
-  governorate:  string
-  phone:        string
-  facebookPage: string
-  imageUrl:     string
-  bookingPrice: string
-  workingDays:  string
-  workingHours: string
-}
+import { ClinicForm } from '../../../types/Clinic'
 
 const EMPTY_FORM: ClinicForm = {
   name: '', address: '', governorate: '', phone: '',

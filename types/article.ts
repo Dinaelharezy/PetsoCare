@@ -15,3 +15,14 @@ summaryEn?: string
 contentEn?: string
 }
 
+export interface ArticleForm {
+  Title:       string
+  Summary:     string
+  Content:     string
+  TitleEn:     string
+  SummaryEn:   string
+  ContentEn:   string
+  Source:      string
+  Category:    string
+  PublishDate: string
+}

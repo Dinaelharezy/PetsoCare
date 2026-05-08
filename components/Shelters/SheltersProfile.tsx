@@ -1,164 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { Shelter } from "@/types/shelter";
-
-// export default function SheltersProfile() {
-//   const params = useParams();
-//   const router = useRouter();
-//   const [shelter, setShelter] = useState<Shelter | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [notFound, setNotFound] = useState(false);
-
-//   useEffect(() => {
-//     fetch(`/api/shelters/${params.id}`)
-//       .then((res) => {
-//           console.log("ID:", params.id)
-//         if (res.status === 404) {
-//           setNotFound(true);
-          
-//           return null;
-//         }
-//         return res.json();
-//       })
-//       .then((json) => {
-//           console.log("API RESPONSE:", json);
-//         if (json) setShelter(json);
-//       })
-//       .finally(() => setLoading(false));
-//   }, [params.id]);
-
-//   if (loading) {
-//     return (
-//       <div className="flex min-h-screen items-center justify-center bg-gray-50">
-//         <div className="flex items-center gap-3 text-gray-400">
-//           <span className="h-5 w-5 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" />
-//           <span className="text-sm">Loading shelter…</span>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (notFound || !shelter) {
-//     return (
-//       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-4">
-//         {/* <p className="text-lg font-semibold text-gray-700">Shelter not found</p> */}
-//         <button
-//           onClick={() => router.back()}
-//         //   className="rounded-xl bg-teal-500 px-5 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors"
-//         >
-//           Go Back
-//         </button>
-//       </div>
-//     );
-//   }
-
-//   const animalTypeColor: Record<string, string> = {
-//     Dogs: "bg-amber-100 text-amber-700",
-//     Cats: "bg-purple-100 text-purple-700",
-//     Both: "bg-teal-100 text-teal-700",
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 px-4 py-10">
-//       <div className="mx-auto max-w-xl">
-//         {/* Back */}
-//         <button
-//           onClick={() => router.back()}
-//           className="mb-6 flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
-//         >
-//           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-//             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-//           </svg>
-//           Back to Shelters
-//         </button>
-
-//         {/* Card */}
-//         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-//           {/* Title row */}
-//           <div className="flex items-start justify-between gap-3 mb-6">
-//             <div>
-//               <h1 className="text-xl font-bold text-gray-900">{shelter.name}</h1>
-//               <p className="text-sm text-gray-400 mt-0.5">{shelter.governorate}</p>
-//             </div>
-//               {shelter.animalType}
-//           </div>
-
-//           {/* Info rows */}
-//           <div className="space-y-4 divide-y divide-gray-50">
-//             <InfoRow
-//               label="Location"
-//               value={shelter.address}
-//             />
-//             <InfoRow
-//               label="Capacity"
-//               value={shelter.capacity ? `${shelter.capacity} animals` : null}
-//             />
-//             <InfoRow
-//               label="Working Hours"
-//               value={shelter.workingHours}
-//             />
-//           </div>
-
-//           {/* Contact Button */}
-//           <div className="mt-6">
-//             <button
-//               disabled={!shelter.phone}
-//               onClick={() => {
-//                 if (shelter.phone) {
-//                   window.location.href = `tel:${shelter.phone}`;
-//                 }
-//               }}
-//               className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-600 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
-//             >
-//               {shelter.phone ? `Call: ${shelter.phone}` : "Contact Not Available"}
-//             </button>
-//           </div>
-
-//           {/* Status */}
-//           <div className="mt-4 flex items-center justify-center gap-1.5 text-xs">
-//             <span
-//               className={`h-2 w-2 rounded-full ${
-//                 shelter.workingHours ? "bg-green-400" : "bg-orange-400"
-//               }`}
-//             />
-//             <span className={shelter.workingHours ? "text-green-600" : "text-orange-500"}>
-//               {shelter.workingHours ? "Operational" : "Under Construction"}
-//             </span>
-//           </div>
-
-//           {/* Additional Notes */}
-//           {shelter.notes && (
-//             <div className="mt-5 rounded-xl bg-amber-50 border border-amber-100 p-4">
-//               <p className="text-xs font-semibold text-amber-700 mb-1">Additional Notes</p>
-//               <p className="text-sm text-amber-800 leading-relaxed">{shelter.notes}</p>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// function InfoRow({
-//   label,
-//   value,
-// }: {
-//   label: string;
-//   value: string | null | undefined;
-// }) {
-//   return (
-//     <div className="flex items-start gap-3 pt-4 first:pt-0">
-//       <div>
-//         <p className="text-xs text-gray-400 font-medium mb-0.5">{label}</p>
-//         <p className={value ? "text-sm text-gray-800" : "text-sm text-gray-400 italic"}>
-//           {value ?? "Not Available"}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
 
 
 "use client";
@@ -177,20 +16,39 @@ export default function ShelterProfile() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 const { getShelterProfile, setShelterProfile } = useAppStore()
-  useEffect(() => {
-    fetch(`/api/shelters/${params.id}`)
-      .then((res) => {
-        if (res.status === 404) {
-          setNotFound(true);
-          return null;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data) setShelter(data);
-      })
-      .finally(() => setLoading(false));
-  }, [params.id]);
+
+
+useEffect(() => {
+  const cachedShelter = getShelterProfile(params.id as string)
+
+  if (cachedShelter) {
+    setShelter(cachedShelter)
+    setLoading(false)
+    return
+  }
+
+  fetch(`/api/shelters/${params.id}`)
+    .then((res) => {
+      if (res.status === 404) {
+        setNotFound(true)
+        return null
+      }
+
+      return res.json()
+    })
+    .then((data) => {
+      if (data) {
+        setShelter(data)
+
+        setShelterProfile(
+          params.id as string,
+          data
+        )
+      }
+    })
+    .finally(() => setLoading(false))
+}, [params.id])
+
 
   // ── Loading ─────────────────────────────────────────────
   if (loading) {
