@@ -1,13 +1,11 @@
 
-
 // 'use client'
-// // components/AddVaccineModal.tsx
 
 // import { useState, ChangeEvent, FormEvent, useRef, useEffect } from 'react'
 // import { Modal, Button, Form, Alert } from 'react-bootstrap'
 // import { CreateVaccineDto } from '../../../types/Vaccine'
 // import RatingWidget from '@/components/Rating/RatingWidget'
-// /* ── Vaccine name suggestions ───────────────────────────────────────── */
+
 // const VACCINE_SUGGESTIONS = [
 //   'Rabies PrEP — WHO Protocol',
 //   'Rabies PEP 5-Dose — WHO Protocol',
@@ -23,7 +21,6 @@
 //   'FeLV (Cat)',
 // ]
 
-// /* ── Exposure categories ────────────────────────────────────────────── */
 // const EXPOSURE_CATEGORIES = [
 //   { value: 'N/A',          label: 'N/A',          color: '#6c757d' },
 //   { value: 'Category I',   label: 'Category I',   color: '#198754' },
@@ -31,39 +28,43 @@
 //   { value: 'Category III', label: 'Category III', color: '#dc3545' },
 // ]
 
+// const VICTIM_TYPES = ['human', 'animal']
+// const ANIMAL_TYPES = ['dog', 'cat', 'wild animal', 'other']
+
 // interface Props {
-//   show: boolean
-//   onClose: () => void
-//   onSubmit: (dto: CreateVaccineDto) => Promise<boolean>
+//   show:       boolean
+//   onClose:    () => void
+//   onSubmit:   (dto: CreateVaccineDto) => Promise<boolean>
 //   submitting: boolean
 // }
 
 // export default function AddVaccineModal({ show, onClose, onSubmit, submitting }: Props) {
-//   const [name,             setName]             = useState('')
+//   const [vaccineName,      setVaccineName]      = useState('')
 //   const [pet,              setPet]              = useState('')
 //   const [vaccineType,      setVaccineType]      = useState('')
 //   const [exposureCategory, setExposureCategory] = useState('N/A')
 //   const [startDate,        setStartDate]        = useState('')
 //   const [reminder,         setReminder]         = useState(false)
+//   const [victimType,       setVictimType]       = useState('')
+//   const [animalType,       setAnimalType]       = useState('')
 //   const [err,              setErr]              = useState('')
-//   const [showRating, setShowRating] = useState(false)  
-//   // autocomplete
+//   const [showRating,       setShowRating]       = useState(false)
+
 //   const [suggestions, setSuggestions] = useState<string[]>([])
 //   const [showSugs,    setShowSugs]    = useState(false)
 //   const sugRef = useRef<HTMLDivElement>(null)
 
-//   /* reset on open */
 //   useEffect(() => {
 //     if (show) {
-//       setName(''); setPet(''); setVaccineType('')
+//       setVaccineName(''); setPet(''); setVaccineType('')
 //       setExposureCategory('N/A'); setStartDate('')
 //       setReminder(false); setErr('')
+//       setVictimType(''); setAnimalType('')
 //       setSuggestions([]); setShowSugs(false)
-//       setShowRating(false) 
+//       setShowRating(false)
 //     }
 //   }, [show])
 
-//   /* close suggestions on outside click */
 //   useEffect(() => {
 //     const handler = (e: MouseEvent) => {
 //       if (sugRef.current && !sugRef.current.contains(e.target as Node))
@@ -73,10 +74,9 @@
 //     return () => document.removeEventListener('mousedown', handler)
 //   }, [])
 
-//   /* ── handlers ── */
 //   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
 //     const val = e.target.value
-//     setName(val)
+//     setVaccineName(val)
 //     const filtered = VACCINE_SUGGESTIONS.filter(s =>
 //       s.toLowerCase().includes(val.toLowerCase())
 //     )
@@ -87,19 +87,50 @@
 //   const handleSubmit = async (e: FormEvent) => {
 //     e.preventDefault()
 //     setErr('')
-//     if (!name || !pet || !vaccineType || !startDate) {
+//     if (!vaccineName || !pet || !vaccineType || !startDate) {
 //       setErr('Please fill in all required fields.')
 //       return
 //     }
+
+//     if (victimType === 'animal') {
+//       const res = await fetch('/api/vaccine/custom', {
+//         method:  'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           name:       vaccineName,
+//           pet,
+//           doseDays:   [0],
+//           startDate:  new Date(startDate).toISOString(),
+//           reminder,
+//           victimType: 'animal',
+//           animalType: animalType || undefined,
+//           username:   pet,
+//         }),
+//       })
+//       if (res.ok) setShowRating(true)
+//       else setErr('Failed to add vaccine')
+//       return
+//     }
+
 //     const ok = await onSubmit({
-//       name,
+//       vaccineName,
 //       pet,
 //       vaccineType,
 //       exposureCategory,
-//       startDate: new Date(startDate).toISOString(),
+//       startDate:  new Date(startDate).toISOString(),
 //       reminder,
+//       victimType: victimType || undefined,
+//       animalType: animalType || undefined,
 //     })
-//   setShowRating(true)
+//     if (ok) setShowRating(true)
+//     else setErr('Failed to add vaccine')
+//   }
+
+//   const animalTypeIcon = (a: string) => {
+//     if (a === 'dog')        return '🐕'
+//     if (a === 'cat')        return '🐈'
+//     if (a === 'wild animal') return '🦊'
+//     return '🐾'
 //   }
 
 //   return (
@@ -112,16 +143,16 @@
 
 //         <Form onSubmit={handleSubmit}>
 
-//           {/* ── Vaccine Name (with autocomplete) ── */}
+//           {/* Vaccine Name */}
 //           <Form.Group className="mb-3" ref={sugRef as any} style={{ position: 'relative' }}>
 //             <Form.Label className="text-muted small fw-semibold text-uppercase">
 //               Vaccine Name *
 //             </Form.Label>
 //             <Form.Control
 //               placeholder="e.g. Rabies PEP — Egypt Protocol…"
-//               value={name}
+//               value={vaccineName}
 //               onChange={handleNameChange}
-//               onFocus={() => name && setShowSugs(suggestions.length > 0)}
+//               onFocus={() => vaccineName && setShowSugs(suggestions.length > 0)}
 //               autoComplete="off"
 //             />
 //             {showSugs && (
@@ -133,7 +164,7 @@
 //                 {suggestions.map((s, i) => (
 //                   <div
 //                     key={i}
-//                     onMouseDown={() => { setName(s); setShowSugs(false) }}
+//                     onMouseDown={() => { setVaccineName(s); setShowSugs(false) }}
 //                     style={{
 //                       padding: '9px 14px', fontSize: '0.875rem', cursor: 'pointer',
 //                       borderBottom: i < suggestions.length - 1 ? '1px solid #f5f5f5' : 'none',
@@ -148,11 +179,9 @@
 //             )}
 //           </Form.Group>
 
-//           {/* ── Pet Name ── */}
+//           {/* Name (pet / patient) */}
 //           <Form.Group className="mb-3">
-//             <Form.Label className="text-muted small fw-semibold text-uppercase">
-//               Pet Name *
-//             </Form.Label>
+//             <Form.Label className="text-muted small fw-semibold text-uppercase">Name</Form.Label>
 //             <Form.Control
 //               placeholder="e.g. Moly"
 //               value={pet}
@@ -160,7 +189,7 @@
 //             />
 //           </Form.Group>
 
-//           {/* ── Vaccine Type ── */}
+//           {/* Vaccine Type */}
 //           <Form.Group className="mb-3">
 //             <Form.Label className="text-muted small fw-semibold text-uppercase">
 //               Vaccine Type / Brand *
@@ -172,7 +201,7 @@
 //             />
 //           </Form.Group>
 
-//           {/* ── Exposure Category ── */}
+//           {/* Exposure Category */}
 //           <Form.Group className="mb-3">
 //             <Form.Label className="text-muted small fw-semibold text-uppercase">
 //               Exposure Category
@@ -186,15 +215,12 @@
 //                     type="button"
 //                     onClick={() => setExposureCategory(cat.value)}
 //                     style={{
-//                       padding: '5px 14px',
-//                       borderRadius: 20,
-//                       border: `2px solid ${active ? cat.color : '#dee2e6'}`,
-//                       background: active ? cat.color + '18' : 'transparent',
-//                       color: active ? cat.color : '#6c757d',
-//                       fontWeight: active ? 700 : 400,
-//                       fontSize: '0.8rem',
-//                       cursor: 'pointer',
-//                       transition: 'all 0.15s',
+//                       padding: '5px 14px', borderRadius: 20,
+//                       border:      `2px solid ${active ? cat.color : '#dee2e6'}`,
+//                       background:  active ? cat.color + '18' : 'transparent',
+//                       color:       active ? cat.color : '#6c757d',
+//                       fontWeight:  active ? 700 : 400,
+//                       fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
 //                     }}
 //                   >
 //                     {cat.label}
@@ -204,7 +230,67 @@
 //             </div>
 //           </Form.Group>
 
-//           {/* ── Start Date ── */}
+//           {/* Victim Type */}
+//           <Form.Group className="mb-3">
+//             <Form.Label className="text-muted small fw-semibold text-uppercase">
+//               Victim Type
+//             </Form.Label>
+//             <div className="d-flex gap-2">
+//               {VICTIM_TYPES.map(v => {
+//                 const active = victimType === v
+//                 return (
+//                   <button
+//                     key={v}
+//                     type="button"
+//                     onClick={() => setVictimType(active ? '' : v)}
+//                     style={{
+//                       padding: '5px 14px', borderRadius: 20,
+//                       border:     `2px solid ${active ? '#6366f1' : '#dee2e6'}`,
+//                       background: active ? '#eef2ff' : 'transparent',
+//                       color:      active ? '#6366f1' : '#6c757d',
+//                       fontWeight: active ? 700 : 400,
+//                       fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
+//                     }}
+//                   >
+//                     {v === 'human' ? '🧑 Human' : '🐾 Animal'}
+//                   </button>
+//                 )
+//               })}
+//             </div>
+//           </Form.Group>
+
+//           {/* Animal Type — only when victimType === 'animal' */}
+//           {victimType === 'animal' && (
+//             <Form.Group className="mb-3">
+//               <Form.Label className="text-muted small fw-semibold text-uppercase">
+//                 Animal Type
+//               </Form.Label>
+//               <div className="d-flex flex-wrap gap-2">
+//                 {ANIMAL_TYPES.map(a => {
+//                   const active = animalType === a
+//                   return (
+//                     <button
+//                       key={a}
+//                       type="button"
+//                       onClick={() => setAnimalType(active ? '' : a)}
+//                       style={{
+//                         padding: '5px 14px', borderRadius: 20,
+//                         border:     `2px solid ${active ? '#f59e0b' : '#dee2e6'}`,
+//                         background: active ? '#fef3c7' : 'transparent',
+//                         color:      active ? '#b45309' : '#6c757d',
+//                         fontWeight: active ? 700 : 400,
+//                         fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
+//                       }}
+//                     >
+//                       {animalTypeIcon(a)} {a}
+//                     </button>
+//                   )
+//                 })}
+//               </div>
+//             </Form.Group>
+//           )}
+
+//           {/* Start Date */}
 //           <Form.Group className="mb-3">
 //             <Form.Label className="text-muted small fw-semibold text-uppercase">
 //               Start Date *
@@ -216,7 +302,7 @@
 //             />
 //           </Form.Group>
 
-//           {/* ── Reminder ── */}
+//           {/* Reminder */}
 //           <Form.Group className="mb-4">
 //             <Form.Check
 //               type="switch"
@@ -231,26 +317,22 @@
 //             <Button variant="light" className="border" onClick={onClose} disabled={submitting}>
 //               Cancel
 //             </Button>
-//             <Button
-//               type="submit"
-//               disabled={submitting}
-//               className="background-for-app"
-//             >
+//             <Button type="submit" disabled={submitting} className="background-for-app">
 //               {submitting ? 'Adding…' : 'Add Vaccine'}
 //             </Button>
 //           </div>
-
 //         </Form>
-//          {showRating && (
-//         <div className="mt-3">
-//           <RatingWidget fullWidth />
-//           <div className="text-center mt-3">
-//             <Button variant="link" className="text-muted small" onClick={onClose}>
-//               Close
-//             </Button>
+
+//         {showRating && (
+//           <div className="mt-3">
+//             <RatingWidget fullWidth />
+//             <div className="text-center mt-3">
+//               <Button variant="link" className="text-muted small" onClick={onClose}>
+//                 Close
+//               </Button>
+//             </div>
 //           </div>
-//         </div>
-//       )}
+//         )}
 //       </Modal.Body>
 //     </Modal>
 //   )
@@ -285,26 +367,25 @@ const EXPOSURE_CATEGORIES = [
   { value: 'Category III', label: 'Category III', color: '#dc3545' },
 ]
 
-// ── NEW: victim & animal options ─────────────────────────────────────
 const VICTIM_TYPES = ['human', 'animal']
-const ANIMAL_TYPES = ['dog', 'cat', 'wild Animal', 'other']
+const ANIMAL_TYPES = ['dog', 'cat', 'wild animal', 'other']
 
 interface Props {
-  show: boolean
-  onClose: () => void
-  onSubmit: (dto: CreateVaccineDto) => Promise<boolean>
+  show:       boolean
+  onClose:    () => void
+  onSubmit:   (dto: CreateVaccineDto) => Promise<boolean>
   submitting: boolean
 }
 
 export default function AddVaccineModal({ show, onClose, onSubmit, submitting }: Props) {
-  const [name,             setName]             = useState('')
+  const [vaccineName,      setVaccineName]      = useState('')
   const [pet,              setPet]              = useState('')
   const [vaccineType,      setVaccineType]      = useState('')
   const [exposureCategory, setExposureCategory] = useState('N/A')
   const [startDate,        setStartDate]        = useState('')
   const [reminder,         setReminder]         = useState(false)
-  const [victimType,       setVictimType]       = useState('')   // ← NEW
-  const [animalType,       setAnimalType]       = useState('')   // ← NEW
+  const [victimType,       setVictimType]       = useState('')
+  const [animalType,       setAnimalType]       = useState('')
   const [err,              setErr]              = useState('')
   const [showRating,       setShowRating]       = useState(false)
 
@@ -314,10 +395,10 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
 
   useEffect(() => {
     if (show) {
-      setName(''); setPet(''); setVaccineType('')
+      setVaccineName(''); setPet(''); setVaccineType('')
       setExposureCategory('N/A'); setStartDate('')
       setReminder(false); setErr('')
-      setVictimType(''); setAnimalType('')       // ← NEW
+      setVictimType(''); setAnimalType('')
       setSuggestions([]); setShowSugs(false)
       setShowRating(false)
     }
@@ -334,7 +415,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
-    setName(val)
+    setVaccineName(val)
     const filtered = VACCINE_SUGGESTIONS.filter(s =>
       s.toLowerCase().includes(val.toLowerCase())
     )
@@ -343,47 +424,53 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
   }
 
   const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault()
-  setErr('')
-  if (!name || !pet || !vaccineType || !startDate) {
-    setErr('Please fill in all required fields.')
-    return
-  }
+    e.preventDefault()
+    setErr('')
+    if (!vaccineName || !pet || !vaccineType || !startDate) {
+      setErr('Please fill in all required fields.')
+      return
+    }
 
-  // لو animal → بعت لـ /api/vaccine/custom
-  if (victimType === 'animal') {
-    const res = await fetch('/api/vaccine/custom', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        pet,
-        doseDays:   [0],   // dose واحدة يوم 0
-        startDate:  new Date(startDate).toISOString(),
-        reminder,
-        victimType: 'animal',
-        animalType: animalType || undefined,
-        username : pet
-      }),
+    if (victimType === 'animal') {
+      const res = await fetch('/api/vaccine/custom', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:       vaccineName,
+          pet,
+          doseDays:   [0],
+          startDate:  new Date(startDate).toISOString(),
+          reminder,
+          victimType: 'animal',
+          animalType: animalType || undefined,
+          username:   pet,
+        }),
+      })
+      if (res.ok) setShowRating(true)
+      else setErr('Failed to add vaccine')
+      return
+    }
+
+    const ok = await onSubmit({
+      vaccineName,
+      pet,
+      vaccineType,
+      exposureCategory,
+      startDate:  new Date(startDate).toISOString(),
+      reminder,
+      victimType: victimType || undefined,
+      animalType: animalType || undefined,
     })
-    if (res.ok) setShowRating(true)
+    if (ok) setShowRating(true)
     else setErr('Failed to add vaccine')
-    return
   }
 
-  // human → نفس الـ flow القديم
-  const ok = await onSubmit({
-    name,
-    pet,
-    vaccineType,
-    exposureCategory,
-    startDate: new Date(startDate).toISOString(),
-    reminder,
-    victimType: victimType || undefined,
-    animalType: animalType || undefined,
-  })
-  setShowRating(true)
-}
+  const animalTypeIcon = (a: string) => {
+    if (a === 'dog')        return '🐕'
+    if (a === 'cat')        return '🐈'
+    if (a === 'wild animal') return '🦊'
+    return '🐾'
+  }
 
   return (
     <Modal show={show} onHide={onClose} centered>
@@ -395,16 +482,16 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
 
         <Form onSubmit={handleSubmit}>
 
-          {/* ── Vaccine Name ── */}
+          {/* Vaccine Name */}
           <Form.Group className="mb-3" ref={sugRef as any} style={{ position: 'relative' }}>
             <Form.Label className="text-muted small fw-semibold text-uppercase">
               Vaccine Name *
             </Form.Label>
             <Form.Control
               placeholder="e.g. Rabies PEP — Egypt Protocol…"
-              value={name}
+              value={vaccineName}
               onChange={handleNameChange}
-              onFocus={() => name && setShowSugs(suggestions.length > 0)}
+              onFocus={() => vaccineName && setShowSugs(suggestions.length > 0)}
               autoComplete="off"
             />
             {showSugs && (
@@ -416,7 +503,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
                 {suggestions.map((s, i) => (
                   <div
                     key={i}
-                    onMouseDown={() => { setName(s); setShowSugs(false) }}
+                    onMouseDown={() => { setVaccineName(s); setShowSugs(false) }}
                     style={{
                       padding: '9px 14px', fontSize: '0.875rem', cursor: 'pointer',
                       borderBottom: i < suggestions.length - 1 ? '1px solid #f5f5f5' : 'none',
@@ -431,11 +518,9 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             )}
           </Form.Group>
 
-          {/* ── Pet Name ── */}
+          {/* Name (pet / patient) */}
           <Form.Group className="mb-3">
-            <Form.Label className="text-muted small fw-semibold text-uppercase">
-             Name 
-            </Form.Label>
+            <Form.Label className="text-muted small fw-semibold text-uppercase">Name</Form.Label>
             <Form.Control
               placeholder="e.g. Moly"
               value={pet}
@@ -443,7 +528,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             />
           </Form.Group>
 
-          {/* ── Vaccine Type ── */}
+          {/* Vaccine Type */}
           <Form.Group className="mb-3">
             <Form.Label className="text-muted small fw-semibold text-uppercase">
               Vaccine Type / Brand *
@@ -455,7 +540,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             />
           </Form.Group>
 
-          {/* ── Exposure Category ── */}
+          {/* Exposure Category */}
           <Form.Group className="mb-3">
             <Form.Label className="text-muted small fw-semibold text-uppercase">
               Exposure Category
@@ -470,10 +555,10 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
                     onClick={() => setExposureCategory(cat.value)}
                     style={{
                       padding: '5px 14px', borderRadius: 20,
-                      border: `2px solid ${active ? cat.color : '#dee2e6'}`,
-                      background: active ? cat.color + '18' : 'transparent',
-                      color: active ? cat.color : '#6c757d',
-                      fontWeight: active ? 700 : 400,
+                      border:      `2px solid ${active ? cat.color : '#dee2e6'}`,
+                      background:  active ? cat.color + '18' : 'transparent',
+                      color:       active ? cat.color : '#6c757d',
+                      fontWeight:  active ? 700 : 400,
                       fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
                     }}
                   >
@@ -484,7 +569,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             </div>
           </Form.Group>
 
-          {/* ── Victim Type ── NEW */}
+          {/* Victim Type */}
           <Form.Group className="mb-3">
             <Form.Label className="text-muted small fw-semibold text-uppercase">
               Victim Type
@@ -499,21 +584,21 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
                     onClick={() => setVictimType(active ? '' : v)}
                     style={{
                       padding: '5px 14px', borderRadius: 20,
-                      border: `2px solid ${active ? '#6366f1' : '#dee2e6'}`,
+                      border:     `2px solid ${active ? '#6366f1' : '#dee2e6'}`,
                       background: active ? '#eef2ff' : 'transparent',
-                      color: active ? '#6366f1' : '#6c757d',
+                      color:      active ? '#6366f1' : '#6c757d',
                       fontWeight: active ? 700 : 400,
                       fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
                     }}
                   >
-                  {v === 'human' ? '🧑 Human' : '🐾 Animal'}
+                    {v === 'human' ? '🧑 Human' : '🐾 Animal'}
                   </button>
                 )
               })}
             </div>
           </Form.Group>
 
-          {/* ── Animal Type ── NEW (only shown if victimType === 'Animal') */}
+          {/* Animal Type — only when victimType === 'animal' */}
           {victimType === 'animal' && (
             <Form.Group className="mb-3">
               <Form.Label className="text-muted small fw-semibold text-uppercase">
@@ -529,14 +614,14 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
                       onClick={() => setAnimalType(active ? '' : a)}
                       style={{
                         padding: '5px 14px', borderRadius: 20,
-                        border: `2px solid ${active ? '#f59e0b' : '#dee2e6'}`,
+                        border:     `2px solid ${active ? '#f59e0b' : '#dee2e6'}`,
                         background: active ? '#fef3c7' : 'transparent',
-                        color: active ? '#b45309' : '#6c757d',
+                        color:      active ? '#b45309' : '#6c757d',
                         fontWeight: active ? 700 : 400,
                         fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.15s',
                       }}
                     >
-                      {a === 'Dog' ? '🐕' : a === 'Cat' ? '🐈' : a === 'Wild Animal' ? '🦊' : '🐾'} {a}
+                      {animalTypeIcon(a)} {a}
                     </button>
                   )
                 })}
@@ -544,7 +629,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             </Form.Group>
           )}
 
-          {/* ── Start Date ── */}
+          {/* Start Date */}
           <Form.Group className="mb-3">
             <Form.Label className="text-muted small fw-semibold text-uppercase">
               Start Date *
@@ -556,7 +641,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
             />
           </Form.Group>
 
-          {/* ── Reminder ── */}
+          {/* Reminder */}
           <Form.Group className="mb-4">
             <Form.Check
               type="switch"
@@ -575,7 +660,6 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
               {submitting ? 'Adding…' : 'Add Vaccine'}
             </Button>
           </div>
-
         </Form>
 
         {showRating && (

@@ -13,7 +13,7 @@ export interface Vaccine {
 }
 
 export interface CreateVaccineDto {
-  userName:             string
+  userName?:             string
   pet:              string
   vaccineType:      string
   exposureCategory: string

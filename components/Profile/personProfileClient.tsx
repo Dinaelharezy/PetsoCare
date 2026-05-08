@@ -334,8 +334,8 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
               {completedVaccines.map(vaccine => (
                 <div key={vaccine.id} className="d-flex justify-content-between align-items-center mb-2" style={{ opacity: 0.6 }}>
                   <div>
-                    <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.name}</div>
-                    <div className="text-muted small">For {vaccine.name}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
+                    <div className="fw-semibold mb-1 text-decoration-line-through">{vaccine.vaccineName}</div>
+                    <div className="text-muted small">For {vaccine.userName}{vaccine.startDate ? ` on ${formatDate(vaccine.startDate)}` : ''}</div>
                   </div>
                   <span className="badge" style={{ backgroundColor: '#8ae68d', color: '#333', fontSize: '11px' }}>✓ Done</span>
                 </div>
