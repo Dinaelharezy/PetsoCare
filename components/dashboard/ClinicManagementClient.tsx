@@ -50,13 +50,7 @@ export default function ClinicManagementClient() {
 
   const governorates = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
-  useEffect(() => { loadClinics() }, [])
-  useEffect(() => {
-    const handler = () => loadClinics()
-    window.addEventListener('clinicsUpdated', handler)
-    return () => window.removeEventListener('clinicsUpdated', handler)
-  }, [])
-
+ 
   const loadClinics = async () => {
     try {
       setLoading(true)
@@ -68,6 +62,14 @@ export default function ClinicManagementClient() {
       setLoading(false)
     }
   }
+
+ useEffect(() => { loadClinics() }, [])
+  useEffect(() => {
+    const handler = () => loadClinics()
+    window.addEventListener('clinicsUpdated', handler)
+    return () => window.removeEventListener('clinicsUpdated', handler)
+  }, [])
+
 
   const handleShowModal = (clinic?: Clinic) => {
     if (clinic) {

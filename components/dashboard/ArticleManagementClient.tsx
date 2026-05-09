@@ -50,7 +50,7 @@ export default function ArticleManagementClient() {
 
   const categories = ['Prevention', 'Emergency Care', 'Awareness', 'Symptoms', 'Vaccination']
 
-  useEffect(() => { loadArticles() }, [])
+ 
 
   const loadArticles = async () => {
     try {
@@ -69,6 +69,8 @@ export default function ArticleManagementClient() {
     }
   }
 
+  useEffect(() => { loadArticles() }, [])
+  
   const handleDeleteClick = (id: number) => {
     setDeletingId(id)
     setShowDeleteConfirm(true)
