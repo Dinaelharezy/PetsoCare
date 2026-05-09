@@ -226,7 +226,7 @@
 // }
 
 import { Suspense } from 'react'
-import LoginClient from '../../components/SignUp/Loginclient'
+import LoginClient from '../../components/SignUp/LoginClient'
 
 export default function LoginPage() {
   return (
