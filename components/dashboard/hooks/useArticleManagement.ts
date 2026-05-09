@@ -31,7 +31,7 @@ export function useArticleManagement() {
   const [imageFile,      setImageFile]      = useState<File | null>(null)
   const [formData,       setFormData]       = useState<ArticleForm>(EMPTY_FORM)
 
-  useEffect(() => { loadArticles() }, [])
+ 
 
   // ─── Load ────────────────────────────────────────────────────────────────
   const loadArticles = async () => {
@@ -51,7 +51,8 @@ export function useArticleManagement() {
       setLoading(false)
     }
   }
-
+  
+ useEffect(() => { loadArticles() }, [])
   // ─── Modal ───────────────────────────────────────────────────────────────
   const handleShowModal = (article?: article) => {
     if (article) {
