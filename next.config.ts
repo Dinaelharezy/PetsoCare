@@ -51,6 +51,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.ngrok-free.dev',
       },
+         {
+        protocol: 'https',
+        hostname: '**.azurewebsites.net',
+      },
       {
         protocol: 'https',
         hostname: '**.trycloudflare.com',
