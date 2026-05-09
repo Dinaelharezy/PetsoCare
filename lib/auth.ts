@@ -198,7 +198,6 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 
 const HEADERS = {
   "Content-Type": "application/json",
-  "ngrok-skip-browser-warning": "true",
 };
 
 // ── Helper: decode JWT ─────────────────────────────────────────────

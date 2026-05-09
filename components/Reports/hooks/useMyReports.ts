@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import { Report, ReportType, ReportStatus } from '@/types/report'
-
+import { useSession } from 'next-auth/react'
 // ✅ تحويل status من رقم إلى string
 const mapStatus = (s: number): ReportStatus => {
   const statusMap: Record<number, ReportStatus> = {
@@ -14,7 +14,7 @@ const mapStatus = (s: number): ReportStatus => {
   }
   return statusMap[s] ?? 'Pending'
 }
-
+const { data: session } = useSession()
 // ✅ تحويل type من رقم إلى string
 const mapType = (t: number): ReportType => {
   const typeMap: Record<number, ReportType> = {
@@ -34,8 +34,13 @@ export function useMyReports() {
     const fetchReports = async () => {
       try {
         setLoading(true)
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/my-reports`)
-        
+  // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/my-reports`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/my-reports`, {
+  headers: {
+      'Authorization': `Bearer ${(session as any)?.accessToken}`,
+    'Content-Type': 'application/json',
+  }
+})
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
