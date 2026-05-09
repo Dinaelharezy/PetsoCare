@@ -67,6 +67,10 @@ export function useMyReports() {
 
     fetchReports()
   }, [])
-
+const fetchReports = async () => {
+  console.log('🔑 Session:', session)
+  console.log('🔑 Token:', session?.user?.accessToken)
+  // ...
+}
   return { reports, loading, error }
 }
