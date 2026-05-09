@@ -144,7 +144,7 @@ export default function ChatBot() {
               <span className="status-dot" />
             </div>
             <div className="header-info">
-              <span className="header-title">PetCare Assistant</span>
+              <span className="header-title">Preliminary Diagnosis Assistant</span>
               <span className="header-sub">Online • AI Powered</span>
             </div>
             <button className="close-btn" onClick={() => setIsOpen(false)}>

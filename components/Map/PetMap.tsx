@@ -25,14 +25,14 @@ type Props = {
 
 const TYPE_COLORS = {
   clinic:          '#306beb',
-  'report-bite':   '#ef4444',
-  'report-animal': '#8b5cf6',
+  'report-bite':   '#8b5cf6',
+  'report-animal': '#ef4444',
   'my-reports':    '#f39df5',
 } as const
 
 const FILTER_LABELS = {
   clinic:          '🏥 Clinics',
-  'report-bite':   '🐕 Bite Reports',
+  'report-bite':   '🐕 Exposure',
   'report-animal': '⚠️ Dangerous Animal',
   'my-reports':    '👤 My Reports',
 } as const

@@ -149,24 +149,54 @@ export default function ArticleManagementClient() {
     window.dispatchEvent(new Event('articlesUpdated'))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+  // 
+  
 
-    if (!formData.TitleEn.trim())   { setError('Title is required');        return }
-    if (!formData.SummaryEn.trim()) { setError('Summary is required');      return }
-    if (!formData.ContentEn.trim()) { setError('Content is required');      return }
-    if (!formData.Category.trim())  { setError('Category is required');     return }
-    if (!formData.Source.trim())    { setError('Source is required');       return }
-    if (!formData.PublishDate)      { setError('Publish date is required'); return }
+  // ضع الكود ده بدل handleSubmit الموجودة في ArticleManagementClient
 
-    try {
-      if (editingArticle) {
-        const response = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
-          method: 'PUT',
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+
+  if (!formData.TitleEn.trim())   { setError("Title is required");        return; }
+  if (!formData.SummaryEn.trim()) { setError("Summary is required");      return; }
+  if (!formData.ContentEn.trim()) { setError("Content is required");      return; }
+  if (!formData.Category.trim())  { setError("Category is required");     return; }
+  if (!formData.Source.trim())    { setError("Source is required");       return; }
+  if (!formData.PublishDate)      { setError("Publish date is required"); return; }
+
+  try {
+    if (editingArticle) {
+      // ─── EDIT ──────────────────────────────────────────────────────────────
+      if (imageFile) {
+        // لو فيه صورة → بعت FormData واحدة بكل حاجة
+        const fd = new FormData();
+        fd.append("Title",       formData.TitleEn.trim());
+        fd.append("Summary",     formData.SummaryEn.trim());
+        fd.append("Content",     formData.ContentEn.trim());
+        fd.append("TitleEn",     formData.TitleEn.trim());
+        fd.append("SummaryEn",   formData.SummaryEn.trim());
+        fd.append("ContentEn",   formData.ContentEn.trim());
+        fd.append("Category",    formData.Category.trim());
+        fd.append("PublishDate", new Date(formData.PublishDate).toISOString());
+        fd.append("Source",      formData.Source.trim());
+        fd.append("Published",   "true");
+        fd.append("Image",       imageFile);
+
+        const res = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+          method: "PUT",
+          headers: { "ngrok-skip-browser-warning": "true" },
+          body: fd,
+        });
+
+        if (!res.ok) { setError(`Failed to update: ${res.status}`); return; }
+      } else {
+        // مفيش صورة → بعت JSON
+        const res = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true',
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true",
           },
           body: JSON.stringify({
             title:       formData.TitleEn,
@@ -180,63 +210,48 @@ export default function ArticleManagementClient() {
             source:      formData.Source,
             published:   true,
           }),
-        })
+        });
 
-        if (!response.ok) {
-          setError(`Failed to update: ${response.status}`)
-          return
-        }
-
-        if (imageFile) {
-          const imgFormData = new FormData()
-          imgFormData.append('Image', imageFile)
-          const imgResponse = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
-            method: 'PATCH',
-            headers: { 'ngrok-skip-browser-warning': 'true' },
-            body: imgFormData,
-          })
-          if (!imgResponse.ok) console.warn('Image upload failed — article updated but image unchanged')
-        }
-
-        notifySuccess('Article updated successfully!')
-
-      } else {
-        const formDataToSend = new FormData()
-        formDataToSend.append('Title',       formData.TitleEn.trim())
-        formDataToSend.append('Summary',     formData.SummaryEn.trim())
-        formDataToSend.append('Content',     formData.ContentEn.trim())
-        formDataToSend.append('TitleEn',     formData.TitleEn.trim())
-        formDataToSend.append('SummaryEn',   formData.SummaryEn.trim())
-        formDataToSend.append('ContentEn',   formData.ContentEn.trim())
-        formDataToSend.append('Category',    formData.Category.trim())
-        formDataToSend.append('PublishDate', new Date(formData.PublishDate).toISOString())
-        formDataToSend.append('Source',      formData.Source.trim())
-        formDataToSend.append('Published',   'true')
-        if (imageFile) formDataToSend.append('Image', imageFile)
-
-        const response = await fetch('/api/dashboard/articles', {
-          method: 'POST',
-          headers: { 'ngrok-skip-browser-warning': 'true' },
-          body: formDataToSend,
-        })
-
-        if (!response.ok) {
-          setError(`Failed to create: ${response.status}`)
-          return
-        }
-
-        notifySuccess('Article created successfully!')
+        if (!res.ok) { setError(`Failed to update: ${res.status}`); return; }
       }
 
-      setImageFile(null)
-      await loadArticles()
-      handleCloseModal()
+      notifySuccess("Article updated successfully!");
 
-    } catch (error) {
-      console.error('Error saving article:', error)
-      setError('Failed to save article. Please try again.')
+    } else {
+      // ─── CREATE ────────────────────────────────────────────────────────────
+      const fd = new FormData();
+      fd.append("Title",       formData.TitleEn.trim());
+      fd.append("Summary",     formData.SummaryEn.trim());
+      fd.append("Content",     formData.ContentEn.trim());
+      fd.append("TitleEn",     formData.TitleEn.trim());
+      fd.append("SummaryEn",   formData.SummaryEn.trim());
+      fd.append("ContentEn",   formData.ContentEn.trim());
+      fd.append("Category",    formData.Category.trim());
+      fd.append("PublishDate", new Date(formData.PublishDate).toISOString());
+      fd.append("Source",      formData.Source.trim());
+      fd.append("Published",   "true");
+      if (imageFile) fd.append("Image", imageFile);
+
+      const res = await fetch("/api/dashboard/articles", {
+        method: "POST",
+        headers: { "ngrok-skip-browser-warning": "true" },
+        body: fd,
+      });
+
+      if (!res.ok) { setError(`Failed to create: ${res.status}`); return; }
+
+      notifySuccess("Article created successfully!");
     }
+
+    setImageFile(null);
+    await loadArticles();
+    handleCloseModal();
+
+  } catch (error) {
+    console.error("Error saving article:", error);
+    setError("Failed to save article. Please try again.");
   }
+};
 
   const handleDelete = async (id: number) => {
     handleDeleteClick(id)
