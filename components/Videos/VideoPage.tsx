@@ -19,7 +19,7 @@ export default function VideoPage() {
   const fetchVideos = async () => {
     try {
       setLoading(true)
-      const res = await fetch('/api/Videos')
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos`)
       
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`)

@@ -25,7 +25,7 @@ export default function VideoManagementClient() {
   const loadVideos = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/Videos?t=${Date.now()}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos?t=${Date.now()}`, {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         cache: 'no-store',
       })
@@ -97,7 +97,7 @@ export default function VideoManagementClient() {
     try {
       if (editingVideo) {
         // ✅ Update existing video
-        const response = await fetch(`/api/Videos/${editingVideo.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos/${editingVideo.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export default function VideoManagementClient() {
         setSuccessMessage('Video updated successfully!')
       } else {
         // ✅ Create new video
-        const response = await fetch('/api/Videos', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ export default function VideoManagementClient() {
   const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this video?')) {
        try {
-      const response = await fetch(`/api/Videos/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos/${id}`, {
         method: 'DELETE',
         headers: { 'ngrok-skip-browser-warning': 'true' }
       })

@@ -113,7 +113,7 @@ const [showRating, setShowRating] = useState(false)
 }
 
     try {
-      const res = await fetch('/api/report/dangerous', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/dangerous`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

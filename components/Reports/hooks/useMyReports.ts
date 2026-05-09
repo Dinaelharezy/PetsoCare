@@ -34,7 +34,7 @@ export function useMyReports() {
     const fetchReports = async () => {
       try {
         setLoading(true)
-        const response = await fetch('/api/report/my-reports')
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/my-reports`)
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)

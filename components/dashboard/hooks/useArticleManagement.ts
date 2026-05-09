@@ -37,7 +37,7 @@ export function useArticleManagement() {
   const loadArticles = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/dashboard/articles?lang=en&t=${Date.now()}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles?lang=en&t=${Date.now()}`, {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         cache: 'no-store',
       })
@@ -120,7 +120,7 @@ export function useArticleManagement() {
     try {
       if (editingArticle) {
         // ── UPDATE ──────────────────────────────────────────────────────
-        const res = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${editingArticle.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export function useArticleManagement() {
         if (imageFile) {
           const imgForm = new FormData()
           imgForm.append('Image', imageFile)
-          const imgRes = await fetch(`/api/dashboard/articles/${editingArticle.id}`, {
+          const imgRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${editingArticle.id}`, {
             method:  'PATCH',
             headers: { 'ngrok-skip-browser-warning': 'true' },
             body:    imgForm,
@@ -173,7 +173,7 @@ export function useArticleManagement() {
         fd.append('PublishDate', new Date(formData.PublishDate).toISOString())
         if (imageFile) fd.append('Image', imageFile)
 
-        const res = await fetch('/api/dashboard/articles', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles`, {
           method:  'POST',
           headers: { 'ngrok-skip-browser-warning': 'true' },
           body: fd,
@@ -201,7 +201,7 @@ export function useArticleManagement() {
   const handleDelete = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this article?')) return
     try {
-      const res = await fetch(`/api/dashboard/articles/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${id}`, {
         method:  'DELETE',
         headers: { 'ngrok-skip-browser-warning': 'true' },
       })

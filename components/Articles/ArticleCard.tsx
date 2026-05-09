@@ -5,8 +5,8 @@ import Link from 'next/link'
 interface ArticleCardProps {
   article: article
 }
-
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
+
 
 // const getImageSrc = (src?: string): string | null => {
 //   if (!src) return null

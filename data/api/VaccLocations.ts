@@ -17,8 +17,8 @@ export async function getAllLocations(params?: {
   if (params?.isActive    != null) query.set('isActive',    String(params.isActive))
 
   const url = query.toString() 
-    ? `/api/user/locations?${query}`
-    : '/api/user/locations'
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/user/locations?${query}`
+    : '${process.env.NEXT_PUBLIC_API_URL}/api/user/locations'
 
   const res = await fetch(url)
   if (!res.ok) throw new Error('Failed to fetch locations')

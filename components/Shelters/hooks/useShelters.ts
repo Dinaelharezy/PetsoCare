@@ -15,7 +15,7 @@ export function useShelters() {
   useEffect(() => {
     if (shelters.length === 0 || isSheltersStale()) {
       setLoading(true)
-      fetch('/api/shelters')
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters`)
         .then(res => res.json())
         .then(data => setShelters(Array.isArray(data) ? data : []))
         .catch(err => {

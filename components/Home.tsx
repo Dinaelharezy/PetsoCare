@@ -259,7 +259,7 @@ export default function HomePage() {
 
     try {
       setLoading(true)
-      const res = await fetch(`/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Clinics?t=${Date.now()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error('API not working')
       const data: Clinic[] = await res.json()
 
@@ -278,7 +278,7 @@ export default function HomePage() {
 
   const fetchArticles = useCallback(async () => {
     try {
-      const res = await fetch(`/api/Articles?lang=en&t=${Date.now()}`, { cache: 'no-store' })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Articles?lang=en&t=${Date.now()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error('Articles API not working')
       const data = await res.json()
       setArticles(data)

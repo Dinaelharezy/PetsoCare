@@ -29,7 +29,7 @@ export function useVaccine() {
   setLoading(true)
   setError(null)
   try {
-    const res  = await fetch('/api/vaccine')
+    const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine`)
     const text = await res.text()
     const data = text ? JSON.parse(text) : {}
     console.log (data)
@@ -66,7 +66,7 @@ export function useVaccine() {
     setSubmitting(true)
     setError(null)
     try {
-      const res  = await fetch('/api/vaccine', {
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(dto),
@@ -102,7 +102,7 @@ const addVaccineFromSchedule = useCallback(
     setSubmitting(true)
     setError(null)
     try {
-      const res = await fetch('/api/vaccine/custom', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/custom`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
@@ -136,7 +136,7 @@ const addVaccineFromSchedule = useCallback(
     setSubmitting(true)
     setError(null)
     try {
-      const res  = await fetch('/api/vaccine/take', {
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/take`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ id: dto.id, date: dto.date ?? new Date().toISOString() }),
@@ -161,7 +161,7 @@ const updateVaccine = useCallback(async (id: string, date?: string, reminder?: b
   try {
     const body = { id, date, reminder };
 
-    const res = await fetch('/api/vaccine/update', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ const updateVaccine = useCallback(async (id: string, date?: string, reminder?: b
     setSubmitting(true)
     setError(null)
     try {
-      const res = await fetch(`/api/vaccine/${id}`, { method: 'DELETE' })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/${id}`, { method: 'DELETE' })
       if (!res.ok) {
         const text = await res.text()
         const data = text ? JSON.parse(text) : {}
@@ -212,7 +212,7 @@ const completeVaccine = useCallback(async (id: string): Promise<boolean> => {
   setSubmitting(true)
   setError(null)
   try {
-    const res = await fetch('/api/vaccine/take', {   // ← take مش complete
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/take`, {   // ← take مش complete
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ id }),

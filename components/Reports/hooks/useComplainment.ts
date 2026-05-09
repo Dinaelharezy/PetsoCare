@@ -32,7 +32,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   image:image,
     }
 
-    const res = await fetch('/api/report/complaint', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/complaint`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

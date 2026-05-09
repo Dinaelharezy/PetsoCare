@@ -3,16 +3,16 @@ import { Report,BiteReport,ComplaintReport,DangerousAnimalReport } from '../../t
 
 
 export async function getAllReports() {
-  const res = await fetch(`/api/admin/reports`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports`);
   return res.json();
 }
 export async function getAllApprovedReports() {
-  const res = await fetch(`/api/report/approved_inprogress_done`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/approved_inprogress_done`);
   return res.json();
 }
 
 export async function manageReport(id: number, data: any) {
-  const res = await fetch(`/api/admin/reports/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +24,7 @@ export async function manageReport(id: number, data: any) {
 }
 
 export async function getMyReports(token: string) {
-  const res = await fetch(`/api/report/my-reports`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/report/my-reports`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -47,7 +47,7 @@ export async function getMyReports(token: string) {
 //   return res.json();
 // }
 export async function getMapReports(token?: string) {
-  const res = await fetch(`/api/admin/reports/map`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/map`, {
     headers: token
       ? { Authorization: `Bearer ${token}` }
       : {},

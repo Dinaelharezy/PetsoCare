@@ -20,7 +20,7 @@ export function Appointment() {
   const params = useParams()
   const clinicId = params?.id as string
 
-  // ✅ step معرف هنا
+ 
   const [step, setStep] = useState<Step>('datetime')
 
   const {
@@ -76,7 +76,7 @@ useEffect(() => {
     setSelectedTime('')
     setError('')
     try {
-      const res = await fetch(`/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
         headers: { 
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ const handleConfirmAppointment = async () => {
 
     console.log("📤 Trying flat payload:", JSON.stringify(payloadFlat, null, 2));
 
-    let res = await fetch("/api/Appointments", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Appointments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const handleConfirmAppointment = async () => {
     // لو فشل الأول، جرب الـ dto
     if (!res.ok) {
       console.log("⚠️ Flat payload failed, trying with dto...");
-      res = await fetch("/api/Appointments", {
+      res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Appointments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

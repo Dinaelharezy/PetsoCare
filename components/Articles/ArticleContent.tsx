@@ -15,12 +15,12 @@ const getArticleImageSrc = (src?: string): string | null => {
   if (!src) return null
 
   if (src.startsWith('http')) {
-    return `/api/image?url=${encodeURIComponent(src)}`
+    return `{process.env.NEXT_PUBLIC_API_URL}/api/image?url=${encodeURIComponent(src)}`
   }
 
   if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
     const full = BASE_URL ? `${BASE_URL}${src}` : src
-    return `/api/image?url=${encodeURIComponent(full)}`
+    return `{process.env.NEXT_PUBLIC_API_URL}/api/image?url=${encodeURIComponent(full)}`
   }
 
   if (src.startsWith('/')) return src

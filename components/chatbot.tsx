@@ -68,7 +68,7 @@ export default function ChatBot() {
     setIsTyping(true)
 
     try {
-      const response = await fetch('/api/openrouter/chat', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/openrouter/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userInput, history: chatHistory }),

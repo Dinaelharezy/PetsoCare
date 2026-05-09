@@ -22,7 +22,7 @@ export function useNotification() {
   const fetchNotifications = useCallback(async () => {
     setLoading(true)
     try {
-      const res  = await fetch('/api/Notification')
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Notification`)
       const text = await res.text()
       const data = text ? JSON.parse(text) : []
       if (res.ok) setNotifications(Array.isArray(data) ? data : [])
@@ -36,7 +36,7 @@ export function useNotification() {
   // ── GET /api/Notification/unread-count ──
   const fetchUnreadCount = useCallback(async () => {
     try {
-      const res  = await fetch('/api/Notification/unread-count')
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Notification/unread-count`)
       const text = await res.text()
       const data = text ? JSON.parse(text) : 0
       if (res.ok) setUnreadCount(typeof data === 'number' ? data : 0)
@@ -48,7 +48,7 @@ export function useNotification() {
   // ── POST /api/Notification/mark-as-read/{id} ──
   const markAsRead = useCallback(async (id: number): Promise<boolean> => {
     try {
-      const res = await fetch(`/api/Notification/mark-as-read/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Notification/mark-as-read/${id}`, {
         method: 'POST',
       })
       if (res.ok) {

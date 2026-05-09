@@ -15,8 +15,8 @@ export default function StatisticsCard() {
     const fetchData = async () => {
       try {
         const [usersRes, statsRes] = await Promise.all([
-          fetch('/api/admin/vaccine/users'),
-          fetch('/api/admin/vaccine/stats'),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/vaccine/users`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/vaccine/stats`),
         ])
         const usersData = await usersRes.json()
 const statsData = await statsRes.json()

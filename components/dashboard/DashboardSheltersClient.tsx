@@ -29,7 +29,7 @@ export default function DashboardSheltersClient() {
   const fetchShelters = async () => {
     try {
       setLoading(true)
-      const res  = await fetch("/api/shelters")
+      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters`)
       const json = await res.json()
       setShelters(json.data ?? json)
     } finally {
@@ -76,7 +76,7 @@ export default function DashboardSheltersClient() {
     e.preventDefault()
     setSubmitting(true)
 
-    const url    = editingShelter ? `/api/dashboard/shelters/${editingShelter.id}` : "/api/dashboard/shelters"
+    const url    = editingShelter ? `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters/${editingShelter.id}` : `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters`
     const method = editingShelter ? "PUT" : "POST"
 
     const payload = {
@@ -118,7 +118,7 @@ export default function DashboardSheltersClient() {
   const confirmDelete = async () => {
     if (!deletingId) return
     try {
-      await fetch(`/api/dashboard/shelters/${deletingId}`, { method: "DELETE" })
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters/${deletingId}`, { method: "DELETE" })
       setSuccessMessage("Shelter deleted successfully!")
       await fetchShelters()
       setTimeout(() => setSuccessMessage(""), 3000)

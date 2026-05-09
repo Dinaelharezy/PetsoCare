@@ -140,7 +140,7 @@ export default function ClinicManagementClient() {
       fd.append('Longitude',    formData.longitude    || '0')
       if (imageFile) fd.append('Image', imageFile)
 
-      const url    = editingClinic ? `/api/dashboard/clinics/${editingClinic.id}` : '/api/dashboard/clinics'
+      const url    = editingClinic ? `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/clinics/${editingClinic.id}` : '/api/dashboard/clinics'
       const method = editingClinic ? 'PUT' : 'POST'
 
       const response = await fetch(url, {

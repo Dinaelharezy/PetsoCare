@@ -27,7 +27,7 @@ useEffect(() => {
     return
   }
 
-  fetch(`/api/shelters/${params.id}`)
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters/${params.id}`)
     .then((res) => {
       if (res.status === 404) {
         setNotFound(true)

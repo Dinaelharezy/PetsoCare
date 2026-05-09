@@ -207,7 +207,7 @@ export default function ReportManagement() {
     try {
       setLoading(true)
       setError(null)
-      const res = await fetch('/api/admin/reports', { cache: 'no-store' })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports`, { cache: 'no-store' })
       if (!res.ok) throw new Error('Failed to load reports')
       const data = await res.json()
       setReports(
@@ -232,7 +232,7 @@ export default function ReportManagement() {
   const doAction = async (id: number, action: 'seen' | 'approve' | 'in-progress' | 'done') => {
     setActionLoading(id)
     try {
-      const res = await fetch(`/api/admin/reports/${id}/${action}`, { method: 'PUT' })
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${id}/${action}`, { method: 'PUT' })
       if (!res.ok) throw new Error('Action failed')
       await fetchReports()
       showToast('Report updated successfully', 'success')
@@ -247,7 +247,7 @@ export default function ReportManagement() {
     if (!rejectTarget) return
     setRejectLoading(true)
     try {
-      const res = await fetch(`/api/admin/reports/${rejectTarget.id}/reject`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/reports/${rejectTarget.id}/reject`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(rejectReason),

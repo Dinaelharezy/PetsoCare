@@ -61,7 +61,7 @@ export function useEdit() {
     }
 
     // لو مفيش store، اعمل fetch مرة واحدة
-    fetch('/api/auth/me', { cache: 'no-store' })
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         populateForm(data)
@@ -73,7 +73,7 @@ export function useEdit() {
 
 
 const refreshAndSyncStore = async () => {
-  const res = await fetch('/api/auth/me', { cache: 'no-store' })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, { cache: 'no-store' })
   const data = await res.json()
   populateForm(data)
   setProfile(data, data.id ?? data.email)  // ← بيحدث الـ store بالصورة الجديدة
@@ -95,7 +95,7 @@ const refreshAndSyncStore = async () => {
     setErrorMsg('')
     setSuccessMsg('')
     try {
-      const profileRes = await fetch('/api/user/profile', {
+      const profileRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -112,7 +112,7 @@ const refreshAndSyncStore = async () => {
         const formData = new FormData()
         formData.append('file', imageFile)
 
-        const imgRes = await fetch('/api/user/upload-image', {
+        const imgRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/upload-image`, {
           method: 'POST',
           body: formData,
         })
@@ -162,7 +162,7 @@ const refreshAndSyncStore = async () => {
     setSaving(true)
     setErrorMsg('')
     try {
-      const res = await fetch('/api/user/change-password', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/change-password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ currentPassword, newPassword }),
@@ -185,10 +185,10 @@ const refreshAndSyncStore = async () => {
   setErrorMsg('')
   setSuccessMsg('')
   try {
-    const res = await fetch('/api/auth/update-phone', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-phone`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone }),   // 👈 ده كان صح من الأول
+      body: JSON.stringify({ phone }),   
     })
     if (!res.ok) throw new Error(await res.text())
     await refreshAndSyncStore()
@@ -205,7 +205,7 @@ const refreshAndSyncStore = async () => {
     setSaving(true)
     setErrorMsg('')
     try {
-      const res = await fetch('/api/user/change-email', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/change-email`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ newEmail }),

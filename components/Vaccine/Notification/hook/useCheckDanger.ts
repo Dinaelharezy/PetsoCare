@@ -10,7 +10,7 @@ export function useCheckDanger() {
         const { latitude, longitude } = position.coords
 
         try {
-          await fetch('/api/user-location/check-danger', {
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-location/check-danger`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ latitude, longitude }),
