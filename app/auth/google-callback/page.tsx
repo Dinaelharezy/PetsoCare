@@ -32,7 +32,7 @@ export default function GoogleCallbackPage() {
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div className="text-center">
         <div className="spinner-border text-success mb-3" />
-        <p className="text-muted">Signing you in with Google...</p>
+        <p className="text-muted">Signing you in with Google..</p>
       </div>
     </div>
   )
