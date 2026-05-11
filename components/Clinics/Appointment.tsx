@@ -43,31 +43,7 @@ export function Appointment() {
     setError,
   } = useAppointment(clinicId)
 
-  // Fetch available times when date changes
-  // useEffect(() => {
-  //   if (!selectedDate || !clinicId) return
-  //   const fetchTimes = async () => {
-  //     setLoadingTimes(true)
-  //     setSelectedTime('')
-  //     setError('')
-  //     try {
-  //       const res = await fetch(`/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
-  //         headers: { 'ngrok-skip-browser-warning': 'true' }
-  //       })
-  //       if (!res.ok) throw new Error()
-  //       const data = await res.json()
-  //       const times = Array.isArray(data) ? data : data.times ?? data.data ?? []
-  //       setAvailableTimes(times)
-  //     } catch {
-  //       // Fallback times if API fails
-  //       setAvailableTimes(['9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'])
-  //     } finally {
-  //       setLoadingTimes(false)
-  //     }
-  //   }
-  //   fetchTimes()
-  // }, [selectedDate, clinicId])
-
+  
 // Fetch available times when date changes
 useEffect(() => {
   if (!selectedDate || !clinicId) return
@@ -76,12 +52,7 @@ useEffect(() => {
     setSelectedTime('')
     setError('')
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Appointments/${clinicId}/available-times?date=${selectedDate}`, {
-        headers: { 
-          'ngrok-skip-browser-warning': 'true',
-          'Content-Type': 'application/json'
-        }
-      })
+    const res = await fetch(`/api/proxy/Appointments/${clinicId}/available-times?date=${selectedDate}`)
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}))
         console.error("Error fetching times:", errorData)
@@ -152,7 +123,7 @@ const handleConfirmAppointment = async () => {
 
     console.log("📤 Trying flat payload:", JSON.stringify(payloadFlat, null, 2));
 
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Appointments`, {
+    let res = await fetch(`/api/proxy/Appointments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

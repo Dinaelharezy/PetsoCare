@@ -126,7 +126,7 @@ export function useNotification() {
     setLoading(true)
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Notification`,
+        `/api/proxy/Notification`,
         { headers }
       )
       if (res.status === 401 || !res.ok) return  // ✅ متعملش redirect
@@ -145,7 +145,7 @@ export function useNotification() {
     if (!token) return   // ✅ متعملش request لو مفيش token
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Notification/unread-count`,
+        `/api/proxy/Notification/unread-count`,
         { headers }
       )
       if (res.status === 401 || !res.ok) return  // ✅ متعملش redirect
@@ -162,7 +162,7 @@ export function useNotification() {
     if (!token) return false
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Notification/mark-as-read/${id}`,
+        `/api/proxy/Notification/mark-as-read/${id}`,
         { method: 'POST', headers }
       )
       if (res.ok) {

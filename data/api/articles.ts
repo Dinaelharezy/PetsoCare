@@ -1,29 +1,91 @@
 
+// import { article } from '@/types/article'
+
+
+
+// export const articlesApi = {
+
+//   getById: async (id: number): Promise<article> => {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`)
+//     if (!response.ok) throw new Error('Failed to fetch article')
+//     return response.json()
+//   },
+
+//   getAll: async (): Promise<article[]> => {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles`)
+//     if (!response.ok) throw new Error('Failed to fetch articles')
+//     return response.json()
+//   },
+
+//   create: async (data: Partial<article>): Promise<article> => {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+        
+//       },
+//       body: JSON.stringify(data)
+//     })
+//     if (!response.ok) throw new Error('Failed to create article')
+//     return response.json()
+//   },
+
+//   update: async (id: number, data: Partial<article>): Promise<article> => {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`, {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+    
+//       },
+//       body: JSON.stringify(data)
+//     })
+
+//     if (!response.ok) {
+//       const errorText = await response.text()
+//       console.error('❌ Update failed:', response.status, errorText)
+//       throw new Error(errorText || 'Failed to update article')
+//     }
+
+//     const text = await response.text()
+//     if (!text || text.trim() === '') return data as article
+
+//     try {
+//       return JSON.parse(text)
+//     } catch {
+//       return data as article
+//     }
+//   },
+
+//   delete: async (id: number): Promise<void> => {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`, {
+//       method: 'DELETE',
+    
+//     })
+//     if (!response.ok) throw new Error('Failed to delete article')
+//   }
+// }
+
 import { article } from '@/types/article'
 
-
+const BASE = '/api/proxy' // ✅ بيمر على الـ Next.js proxy
 
 export const articlesApi = {
-
   getById: async (id: number): Promise<article> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`)
+    const response = await fetch(`${BASE}/Articles/${id}`)
     if (!response.ok) throw new Error('Failed to fetch article')
     return response.json()
   },
 
   getAll: async (): Promise<article[]> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles`)
+    const response = await fetch(`${BASE}/Articles`)
     if (!response.ok) throw new Error('Failed to fetch articles')
     return response.json()
   },
 
   create: async (data: Partial<article>): Promise<article> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles`, {
+    const response = await fetch(`${BASE}/Articles`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
     if (!response.ok) throw new Error('Failed to create article')
@@ -31,12 +93,9 @@ export const articlesApi = {
   },
 
   update: async (id: number, data: Partial<article>): Promise<article> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`, {
+    const response = await fetch(`${BASE}/Articles/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-    
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
 
@@ -57,9 +116,8 @@ export const articlesApi = {
   },
 
   delete: async (id: number): Promise<void> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Articles/${id}`, {
+    const response = await fetch(`${BASE}/Articles/${id}`, {
       method: 'DELETE',
-    
     })
     if (!response.ok) throw new Error('Failed to delete article')
   }

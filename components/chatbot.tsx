@@ -68,11 +68,11 @@ export default function ChatBot() {
     setIsTyping(true)
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/openrouter/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userInput, history: chatHistory }),
-      })
+   const response = await fetch('/api/Ai/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ message: userInput, history: chatHistory }),
+})
 
       if (!response.ok) throw new Error(`API error: ${response.status}`)
 

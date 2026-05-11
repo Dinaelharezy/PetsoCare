@@ -55,7 +55,7 @@ export default function ArticleManagementClient() {
   const loadArticles = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles?lang=en&t=${Date.now()}`, {
+      const response = await fetch(`/api/proxy/dashboard/articles?lang=en&t=${Date.now()}`, {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         cache: 'no-store',
       })
@@ -80,7 +80,7 @@ export default function ArticleManagementClient() {
     if (!deletingId) return
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${deletingId}`, {
+      const response = await fetch(`/api/proxy/dashboard/articles/${deletingId}`, {
         method: 'DELETE',
         headers: { 'ngrok-skip-browser-warning': 'true' },
       })
@@ -185,7 +185,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         fd.append("Published",   "true");
         fd.append("Image",       imageFile);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${editingArticle.id}`, {
+        const res = await fetch(`/api/proxy/dashboard/articles/${editingArticle.id}`, {
           method: "PUT",
           headers: { "ngrok-skip-browser-warning": "true" },
           body: fd,
@@ -194,7 +194,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         if (!res.ok) { setError(`Failed to update: ${res.status}`); return; }
       } else {
         // مفيش صورة → بعت JSON
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles/${editingArticle.id}`, {
+        const res = await fetch(`/api/proxy/dashboard/articles/${editingArticle.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -234,7 +234,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       fd.append("Published",   "true");
       if (imageFile) fd.append("Image", imageFile);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/articles`, {
+      const res = await fetch(`/api/proxy/dashboard/articles`, {
         method: "POST",
         headers: { "ngrok-skip-browser-warning": "true" },
         body: fd,

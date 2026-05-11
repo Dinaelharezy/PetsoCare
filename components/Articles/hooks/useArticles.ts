@@ -18,11 +18,11 @@ export const useArticles = () => {
   const fetchArticles = useCallback(async () => {
     try {
       setLoading(true)
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Articles?lang=en&t=${Date.now()}`,
-        { cache: 'no-store' }
-      )
+      
+const res = await fetch(
+  `/api/proxy/Articles?lang=en&t=${Date.now()}`,
+  { cache: 'no-store' }
+)
 
       if (!res.ok) throw new Error('Articles API not working')
 

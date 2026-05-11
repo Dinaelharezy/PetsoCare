@@ -72,7 +72,7 @@ export async function GET(request: Request) {
     const lang = searchParams.get("lang") ?? "en";
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/Articles?lang=${lang}&pageSize=100`,
+      `/api/Articles?lang=${lang}&pageSize=100`,
       {
         headers: { "ngrok-skip-browser-warning": "true" },
         cache: "no-store",

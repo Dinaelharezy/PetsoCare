@@ -24,7 +24,7 @@ export function useVideo(id: string) {
         setLoading(true)
         setError(null)
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos`)
+        const response = await fetch(`/api/proxy/Videos`)
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
         const data: Video[] = await response.json()

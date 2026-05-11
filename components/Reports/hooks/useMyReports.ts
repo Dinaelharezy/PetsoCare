@@ -115,7 +115,7 @@ export function useMyReports() {
         setLoading(true)
 
         // ✅ بيبعت للـ Next.js API route مش للـ backend مباشرة
-        const response = await fetch('/api/report/my-reports')
+        const response = await fetch('/api/proxy/report/my-reports')
 
         if (response.status === 401) {
           setError('Unauthorized')

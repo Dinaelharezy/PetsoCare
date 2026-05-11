@@ -16,10 +16,15 @@ export const useContent = (id: string) => {
       setLoading(true)
       setError(null)
 
+      // const res = await fetch(
+      //   `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${id}?lang=en&t=${Date.now()}`,
+      //   { cache: 'no-store' }
+      // )
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Articles/${id}?lang=en&t=${Date.now()}`,
-        { cache: 'no-store' }
-      )
+  `/api/proxy/Articles/${id}?lang=en&t=${Date.now()}`,
+  { cache: 'no-store' }
+)
 
       if (!res.ok) throw new Error('Article not found')
 

@@ -17,8 +17,6 @@ export default function ArticlesClient() {
     categories,
     activeCategory,
     setActiveCategory,
-    searchQuery,
-    setSearchQuery,
     currentPage,
     setCurrentPage,
     totalPages,
@@ -32,10 +30,6 @@ const router = useRouter()
     <>
       <Container className='mb-4'>
 
-      {/* <div style={{ textAlign: 'center', margin: '2rem', color: '#555' }}>
-        <h3 className='bold'>Explore a world of knowledge, discover articles that inspire and inform you</h3>
-        <p className='text-muted'>"Search, explore, and dive into content curated for you and your interests."</p>
-      </div> */}
             {/* Header */}
             <div className="header-section">
               <Container>

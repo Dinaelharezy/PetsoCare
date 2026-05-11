@@ -76,7 +76,7 @@ export default function DashboardSheltersClient() {
     e.preventDefault()
     setSubmitting(true)
 
-    const url    = editingShelter ? `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters/${editingShelter.id}` : `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters`
+    const url    = editingShelter ? `/api/proxy/dashboard/shelters/${editingShelter.id}` : `/api/proxy/dashboard/shelters`
     const method = editingShelter ? "PUT" : "POST"
 
     const payload = {
@@ -118,7 +118,7 @@ export default function DashboardSheltersClient() {
   const confirmDelete = async () => {
     if (!deletingId) return
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/shelters/${deletingId}`, { method: "DELETE" })
+      await fetch(`/api/proxy/dashboard/shelters/${deletingId}`, { method: "DELETE" })
       setSuccessMessage("Shelter deleted successfully!")
       await fetchShelters()
       setTimeout(() => setSuccessMessage(""), 3000)

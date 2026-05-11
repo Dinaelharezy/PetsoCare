@@ -13,7 +13,7 @@ export function useRating() {
     setSubmitting(true)
     setError(null)
     try {
-      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Rating`, {
+      const res  = await fetch(`/api/proxy/Rating`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ value }),
@@ -52,8 +52,8 @@ export function useRatingStats() {
       setLoading(true)
       try {
         const [avgRes, cntRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Rating/average`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Rating/count`),
+          fetch(`/api/proxy/Rating/average`),
+          fetch(`/api/proxy/Rating/count`),
         ])
         const avg = await avgRes.json()
         const cnt = await cntRes.json()

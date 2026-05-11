@@ -18,7 +18,7 @@ export default function AdminAppointmentsView() {
 
   // ── جيب الحجوزات من الـ API عند التحميل ──
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/appointments/clinic/all`, { cache: 'no-store' })
+    fetch(`/api/proxy/dashboard/appointments/clinic/all`, { cache: 'no-store' })
       .then(r => r.json())
       .then(setAppointments)
       .catch(err => console.error('Failed to load appointments:', err))

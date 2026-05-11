@@ -432,7 +432,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
     }
 
     if (victimType === 'animal') {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vaccine/custom`, {
+      const res = await fetch(`/api/proxy/vaccine/custom`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

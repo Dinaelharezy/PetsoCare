@@ -14,7 +14,6 @@
     "lucide-react": "^1.11.0",
     "next": "^15.1.9",
     "next-auth": "^5.0.0-beta.30",
-    "puter": "^1.0.0",
     "react": "19.2.5",
     "react-bootstrap": "^2.10.10",
     "react-dom": "19.2.5",
