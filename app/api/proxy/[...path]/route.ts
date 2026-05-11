@@ -55,7 +55,7 @@ async function handler(req: Request, { params }: { params: { path: string[] } })
   const token = session?.user?.accessToken
 
   const path = params.path.join('/')
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/${path}`
+ const url = `${process.env.API_URL}/api/${path}`
 
   const isFormData = req.headers.get('content-type')?.includes('multipart/form-data')
 

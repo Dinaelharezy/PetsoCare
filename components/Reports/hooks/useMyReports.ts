@@ -77,7 +77,7 @@
 import { useState, useEffect } from 'react'
 import { Report, ReportType, ReportStatus } from '@/types/report'
 import { useSession } from 'next-auth/react'
-
+import { apiUrl } from '@/lib/api'
 const mapStatus = (s: number): ReportStatus => {
   const statusMap: Record<number, ReportStatus> = {
     0: 'Pending',
@@ -115,7 +115,7 @@ export function useMyReports() {
         setLoading(true)
 
         // ✅ بيبعت للـ Next.js API route مش للـ backend مباشرة
-        const response = await fetch(`/proxy/report/my-reports`)
+        const response = await fetch(apiUrl(`report/my-reports`))
 
         if (response.status === 401) {
           setError('Unauthorized')

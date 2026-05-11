@@ -2,6 +2,7 @@
 
 'use client'
 
+import { apiUrl } from '@/lib/api'
 import { useState } from 'react'
 
 export const BODY_LOCATIONS = [
@@ -109,7 +110,7 @@ const [showRating, setShowRating] = useState(false)
 }
 
     try {
-      const res = await fetch(`/api/proxy/report/bite`, {
+      const res = await fetch(apiUrl(`report/bite`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

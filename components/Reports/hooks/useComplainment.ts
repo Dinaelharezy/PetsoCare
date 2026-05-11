@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { apiUrl } from '@/lib/api'
 export  function useComplainment() {
 
  const [urgency, setUrgency] = useState('Low')
@@ -32,11 +32,11 @@ const handleSubmit = async (e: React.FormEvent) => {
   image:image,
     }
 
-    const res = await fetch(`/api/proxy/report/complaint`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
+  const res = await fetch(apiUrl('report/complaint'), {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(payload),
+})
 
 if (!res.ok) {
   let errorMessage

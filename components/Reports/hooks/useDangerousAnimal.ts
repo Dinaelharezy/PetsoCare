@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from 'react'
-
+import { apiUrl } from '@/lib/api'
 const DOG_SYMPTOMS = [
   'Sudden aggression or unusual aggressive behavior',
   'Repeated attempts to bite',
@@ -113,12 +113,11 @@ const [showRating, setShowRating] = useState(false)
 }
 
     try {
-      const res = await fetch(`/api/proxy/report/dangerous`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
+ const res = await fetch(apiUrl('report/dangerous'), {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(payload),
+})
       if (!res.ok) {
         const err = await res.json()
         throw new Error(err.error || 'Submission failed')
