@@ -1,3 +1,5 @@
+
+
 // import { NextResponse } from 'next/server'
 // import { auth } from '@/lib/auth'
 
@@ -8,17 +10,16 @@
 //   const session = await auth()
 //   const token = session?.user?.accessToken
 
-//   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
 //   const path = params.path.join('/')
-//   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/${path}`
+//  const url = `${process.env.API_URL}/api/${path}`
 
 //   const isFormData = req.headers.get('content-type')?.includes('multipart/form-data')
 
 //   const options: RequestInit = {
 //     method: req.method,
 //     headers: {
-//       Authorization: `Bearer ${token}`,
+//       // ✅ لو في token ضيفه، لو لأ ابعت من غيره
+//       ...(token && { Authorization: `Bearer ${token}` }),
 //       ...(!isFormData && { 'Content-Type': 'application/json' }),
 //     },
 //     cache: 'no-store',
@@ -50,19 +51,19 @@ import { auth } from '@/lib/auth'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-async function handler(req: Request, { params }: { params: { path: string[] } }) {
+async function handler(req: Request, { params }: { params: Promise<{ path: string[] }> }) {
   const session = await auth()
   const token = session?.user?.accessToken
 
-  const path = params.path.join('/')
- const url = `${process.env.API_URL}/api/${path}`
+  const { path: pathArr } = await params  // ✅ await هنا
+  const path = pathArr.join('/')
+  const url = `${process.env.API_URL}/api/${path}`
 
   const isFormData = req.headers.get('content-type')?.includes('multipart/form-data')
 
   const options: RequestInit = {
     method: req.method,
     headers: {
-      // ✅ لو في token ضيفه، لو لأ ابعت من غيره
       ...(token && { Authorization: `Bearer ${token}` }),
       ...(!isFormData && { 'Content-Type': 'application/json' }),
     },
