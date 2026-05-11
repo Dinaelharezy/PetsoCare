@@ -127,13 +127,13 @@ export default function LoginClient() {
               ) : 'Sign In'}
             </button>
 
-            <div className="d-flex align-items-center gap-2 mb-3">
+            {/* <div className="d-flex align-items-center gap-2 mb-3">
               <hr className="flex-grow-1 m-0" style={{ borderColor: '#ddd' }} />
               <span className="text-muted" style={{ fontSize: '13px' }}>or</span>
               <hr className="flex-grow-1 m-0" style={{ borderColor: '#ddd' }} />
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogle}
               className="btn w-100 py-2 mb-3 d-flex align-items-center justify-content-center gap-2"
@@ -146,7 +146,35 @@ export default function LoginClient() {
                 <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
               </svg>
               Continue with Google
-            </button>
+            </button> */}
+
+            <div className="text-center my-3">
+  <div className="d-flex align-items-center gap-2 mb-3">
+    <hr style={{ flex: 1 }} />
+    <span className="text-muted" style={{ fontSize: '13px' }}>or</span>
+    <hr style={{ flex: 1 }} />
+  </div>
+  <button
+    onClick={() => {
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login`
+    }}
+    className="btn w-100 fw-semibold"
+    style={{
+      borderRadius: '10px',
+      border: '1px solid #ddd',
+      background: 'white',
+      fontSize: '14px',
+    }}
+  >
+    <img
+      src="https://www.google.com/favicon.ico"
+      width={16} height={16}
+      className="me-2"
+      alt="Google"
+    />
+    Continue with Google
+  </button>
+</div>
 
             <p className="text-center mb-2">
               Don&apos;t have an account?{' '}

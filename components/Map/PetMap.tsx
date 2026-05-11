@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { clinicsApi } from '../../data/api/Clinic'
 import { getAllApprovedReports } from '../../data/api/report'
 import { Clinic } from '../../types/Clinic'
-
+import { apiUrl } from '@/lib/api'
 // ── types ──────────────────────────────────────────────────────────────────
 type MapLocation = {
   id:      string | number

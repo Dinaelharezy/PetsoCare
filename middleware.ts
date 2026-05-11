@@ -70,18 +70,72 @@ const ROUTE_ROLES: Record<string, string[]> = {
   "/clinic": ["Admin", "Clinic"],
 };
 
+// const PUBLIC_PATHS = [
+//   "/login",
+//   "/SignUpCompletion",
+//   "/main",
+//   "/api/auth",
+//   "/_next",
+//   "/favicon.ico",
+//   "/api/report",        // ✅ زودي السطر ده
+//   "/api/notification", 
+//   "/api/image", 
+//   "/api/vaccine", 
+//   "/Images",
+//   "/forgot-password",
+//   "/reset-password",
+//   "/verify-email",
+// ];
+
 const PUBLIC_PATHS = [
   "/login",
-  "/SignUpCompletion",
+  "/SignUpCompletion", 
   "/main",
-  "/api/auth",
-  "/_next",
-  "/favicon.ico",
-  "/Images",
   "/forgot-password",
   "/reset-password",
   "/verify-email",
-];
+  "/_next",
+  "/favicon.ico",
+  "/Images",
+  "/api",  // ✅ كده بيشمل كل الـ API routes دفعة واحدة
+]
+
+
+// const PUBLIC_PATHS = [
+//   // ── صفحات مش محتاجة login ──
+//   "/login",
+//   "/SignUpCompletion",
+//   "/main",
+//   "/forgot-password",
+//   "/reset-password",
+//   "/verify-email",
+
+//   // ── Next.js system ──
+//   "/_next",
+//   "/favicon.ico",
+//   "/Images",
+
+//   // ── كل الـ API routes — بتتحمي من جوا بالـ auth() ──
+//   "/api/auth",
+//   "/api/report",
+//   "/api/notification",
+//   "/api/image",
+//   "/api/vaccine",
+//   "/api/admin",
+//   "/api/Appointments",
+//   "/api/Articles",
+//   "/api/clinic",
+//   "/api/Clinics",
+//   "/api/dashboard",
+//   "/api/location",
+//   "/api/Rating",
+//   "/api/shelters",
+//   "/api/stats",
+//   "/api/user",
+//   "/api/user-location",
+//   "/api/Videos",
+//   "/api/openrouter",
+// ]
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -99,9 +153,10 @@ export async function middleware(req: NextRequest) {
   // ✅ getToken بيشتغل في Edge Runtime
   const token = await getToken({
     req,
-    secret: process.env.AUTH_SECRET,
+    // secret: process.env.AUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
   });
-
+console.log('token:', token, 'pathname:', pathname)
   // مش logged in → روح login
   if (!token) {
     const loginUrl = new URL("/login", req.url);

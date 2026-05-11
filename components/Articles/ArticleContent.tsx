@@ -4,29 +4,8 @@
 import { Container, Row, Col, Badge } from 'react-bootstrap'
 import { useRouter } from 'next/navigation'
 import { article } from '@/types/article'
-
+import { getImageSrc } from '@/utils/imageUtils'
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
-
-// Mirrors the shared getImageSrc utility exactly:
-// - http URL  → proxy
-// - /Images, /uploads, /api → prepend BASE_URL then proxy
-// - any other "/" path (public folder like /Dog-2.jpg) → serve directly ✅
-const getArticleImageSrc = (src?: string): string | null => {
-  if (!src) return null
-
-  if (src.startsWith('http')) {
-    return `{process.env.NEXT_PUBLIC_API_URL}/api/image?url=${encodeURIComponent(src)}`
-  }
-
-  if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
-    const full = BASE_URL ? `${BASE_URL}${src}` : src
-    return `{process.env.NEXT_PUBLIC_API_URL}/api/image?url=${encodeURIComponent(full)}`
-  }
-
-  if (src.startsWith('/')) return src
-
-  return null
-}
 
 interface ArticleContentProps {
   article: article
@@ -34,7 +13,7 @@ interface ArticleContentProps {
 
 export default function ArticleContent({ article }: ArticleContentProps) {
   const router = useRouter()
-  const imageSrc = getArticleImageSrc(article.imageUrl)
+  const imageSrc = getImageSrc(article?.imageUrl)
 
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>

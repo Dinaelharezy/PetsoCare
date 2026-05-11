@@ -6,7 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useProfileStore } from '../../../store/profileStore'   
-
+import { apiUrl } from '@/lib/api'
 
 
 export function useProfile() {
@@ -37,12 +37,13 @@ export function useProfile() {
     if (!needsFetch || fetching) return
 
     setFetching(true)
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
-      headers: {
-        Authorization: `Bearer ${(session?.user as any)?.accessToken ?? ''}`,
-        'ngrok-skip-browser-warning': 'true',
-      },
-    })
+    // fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/profile`, {
+    //   headers: {
+    //     Authorization: `Bearer ${(session?.user as any)?.accessToken ?? ''}`,
+    //     'ngrok-skip-browser-warning': 'true',
+    //   },
+    // })
+     fetch(apiUrl('user/profile'))
       .then(res => res.json())
       .then(data => setProfile(data, currentUserId))
       .catch(err => console.error('Failed to fetch profile:', err))

@@ -238,8 +238,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {
         email:    { label: "Email",    type: "email"    },
         password: { label: "Password", type: "password" },
+         token:    { label: "Token",    type: "text"     },
       },
       async authorize(credentials) {
+        
+  if (credentials?.token) {
+    const token = credentials.token as string
+    const decoded = parseJwt(token)
+    const role =
+      (decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] as string)
+      ?? "User"
+    const image = await fetchProfileImage(token)
+
+    return {
+      id:          String(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? ""),
+      name:        decoded["name"] as string ?? "",
+      email:       decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] as string ?? "",
+      role,
+      accessToken: token,
+      image,
+    }
+  }
+
         try {
           const res = await fetch(`${API}/api/auth/login`, {
             method:  "POST",
