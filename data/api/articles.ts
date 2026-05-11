@@ -65,25 +65,25 @@
 //   }
 // }
 
-import { article } from '@/types/article'
 
-const BASE = '/api/proxy' // ✅ بيمر على الـ Next.js proxy
+import { article } from '@/types/article'
+import { apiUrl } from '@/lib/api'
 
 export const articlesApi = {
   getById: async (id: number): Promise<article> => {
-    const response = await fetch(`${BASE}/Articles/${id}`)
+    const response = await fetch(apiUrl(`Articles/${id}`))
     if (!response.ok) throw new Error('Failed to fetch article')
     return response.json()
   },
 
   getAll: async (): Promise<article[]> => {
-    const response = await fetch(`${BASE}/Articles`)
+    const response = await fetch(apiUrl('Articles'))
     if (!response.ok) throw new Error('Failed to fetch articles')
     return response.json()
   },
 
   create: async (data: Partial<article>): Promise<article> => {
-    const response = await fetch(`${BASE}/Articles`, {
+    const response = await fetch(apiUrl('Articles'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -93,7 +93,7 @@ export const articlesApi = {
   },
 
   update: async (id: number, data: Partial<article>): Promise<article> => {
-    const response = await fetch(`${BASE}/Articles/${id}`, {
+    const response = await fetch(apiUrl(`Articles/${id}`), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -116,7 +116,7 @@ export const articlesApi = {
   },
 
   delete: async (id: number): Promise<void> => {
-    const response = await fetch(`${BASE}/Articles/${id}`, {
+    const response = await fetch(apiUrl(`Articles/${id}`), {
       method: 'DELETE',
     })
     if (!response.ok) throw new Error('Failed to delete article')
