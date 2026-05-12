@@ -55,7 +55,7 @@ async function handler(req: Request, { params }: { params: Promise<{ path: strin
   const session = await auth()
   const token = session?.user?.accessToken
 
-  const { path: pathArr } = await params  // ✅ await هنا
+  const { path: pathArr } = await params 
   const path = pathArr.join('/')
   const url = `${process.env.API_URL}/api/${path}`
 
@@ -71,7 +71,7 @@ async function handler(req: Request, { params }: { params: Promise<{ path: strin
   }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') {
-    options.body = isFormData ? await req.formData() : await req.text()
+  options.body = isFormData ? await req.formData() : await req.text()
   }
 
   const res = await fetch(url, options)
