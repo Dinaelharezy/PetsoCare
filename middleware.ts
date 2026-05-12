@@ -157,7 +157,7 @@ export async function middleware(req: NextRequest) {
     // secret: process.env.AUTH_SECRET,
     secret: process.env.NEXTAUTH_SECRET,
   });
-console.log('token:', token, 'pathname:', pathname)
+console.log("TOKEN:", token);
   // مش logged in → روح login
   if (!token) {
     const loginUrl = new URL("/login", req.url);
