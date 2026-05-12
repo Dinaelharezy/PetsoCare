@@ -43,7 +43,7 @@ export default function NavBar() {
 
           
          <BSNavbar.Brand as={Link} href="/main/Home" className="logo-container">
-            <Image src="/logo.png" alt="PetsoCare" width={120} height={40} className="logo" priority />
+            <Image src="/Logo.png" alt="PetsoCare" width={120} height={40} className="logo" priority />
           </BSNavbar.Brand> 
 
           
