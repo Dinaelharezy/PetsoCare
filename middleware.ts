@@ -82,7 +82,7 @@
 //   "/auth",
 //   "/favicon.ico",
 //   "/Images",
-//   "/api",  // ✅ كده بيشمل كل الـ API routes دفعة واحدة
+//   "/api",  
 // ]
 
 // export async function middleware(req: NextRequest) {
@@ -135,49 +135,75 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const PUBLIC_PATHS = [
-  "/login",
-  "/SignUpCompletion",
-  "/main",
-  "/forgot-password",
-  "/reset-password",
-  "/verify-email",
-  "/_next",
-  "/favicon.ico",
-  "/Images",
-  "/api/auth",
+const PROTECTED_API = [
+  "/api/admin",
+  "/api/dashboard",
+  "/api/stats",
 ];
+
+const ROUTE_ROLES: Record<string, string[]> = {
+  "/admin": ["Admin"],
+  "/clinic": ["Admin", "Clinic"],
+};
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ignore public routes
-  if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
+  // ✅ static files
+  if (pathname.startsWith("/_next") || pathname === "/favicon.ico") {
+    return NextResponse.next();
+  }
+
+  // 🔥 API RULE:
+  // كل الـ API مفتوحة ماعدا 3 routes دول
+  const isProtectedAPI = PROTECTED_API.some((p) =>
+    pathname.startsWith(p)
+  );
+
+  if (!isProtectedAPI && pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
+  // 🔒 لو API محمي → check auth
+  if (pathname.startsWith("/api") && isProtectedAPI) {
+    const token = await getToken({
+      req,
+      secret: process.env.AUTH_SECRET,
+    });
+
+    if (!token) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+  }
+
+  // 🔒 صفحات الموقع
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/main")
+  ) {
     return NextResponse.next();
   }
 
   const token = await getToken({
     req,
-    secret: process.env.AUTH_SECRET, // ✅ MUST MATCH
+    secret: process.env.AUTH_SECRET,
   });
 
-  console.log("TOKEN:", token);
-
   if (!token) {
-    const url = new URL("/login", req.url);
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  const role = (token.role as string) ?? "User";
+  const role = token.role as string;
 
-  // role protection
-  if (pathname.startsWith("/admin") && role !== "Admin") {
-    return NextResponse.redirect(new URL("/forbidden", req.url));
-  }
-
-  if (pathname.startsWith("/clinic") && !["Admin", "Clinic"].includes(role)) {
-    return NextResponse.redirect(new URL("/forbidden", req.url));
+  for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
+    if (pathname.startsWith(route)) {
+      if (!allowed.includes(role)) {
+        return NextResponse.redirect(new URL("/forbidden", req.url));
+      }
+    }
   }
 
   return NextResponse.next();
