@@ -95,6 +95,7 @@ const PUBLIC_PATHS = [
   "/reset-password",
   "/verify-email",
   "/_next",
+  "/auth",
   "/favicon.ico",
   "/Images",
   "/api",  // ✅ كده بيشمل كل الـ API routes دفعة واحدة

@@ -41,22 +41,12 @@ export default function NavBar() {
       >
         <Container fluid className="px-3 px-lg-4">
 
-          {/* Logo */}
-          {/* <BSNavbar.Brand as={Link} href="/main/Home" className="logo-container">
+          
+         <BSNavbar.Brand as={Link} href="/main/Home" className="logo-container">
             <Image src="/logo.png" alt="PetsoCare" width={120} height={40} className="logo" priority />
-          </BSNavbar.Brand> */}
+          </BSNavbar.Brand> 
 
-          <BSNavbar.Brand as={Link} href="/main/Home" className="logo-container">
-  <Image 
-    src={getImageSrc('/logo.png') || '/logo.png'} 
-    alt="PetsoCare" 
-    width={120} 
-    height={40} 
-    className="logo" 
-    priority 
-  />
-</BSNavbar.Brand>
-
+          
           <BSNavbar.Toggle aria-controls="navbarNav" />
 
           <BSNavbar.Collapse id="navbarNav">
