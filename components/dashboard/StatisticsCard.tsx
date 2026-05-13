@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { UserVaccineData,GlobalStats } from '../../types/Statistics'
+import { apiUrl } from '@/lib/api'
 
 export default function StatisticsCard() {
   const [users,    setUsers]   = useState<UserVaccineData[]>([])
@@ -15,8 +16,8 @@ export default function StatisticsCard() {
     const fetchData = async () => {
       try {
         const [usersRes, statsRes] = await Promise.all([
-          fetch(`/api/proxy/admin/vaccine/users`),
-          fetch(`/api/proxy/admin/vaccine/stats`),
+          fetch(apiUrl(`admin/vaccine/users`)),
+          fetch(apiUrl(`admin/vaccine/stats`)),
         ])
         const usersData = await usersRes.json()
 const statsData = await statsRes.json()

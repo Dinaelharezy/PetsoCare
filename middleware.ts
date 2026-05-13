@@ -132,85 +132,143 @@
 //   ],
 // };
 
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+// import { NextRequest, NextResponse } from "next/server";
+// import { getToken } from "next-auth/jwt";
 
-const PROTECTED_API = [
-  "/api/admin",
-  "/api/dashboard",
-  "/api/stats",
-];
+// const PROTECTED_API = [
+//   "/api/admin",
+//   "/api/dashboard",
+//   "/api/stats",
+// ];
+
+// const ROUTE_ROLES: Record<string, string[]> = {
+//   "/admin": ["Admin"],
+//   "/clinic": ["Admin", "Clinic"],
+// };
+
+// // export async function middleware(req: NextRequest) {
+// //   const { pathname } = req.nextUrl;
+
+// //   // ✅ static files
+// //   if (pathname.startsWith("/_next") || pathname === "/favicon.ico") {
+// //     return NextResponse.next();
+// //   }
+
+// //   // 🔥 API RULE:
+// //   // كل الـ API مفتوحة ماعدا 3 routes دول
+// //   const isProtectedAPI = PROTECTED_API.some((p) =>
+// //     pathname.startsWith(p)
+// //   );
+
+// //   if (!isProtectedAPI && pathname.startsWith("/api")) {
+// //     return NextResponse.next();
+// //   }
+
+// //   // 🔒 لو API محمي → check auth
+// //   if (pathname.startsWith("/api") && isProtectedAPI) {
+// //     const token = await getToken({
+// //       req,
+// //       secret: process.env.AUTH_SECRET,
+// //     });
+
+// //     if (!token) {
+// //       return NextResponse.json(
+// //         { error: "Unauthorized" },
+// //         { status: 401 }
+// //       );
+// //     }
+// //   }
+
+// //   // 🔒 صفحات الموقع
+// //   if (
+// //     pathname.startsWith("/login") ||
+// //     pathname.startsWith("/main")
+// //   ) {
+// //     return NextResponse.next();
+// //   }
+
+// //   const token = await getToken({
+// //     req,
+// //     secret: process.env.AUTH_SECRET,
+// //   });
+
+// //   if (!token) {
+// //     return NextResponse.redirect(new URL("/login", req.url));
+// //   }
+
+// //   const role = token.role as string;
+
+// //   for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
+// //     if (pathname.startsWith(route)) {
+// //       if (!allowed.includes(role)) {
+// //         return NextResponse.redirect(new URL("/forbidden", req.url));
+// //       }
+// //     }
+// //   }
+
+// //   return NextResponse.next();
+// // }
+
+
+
+
+// export const config = {
+//   matcher: [
+//     "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.ico).*)",
+//   ],
+// };
+
+import { auth } from "@/lib/auth"
+import { NextResponse } from "next/server"
+
+
+const PROTECTED_API = ["/api/admin", "/api/dashboard", "/api/stats"]
 
 const ROUTE_ROLES: Record<string, string[]> = {
   "/admin": ["Admin"],
   "/clinic": ["Admin", "Clinic"],
-};
+}
 
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+export default auth((req) => {
+  const { pathname } = req.nextUrl
+  const token = req.auth // ✅ مباشرة من Auth.js v5
 
-  // ✅ static files
-  if (pathname.startsWith("/_next") || pathname === "/favicon.ico") {
-    return NextResponse.next();
+  // Public pages
+  if (pathname.startsWith("/login") || pathname.startsWith("/main")) {
+    return NextResponse.next()
   }
 
-  // 🔥 API RULE:
-  // كل الـ API مفتوحة ماعدا 3 routes دول
-  const isProtectedAPI = PROTECTED_API.some((p) =>
-    pathname.startsWith(p)
-  );
-
-  if (!isProtectedAPI && pathname.startsWith("/api")) {
-    return NextResponse.next();
-  }
-
-  // 🔒 لو API محمي → check auth
-  if (pathname.startsWith("/api") && isProtectedAPI) {
-    const token = await getToken({
-      req,
-      secret: process.env.AUTH_SECRET,
-    });
+  // API routes
+  if (pathname.startsWith("/api")) {
+    const isProtectedAPI = PROTECTED_API.some((p) => pathname.startsWith(p))
+    if (!isProtectedAPI) return NextResponse.next()
 
     if (!token) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+    return NextResponse.next()
   }
 
-  // 🔒 صفحات الموقع
-  if (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/main")
-  ) {
-    return NextResponse.next();
-  }
-
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET,
-  });
-
+  // Protected pages
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
-  const role = token.role as string;
+  const role = token.user?.role as string
 
   for (const [route, allowed] of Object.entries(ROUTE_ROLES)) {
     if (pathname.startsWith(route)) {
       if (!allowed.includes(role)) {
-        return NextResponse.redirect(new URL("/forbidden", req.url));
+        return NextResponse.redirect(new URL("/forbidden", req.url))
       }
     }
   }
 
-  return NextResponse.next();
-}
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
     "/((?!_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.ico).*)",
   ],
-};
+}

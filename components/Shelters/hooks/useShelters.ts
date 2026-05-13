@@ -3,7 +3,7 @@
 // hooks/useShelters.ts
 import { useState, useEffect } from 'react'
 import { useAppStore } from '../../../store/Appstore'
-
+import { apiUrl } from '@/lib/api'
 const SHELTERS_PER_PAGE = 4
 
 export function useShelters() {
@@ -15,7 +15,7 @@ export function useShelters() {
   useEffect(() => {
     if (shelters.length === 0 || isSheltersStale()) {
       setLoading(true)
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters`)
+      fetch(apiUrl(`shelters`))
         .then(res => res.json())
         .then(data => setShelters(Array.isArray(data) ? data : []))
         .catch(err => {

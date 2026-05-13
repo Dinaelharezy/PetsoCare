@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Button, Modal, Form, Badge, Alert } from 'react-bootstrap'
 import { Video } from '@/types/Video'
+import { apiUrl } from '@/lib/api'
 
 export default function VideoManagementClient() {
   const [videos, setVideos] = useState<Video[]>([])
@@ -25,7 +26,7 @@ export default function VideoManagementClient() {
   const loadVideos = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/proxy/Videos?t=${Date.now()}`, {
+      const response = await fetch(apiUrl(`Videos?t=${Date.now()}`), {
         headers: { 'ngrok-skip-browser-warning': 'true' },
         cache: 'no-store',
       })
@@ -97,7 +98,7 @@ export default function VideoManagementClient() {
     try {
       if (editingVideo) {
         // ✅ Update existing video
-        const response = await fetch(`/api/proxy/Videos/${editingVideo.id}`, {
+        const response = await fetch(apiUrl(`Videos/${editingVideo.id}`), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -116,7 +117,7 @@ export default function VideoManagementClient() {
         setSuccessMessage('Video updated successfully!')
       } else {
         // ✅ Create new video
-        const response = await fetch(`/api/proxy/Videos`, {
+        const response = await fetch(apiUrl(`Videos`), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,7 +150,7 @@ export default function VideoManagementClient() {
   const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this video?')) {
        try {
-      const response = await fetch(`/api/proxy/Videos/${id}`, {
+      const response = await fetch(apiUrl(`Videos/${id}`), {
         method: 'DELETE',
         headers: { 'ngrok-skip-browser-warning': 'true' }
       })

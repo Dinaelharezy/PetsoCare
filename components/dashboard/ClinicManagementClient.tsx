@@ -8,6 +8,7 @@ import { clinicsApi } from '../../data/api/Clinic'
 import { Clinic } from '../../types/Clinic'
 import LocationMapModal from '../Reports/modals/LocationMapModals'
 import { getImageSrc } from '@/utils/imageUtils'
+import { apiUrl } from '@/lib/api'
 
 
 
@@ -140,7 +141,7 @@ export default function ClinicManagementClient() {
       fd.append('Longitude',    formData.longitude    || '0')
       if (imageFile) fd.append('Image', imageFile)
 
-      const url    = editingClinic ? `/api/proxy/dashboard/clinics/${editingClinic.id}` : '/api/proxy/dashboard/clinics'
+      const url    = editingClinic ? apiUrl(`dashboard/clinics/${editingClinic.id}`) : apiUrl('dashboard/clinics')
       const method = editingClinic ? 'PUT' : 'POST'
 
       const response = await fetch(url, {

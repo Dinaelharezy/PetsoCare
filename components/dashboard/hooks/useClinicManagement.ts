@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { clinicsApi } from '../../../data/api/Clinic'
 import { Clinic } from '../../../types/Clinic'
 import { ClinicForm } from '../../../types/Clinic'
+import { apiUrl } from '@/lib/api'
 
 const EMPTY_FORM: ClinicForm = {
   name: '', address: '', governorate: '', phone: '',

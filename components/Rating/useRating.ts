@@ -2,7 +2,7 @@
 // hooks/useRating.ts
 
 import { useState, useEffect } from 'react'
-
+import { apiUrl } from '@/lib/api'
 export function useRating() {
   const [submitted,  setSubmitted]  = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -13,7 +13,7 @@ export function useRating() {
     setSubmitting(true)
     setError(null)
     try {
-      const res  = await fetch(`/api/proxy/Rating`, {
+      const res  = await fetch(apiUrl(`Rating`) , {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ value }),
@@ -52,8 +52,8 @@ export function useRatingStats() {
       setLoading(true)
       try {
         const [avgRes, cntRes] = await Promise.all([
-          fetch(`/api/proxy/Rating/average`),
-          fetch(`/api/proxy/Rating/count`),
+          fetch(apiUrl(`Rating/average`)),
+          fetch(apiUrl(`Rating/count`)),
         ])
         const avg = await avgRes.json()
         const cnt = await cntRes.json()

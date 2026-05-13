@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { Shelter } from "../../types/Shelter";
 import { useAppStore } from '../../store/Appstore'
+import { apiUrl } from "@/lib/api";
 
 export default function ShelterProfile() {
   const params = useParams();
@@ -27,7 +28,7 @@ useEffect(() => {
     return
   }
 
-  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters/${params.id}`)
+  fetch(apiUrl(`shelters/${params.id}`))
     .then((res) => {
       if (res.status === 404) {
         setNotFound(true)

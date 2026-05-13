@@ -239,7 +239,7 @@ export default function LoginClient() {
     }
   }
 
- const handleGoogleLogin = () => {
+const handleGoogleLogin = () => {
   signIn('google', { callbackUrl: '/main/Home' })
 }
   return (

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { apiUrl } from '@/lib/api'
 
 type Status = 'verifying' | 'success' | 'error' | 'resending' | 'resent'
 
@@ -19,7 +20,7 @@ export default function VerifyEmailClient() {
     setStatus('verifying')
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-email?token=${encodeURIComponent(t)}`,
+        apiUrl(`auth/verify-email?token=${encodeURIComponent(t)}`),
         { method: 'GET', headers: { 'ngrok-skip-browser-warning': 'true' } }
       )
       if (res.ok) {

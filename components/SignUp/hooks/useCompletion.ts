@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { apiUrl } from '@/lib/api'
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -97,7 +98,7 @@ export function useCompletion() {
     setSaveStatus('saving')
     setErrorMsg('')
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proxy/auth/register`, {
+      const res = await fetch(apiUrl(`auth/register`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

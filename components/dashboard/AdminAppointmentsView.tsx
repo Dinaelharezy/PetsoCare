@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react'
 import { AdminAppointment } from '@/types/Appointment'
+import { apiUrl } from '@/lib/api'
 const STATUS_COLORS = {
   Pending:   { dot: '#F59E0B', bg: '#FEF3C7', text: '#78350F' },
   Approved:  { dot: '#10B981', bg: '#D1FAE5', text: '#065F46' },
@@ -18,7 +19,7 @@ export default function AdminAppointmentsView() {
 
   // ── جيب الحجوزات من الـ API عند التحميل ──
   useEffect(() => {
-    fetch(`/api/proxy/dashboard/appointments/clinic/all`, { cache: 'no-store' })
+    fetch(apiUrl(`dashboard/appointments/clinic/all`), { cache: 'no-store' })
       .then(r => r.json())
       .then(setAppointments)
       .catch(err => console.error('Failed to load appointments:', err))

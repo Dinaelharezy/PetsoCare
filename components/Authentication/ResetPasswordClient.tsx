@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { apiUrl } from '@/lib/api';
 
 function getPasswordStrength(password: string): {
   score: number; label: string; color: string
@@ -48,7 +49,7 @@ export default function ResetPasswordClient() {
     setStatus('saving')
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reset-password`,
+        apiUrl(`auth/reset-password`),
         {
           method: 'POST',
           headers: {

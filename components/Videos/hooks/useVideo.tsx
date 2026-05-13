@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react'
 import { Video } from '@/types/Video'
-
+import { apiUrl } from '@/lib/api'
 export function useVideo(id: string) {
   const [video,   setVideo]   = useState<Video | null>(null)
   const [loading, setLoading] = useState(true)
@@ -24,7 +24,7 @@ export function useVideo(id: string) {
         setLoading(true)
         setError(null)
 
-        const response = await fetch(`/api/proxy/Videos`)
+        const response = await fetch(apiUrl(`Videos`))
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
         const data: Video[] = await response.json()

@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Video } from '@/types/Video'
+import { apiUrl } from '@/lib/api'
 
 export default function VideoPage() {
   const router = useRouter()
@@ -19,7 +20,7 @@ export default function VideoPage() {
   const fetchVideos = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/Videos`)
+      const res = await fetch(apiUrl(`Videos`))
       
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`)

@@ -7,6 +7,7 @@ import {
   Modal, Form, Badge, Alert
 } from 'react-bootstrap';
 import { Shelter } from '../../types/Shelter'
+import { apiUrl } from '@/lib/api';
 
 const EMPTY_FORM: Shelter = {
   id: "", name: "", governorate: "", address: "",
@@ -29,7 +30,7 @@ export default function DashboardSheltersClient() {
   const fetchShelters = async () => {
     try {
       setLoading(true)
-      const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/shelters`)
+      const res  = await fetch(apiUrl(`shelters`))
       const json = await res.json()
       setShelters(json.data ?? json)
     } finally {
@@ -76,7 +77,7 @@ export default function DashboardSheltersClient() {
     e.preventDefault()
     setSubmitting(true)
 
-    const url    = editingShelter ? `/api/proxy/dashboard/shelters/${editingShelter.id}` : `/api/proxy/dashboard/shelters`
+    const url    = editingShelter ? apiUrl(`shelters/${editingShelter.id}`) : apiUrl(`dashboard/shelters`)
     const method = editingShelter ? "PUT" : "POST"
 
     const payload = {
@@ -118,7 +119,7 @@ export default function DashboardSheltersClient() {
   const confirmDelete = async () => {
     if (!deletingId) return
     try {
-      await fetch(`/api/proxy/dashboard/shelters/${deletingId}`, { method: "DELETE" })
+      await fetch(apiUrl(`dashboard/shelters/${deletingId}`), { method: "DELETE" })
       setSuccessMessage("Shelter deleted successfully!")
       await fetchShelters()
       setTimeout(() => setSuccessMessage(""), 3000)
