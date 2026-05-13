@@ -4,7 +4,7 @@ export interface UserVaccineData {
   pending: number
   risk: string | null
   needsRIG: boolean | null
-  name?: string
+  userName?: string
   victimType: string | null
   animalType: string | null
 }

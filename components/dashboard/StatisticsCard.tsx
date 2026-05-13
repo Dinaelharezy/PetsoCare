@@ -137,10 +137,10 @@ setStats(statsData || null)
                     {/* User */}
                     <div style={{ flex: 2, display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div style={s.avatar}>
-                        {(user.name ?? user.userId).charAt(0).toUpperCase()}
+                        {(user.userName ?? user.userId).charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <div style={s.userName}>{user.name ?? `User #${user.userId}`}</div>
+                        <div style={s.userName}>{user.userName ?? `User #${user.userId}`}</div>
                         <div style={s.userId}>ID: {user.userId}</div>
                       </div>
                     </div>
@@ -212,7 +212,7 @@ setStats(statsData || null)
                         </div>
                         <div style={s.expandItem}>
                           <span style={s.expandKey}>Name</span>
-                          <span style={s.expandVal}>{user.name ?? 'N/A'}</span>
+                          <span style={s.expandVal}>{user.userName ?? 'N/A'}</span>
                         </div>
                         <div style={s.expandItem}>
                           <span style={s.expandKey}>Doses Taken</span>

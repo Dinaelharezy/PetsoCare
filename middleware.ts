@@ -234,7 +234,9 @@ export default auth((req) => {
   const token = req.auth // ✅ مباشرة من Auth.js v5
 
   // Public pages
-  if (pathname.startsWith("/login") || pathname.startsWith("/main")) {
+  if (pathname.startsWith("/login") || pathname.startsWith("/main") ||  pathname.startsWith("/forgot-password") ||
+  pathname.startsWith("/SignUpCompletion") ||
+  pathname.startsWith("/verify-email") )  {
     return NextResponse.next()
   }
 
