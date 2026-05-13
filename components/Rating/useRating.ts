@@ -13,7 +13,7 @@ export function useRating() {
     setSubmitting(true)
     setError(null)
     try {
-      const res  = await fetch(`Rating?value=${value}` , {
+      const res  = await fetch(apiUrl(`Rating?value=${value}`) , {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
        
