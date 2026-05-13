@@ -108,7 +108,7 @@ function GoogleSuccessContent() {
 
 export default function GoogleSuccessPage() {
   return (
-    <Suspense fallback={<div className="text-center mt-5">Loading...</div>}>
+    <Suspense fallback={<div className="text-center mt-5">Loading..</div>}>
       <GoogleSuccessContent />
     </Suspense>
   )
