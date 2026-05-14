@@ -244,8 +244,11 @@ const callbackUrl = !rawCallback || rawCallback === '/login' ? defaultUrl : rawC
   }
 
 const handleGoogleLogin = () => {
-  signIn('google', { callbackUrl: '/main/Home' })
+  const returnUrl = `${window.location.origin}/auth/google-success`
+  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
 }
+
+
   return (
     <div
       className="min-vh-100 d-flex align-items-center justify-content-center"
