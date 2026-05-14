@@ -21,7 +21,7 @@ export default function StatisticsCard() {
         ])
         const usersData = await usersRes.json()
 const statsData = await statsRes.json()
-setUsers(usersData.users || [])   
+setUsers(Array.isArray(usersData) ? usersData : usersData.users || []) 
 setStats(statsData || null)
       } catch (err) {
         console.error('Error fetching stats:', err)
