@@ -243,11 +243,14 @@ const callbackUrl = !rawCallback || rawCallback === '/login' ? defaultUrl : rawC
     }
   }
 
+// const handleGoogleLogin = () => {
+//   const returnUrl = `${window.location.origin}/auth/google-success`
+//   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
+// }
 const handleGoogleLogin = () => {
   const returnUrl = `${window.location.origin}/auth/google-success`
-  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
+  window.location.href = `/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
 }
-
 
   return (
     <div
