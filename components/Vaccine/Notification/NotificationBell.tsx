@@ -51,9 +51,9 @@ export default function NotificationBell() {
         style={{
           background: 'none',
           border: 'none',
+          
           cursor: 'pointer',
           position: 'relative',
-          padding: '0.5rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
