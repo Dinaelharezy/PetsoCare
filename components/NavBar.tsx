@@ -130,7 +130,7 @@ export default function NavBar() {
                   </NavDropdown>
                 ) : status === 'loading' ? (
                   // ✅ Show nothing while session is loading (prevents flicker)
-                  <div/>
+                  <div style={{ width: '36px' }} />
                 ) : (
                   // ✅ Show Login button only when definitely not authenticated
                   <Nav.Link as={Link} href="/login" className="login-btn">
