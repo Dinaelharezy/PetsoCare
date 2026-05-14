@@ -136,13 +136,18 @@ setStats(statsData || null)
                   >
                     {/* User */}
                     <div style={{ flex: 2, display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={s.avatar}>
-                        {(user.userName ?? user.userId).charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <div style={s.userName}>{user.userName ?? `User #${user.userId}`}</div>
-                        <div style={s.userId}>ID: {user.userId}</div>
-                      </div>
+                     ✅ دلوقتي
+<div style={s.avatar}>
+  {(user.userName && user.userName.trim() !== '' 
+    ? user.userName 
+    : user.userId
+  ).charAt(0).toUpperCase()}
+</div>
+<div style={s.userName}>
+  {user.userName && user.userName.trim() !== '' 
+    ? user.userName 
+    : `User #${user.userId}`}
+</div>
                     </div>
 
                     {/* Taken */}
