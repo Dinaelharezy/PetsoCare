@@ -187,11 +187,20 @@ const togglePublish = async (id: string): Promise<void> => {
 }
 
 // ── Clinic Owner: Appointments ────────────────────────────────────
-const getClinicAppointments = async (id: string | number) => {
-  const response = await fetch(apiUrl(`dashboard/appointments/clinic/${id}`), { cache: 'no-store' })
+// const getClinicAppointments = async (id: string | number) => {
+//   const response = await fetch(apiUrl(`dashboard/appointments/clinic/${id}`), { cache: 'no-store' })
+//   if (!response.ok) throw new Error('Failed to fetch appointments')
+//   return response.json()
+// }
+
+const getClinicAppointments = async () => {
+  const response = await fetch(apiUrl(`dashboard/appointments/my-clinic`), { 
+    cache: 'no-store' 
+  })
   if (!response.ok) throw new Error('Failed to fetch appointments')
   return response.json()
 }
+
 
 const approveAppointment = async (id: number): Promise<void> => {
   const response = await fetch(apiUrl(`dashboard/appointments/${id}/approve`), { method: 'PUT' })

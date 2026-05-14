@@ -226,12 +226,12 @@ const PROTECTED_API = ["/api/admin", "/api/dashboard", "/api/stats"]
 
 const ROUTE_ROLES: Record<string, string[]> = {
   "/admin": ["Admin"],
-  "/clinic": ["Admin", "Clinic"],
+  "/clinic": ["Admin", "Clinic","Doctor"],
 }
 
 export default auth((req) => {
   const { pathname } = req.nextUrl
-  const token = req.auth // ✅ مباشرة من Auth.js v5
+  const token = req.auth 
 
   // Public pages
   if (pathname.startsWith("/login") || pathname.startsWith("/main") ||  pathname.startsWith("/forgot-password") ||

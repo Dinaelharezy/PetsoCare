@@ -1,23 +1,13 @@
 'use client'
 import { article } from '../../types/article'
 import Link from 'next/link'
-
+import { SourceWithLinks } from '@/utils/SourceWithLinks'
 interface ArticleCardProps {
   article: article
 }
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 
-// const getImageSrc = (src?: string): string | null => {
-//   if (!src) return null
-//   if (src.startsWith('http')) return src
-//   if (src.startsWith('/Images') || src.startsWith('/uploads') || src.startsWith('/api')) {
-//     const full = BASE_URL ? `${BASE_URL}${src}` : src
-//     return `/api/image?url=${encodeURIComponent(full)}`
-//   }
-//   if (src.startsWith('/')) return src
-//   return null
-// }
 
 const getImageSrc = (src?: string): string | null => {
   if (!src) return null
@@ -40,6 +30,7 @@ const getImageSrc = (src?: string): string | null => {
 }
 
 export default function ArticleCard({ article }: ArticleCardProps) {
+
   return (
     <Link href={`/main/Articles/${article.id}`} className="article-card animate-card">
       <div className="article-image">
@@ -56,7 +47,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       <div className="article-content">
         <span className="article-category">{article.category}</span>
         <h3 className="article-title">{article.title}</h3>
-        <p className="article-excerpt">{article.summary}</p>
+        <p className="article-excerpt">   <SourceWithLinks source={article.source} /></p>
         <div className="article-meta">
           <small className="text-muted">
             {new Date(article.publishDate).toLocaleDateString()}

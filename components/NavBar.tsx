@@ -105,11 +105,12 @@ export default function NavBar() {
   </NavDropdown.Item>
 )}
 
-{/* {(session?.user?.role === 'Clinic' || session?.user?.role === 'Admin') && (
+
+{(session?.user?.role === 'Doctor') && (
   <NavDropdown.Item as={Link} href="/clinic/dashboard">
      Clinic Panel
   </NavDropdown.Item>
-)} */}
+)}
                     <NavDropdown title="Reports" id="reports-dropdown" align="end">
                       <NavDropdown.Item as={Link} href="/main/reports/EmergencyReport">Exposure Report</NavDropdown.Item>
                       <NavDropdown.Item as={Link} href="/main/reports/DangerousAnimal">Dangerous Animal Report</NavDropdown.Item>

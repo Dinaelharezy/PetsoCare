@@ -37,7 +37,7 @@
     "**/*.mts",
     "components/Map/PetMap.tsx",
      "types/**/*.d.ts"
-  ],
+, "utils/parseSource.tsx"  ],
   "exclude": [
     "node_modules"
   ]

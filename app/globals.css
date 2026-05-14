@@ -56,15 +56,15 @@ body {
 }
 
 .logo-container{
-  height: 60px;
+  height: 1rem;
   display: flex;
   align-items: center;
+  
 }
 
 .logo{
   height: 10rem;
   width: auto;
-  margin-top: 0.4rem;
   object-fit: contain;
 }
 
@@ -132,10 +132,10 @@ body {
 }
 
 .theme-btn {
-  width: 36px;
+  width: 1.2rem;
   height: 36px;
   border-radius: 50%;
-  border: none;           /* ✅ شيل الـ border */
+  border: none;      
   background: transparent;
   display: flex;
   align-items: center;
@@ -143,7 +143,6 @@ body {
   cursor: pointer;
   transition: background 0.2s;
   flex-shrink: 0;
-  padding: 0;
 }
 
 .theme-btn:hover {
@@ -212,10 +211,6 @@ body {
   width: 0 !important;
 }
 
-
-.logo-container {
-  flex-shrink: 0;
-}
 
 
 
@@ -310,7 +305,7 @@ body {
 .navbar-right-icons {
   display: flex;
   align-items: center;
-  gap: 1.4rem;
+  gap: 1.3rem;
   border-radius: 50%;
 }
 

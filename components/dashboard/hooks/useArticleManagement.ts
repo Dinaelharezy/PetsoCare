@@ -173,7 +173,7 @@ export function useArticleManagement() {
         fd.append('PublishDate', new Date(formData.PublishDate).toISOString())
         if (imageFile) fd.append('Image', imageFile)
 
-        const res = await fetch(apiUrl(`dashboard/articles`), {
+        const res = await fetch(apiUrl(`/api/proxy/dashboard/articles`), {
           method:  'POST',
           headers: { 'ngrok-skip-browser-warning': 'true' },
           body: fd,

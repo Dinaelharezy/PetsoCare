@@ -202,12 +202,16 @@ import { useState, FormEvent, ChangeEvent } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-
+import { useSession } from 'next-auth/react'
 export default function LoginClient() {
   const router = useRouter()
   const params = useSearchParams()
-  const rawCallback = params.get('callbackUrl') ?? '/main/Home'
-  const callbackUrl = rawCallback === '/login' ? '/main/Home' : rawCallback
+    const { data: session } = useSession()
+  // const rawCallback = params.get('callbackUrl') ?? '/main/Home'
+  // const callbackUrl = rawCallback === '/login' ? '/main/Home' : rawCallback
+  const rawCallback = params.get('callbackUrl')
+const defaultUrl = session?.user?.role === 'Admin' ? '/admin/dashboard' : '/main/Home'
+const callbackUrl = !rawCallback || rawCallback === '/login' ? defaultUrl : rawCallback
 
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [error,    setError]    = useState('')

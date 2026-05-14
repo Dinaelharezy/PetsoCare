@@ -53,7 +53,7 @@ export default function NotificationBell() {
           border: 'none',
           cursor: 'pointer',
           position: 'relative',
-          padding: '6px',
+          padding: '0.5rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
