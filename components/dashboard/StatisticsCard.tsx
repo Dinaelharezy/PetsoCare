@@ -136,12 +136,7 @@ setStats(statsData || null)
                   >
                     {/* User */}
                     <div style={{ flex: 2, display: 'flex', alignItems: 'center', gap: 10 }}>
-                     ✅ دلوقتي
 <div style={s.avatar}>
-  {(user.userName && user.userName.trim() !== '' 
-    ? user.userName 
-    : user.userId
-  ).charAt(0).toUpperCase()}
 </div>
 <div style={s.userName}>
   {user.userName && user.userName.trim() !== '' 
