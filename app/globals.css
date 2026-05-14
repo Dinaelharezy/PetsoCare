@@ -365,9 +365,7 @@ body {
 .login-btn{
   width: 36px !important;
   height: 36px !important;
-  border-radius: 50% !important;
   object-fit: cover;
-  border: 2px solid #E2E8F0;
   cursor: pointer;
   transition: border-color 0.2s;
   margin-left: 0 !important;   
