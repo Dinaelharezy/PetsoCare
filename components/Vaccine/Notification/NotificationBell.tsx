@@ -47,13 +47,14 @@ export default function NotificationBell() {
       {/* ── Bell button ── */}
       <button
         onClick={toggleOpen}
+      
         title="Notifications"
         style={{
           background: 'none',
           border: 'none',
-          
           cursor: 'pointer',
           position: 'relative',
+          padding: '0.5rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
