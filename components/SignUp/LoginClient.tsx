@@ -252,12 +252,12 @@ const callbackUrl = !rawCallback || rawCallback === '/login' ? defaultUrl : rawC
 //   const returnUrl = `${window.location.origin}/auth/google-success`
 //   window.location.href = `/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
 // }
-const handleGoogleLogin = () => {
-  const returnUrl = `${window.location.origin}/auth/google-success`
-  const fullUrl = `/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
-  console.log('Going to:', fullUrl)
-  window.location.href = fullUrl
-}
+// const handleGoogleLogin = () => {
+//   const returnUrl = `${window.location.origin}/auth/google-success`
+//   const fullUrl = `/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
+//   console.log('Going to:', fullUrl)
+//   window.location.href = fullUrl
+// }
   return (
     <div
       className="min-vh-100 d-flex align-items-center justify-content-center"
