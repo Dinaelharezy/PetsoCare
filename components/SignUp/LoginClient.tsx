@@ -203,6 +203,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
+import GoogleButton from '../Authentication/GoogleButton'
 export default function LoginClient() {
   const router = useRouter()
   const params = useSearchParams()
@@ -347,7 +348,7 @@ const handleGoogleLogin = () => {
                 <hr style={{ flex: 1 }} />
               </div>
               
-              {/* ✅ زر جوجل المعدل */}
+              {/* ✅ زر جوجل المعدل
               <button
                 onClick={handleGoogleLogin}
                 className="btn w-100 fw-semibold"
@@ -365,7 +366,8 @@ const handleGoogleLogin = () => {
                   alt="Google"
                 />
                 Continue with Google
-              </button>
+              </button> */}
+              <GoogleButton />
             </div>
 
             <p className="text-center mb-2">

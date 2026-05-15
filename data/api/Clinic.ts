@@ -1,6 +1,6 @@
 
 // import { Clinic } from '../../types/Clinic'
-
+import { getSession } from 'next-auth/react'
 // // ── Admin: Clinics ────────────────────────────────────────────────────────
 
 // const getAllClinics = async (): Promise<Clinic[]> => {
@@ -193,14 +193,24 @@ const togglePublish = async (id: string): Promise<void> => {
 //   return response.json()
 // }
 
+// const getClinicAppointments = async () => {
+//   const response = await fetch(apiUrl(`dashboard/appointments/my-clinic`), { 
+//     cache: 'no-store' 
+//   })
+//   if (!response.ok) throw new Error('Failed to fetch appointments')
+//   return response.json()
+// }
 const getClinicAppointments = async () => {
-  const response = await fetch(apiUrl(`dashboard/appointments/my-clinic`), { 
-    cache: 'no-store' 
+  const session = await getSession() // أو من أي مكان بتجيب منه التوكن
+  const response = await fetch(apiUrl(`dashboard/appointments/my-clinic`), {
+    cache: 'no-store',
+    headers: {
+      Authorization: `Bearer ${session?.user?.accessToken}`,
+    },
   })
   if (!response.ok) throw new Error('Failed to fetch appointments')
   return response.json()
 }
-
 
 const approveAppointment = async (id: number): Promise<void> => {
   const response = await fetch(apiUrl(`dashboard/appointments/${id}/approve`), { method: 'PUT' })

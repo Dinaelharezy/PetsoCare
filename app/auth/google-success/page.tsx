@@ -1,7 +1,34 @@
 
+// "use client";
+
+// import { useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import { signIn } from "next-auth/react";
+
+// export default function GoogleSuccessPage() {
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const params = new URLSearchParams(window.location.search);
+//     const token = params.get("token");
+
+//     if (token) {
+//       // خلي NextAuth يعرف بالتوكن عشان الـ session تشتغل
+//       signIn("credentials", {
+//         token,
+//         redirect: false,
+//       }).then(() => {
+//         router.push("/main/Home");
+//       });
+//     }
+//   }, [router]);
+
+//   return <div>Loading...</div>;
+// }
+
 'use client'
 
-import { useEffect, Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
@@ -11,40 +38,29 @@ function GoogleSuccessContent() {
 
   useEffect(() => {
     const token = searchParams.get('token')
-  const error = searchParams.get('error')
-  
-  // شوف كل الـ params اللي جت
-  console.log('ALL PARAMS:', window.location.href)
-  console.log('TOKEN:', token)
-  console.log('ERROR:', error)
+
     if (!token) {
-      router.replace('/login?error=no_token')
+      router.replace('/login?error=google_failed')
       return
     }
 
-    // ✅ بيبعت الـ token للـ authorize function
     signIn('credentials', {
       token,
       redirect: false,
-    }).then((result) => {
-      if (result?.ok) {
+    }).then((res) => {
+      if (res?.ok) {
         router.replace('/main/Home')
       } else {
-        router.replace('/login?error=google_auth_failed')
+        router.replace('/login?error=google_failed')
       }
     })
-  }, [router, searchParams])
+  }, [])
 
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div className="text-center">
-        <div
-          className="spinner-border text-success mb-3"
-          role="status"
-          style={{ width: '3rem', height: '3rem' }}
-        />
-        <h4>Signing you in...</h4>
-        <p className="text-muted">Please wait, you will be redirected shortly</p>
+        <div className="spinner-border text-success mb-3" role="status" />
+        <p className="text-muted">Signing you in with Google...</p>
       </div>
     </div>
   )
@@ -52,7 +68,16 @@ function GoogleSuccessContent() {
 
 export default function GoogleSuccessPage() {
   return (
-    <Suspense fallback={<div className="text-center mt-5">Loading..</div>}>
+    <Suspense
+      fallback={
+        <div className="min-vh-100 d-flex align-items-center justify-content-center">
+          <div className="text-center">
+            <div className="spinner-border text-success mb-3" role="status" />
+            <p className="text-muted">Signing you in with Google...</p>
+          </div>
+        </div>
+      }
+    >
       <GoogleSuccessContent />
     </Suspense>
   )

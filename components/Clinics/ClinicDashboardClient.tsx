@@ -13,9 +13,9 @@ const STATUS_CONFIG = {
 
 const governorates = ['Port Said', 'Ismailia', 'Suez', 'Cairo']
 
-const getClinicId = (): string => {
-  return '28'
-}
+// const getClinicId = (): string => {
+//   return '28'
+// }
 
 export default function ClinicDashboardClient() {
 
@@ -28,7 +28,7 @@ export default function ClinicDashboardClient() {
     showRejectModal, setShowRejectModal, rejectReason, setRejectReason,
     openRejectModal, handleRejectConfirm,
     showSettings, setShowSettings, settings, setSettings,
-    settingsLoading, handleOpenSettings, handleSettingsSave,
+    settingsLoading, handleOpenSettings, handleSettingsSave,clinicId, setClinicId
   } = useDashboard()
 
 

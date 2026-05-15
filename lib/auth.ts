@@ -419,57 +419,57 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   callbacks: {
     // ── Google callback ──────────────────────────────────────────
-    async signIn({ user, account }) {
-      if (account?.provider === "google") {
-        try {
-          const res = await fetch(`${API}/api/auth/google-response`, {
-            method: "POST",
+    // async signIn({ user, account }) {
+    //   if (account?.provider === "google") {
+    //     try {
+    //       const res = await fetch(`${API}/api/auth/google-response`, {
+    //         method: "POST",
 
-            headers: HEADERS,
+    //         headers: HEADERS,
 
-            body: JSON.stringify({
-              email: user.email,
-              name: user.name,
-            }),
-          });
+    //         body: JSON.stringify({
+    //           email: user.email,
+    //           name: user.name,
+    //         }),
+    //       });
 
-          if (!res.ok) {
-            console.error("Google sync failed:", await res.text());
-               return `/SignUpCompletion?email=${encodeURIComponent(user.email ?? '')}&name=${encodeURIComponent(user.name ?? '')}`
-          }
+    //       if (!res.ok) {
+    //         console.error("Google sync failed:", await res.text());
+    //            return `/SignUpCompletion?email=${encodeURIComponent(user.email ?? '')}&name=${encodeURIComponent(user.name ?? '')}`
+    //       }
 
-          const data = await res.json();
+    //       const data = await res.json();
 
-          const decoded = parseJwt(data.token);
+    //       const decoded = parseJwt(data.token);
 
-          const role =
-            (decoded[
-              "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-            ] as string) ?? "User";
+    //       const role =
+    //         (decoded[
+    //           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    //         ] as string) ?? "User";
 
-          user.id = String(
-            decoded[
-              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-            ] ?? ""
-          );
+    //       user.id = String(
+    //         decoded[
+    //           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+    //         ] ?? ""
+    //       );
 
-          user.role = role;
+    //       user.role = role;
 
-          user.accessToken = data.token;
+    //       user.accessToken = data.token;
 
-          const uploadedImage = await fetchProfileImage(data.token);
+    //       const uploadedImage = await fetchProfileImage(data.token);
 
-          if (uploadedImage) {
-            user.image = uploadedImage;
-          }
-        } catch (e) {
-          console.error("Google signIn error:", e);
+    //       if (uploadedImage) {
+    //         user.image = uploadedImage;
+    //       }
+    //     } catch (e) {
+    //       console.error("Google signIn error:", e);
           
-        }
-      }
+    //     }
+    //   }
 
-      return true;
-    },
+    //   return true;
+    // },
 
     // ── JWT callback ─────────────────────────────────────────────
     async jwt({ token, user, trigger, session }) {
