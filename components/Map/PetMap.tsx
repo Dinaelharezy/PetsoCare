@@ -1062,7 +1062,9 @@ const zones = buildDangerZones(reportLocs, 2)
     visibleLocations.forEach(loc => {
       try {
 
-
+// const color = loc.type.startsWith('report')
+//   ? getDensityColor(loc.lat, loc.lng)
+//   : (TYPE_COLORS as any)[loc.type] ?? '#666'
 
 
 const isMyReport = myReportIds.has(loc.id)
