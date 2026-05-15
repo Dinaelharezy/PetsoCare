@@ -1032,8 +1032,12 @@ export default function PetMap({ onSelectLocation, allowPinDrop = false, current
       return '#22c55e'
     }
 
-    const reportLocs = visibleLocations.filter(l => l.type.startsWith('report'))
-    const zones      = buildDangerZones(reportLocs, 2)
+    // const reportLocs = visibleLocations.filter(l => l.type.startsWith('report'))
+    // const zones      = buildDangerZones(reportLocs, 2)
+
+    // ❌ ده بيتأثر بالـ filter
+const reportLocs = visibleLocations.filter(l => l.type.startsWith('report'))
+const zones = buildDangerZones(reportLocs, 2)
 
     zones.forEach(zone => {
       try {
@@ -1058,13 +1062,14 @@ export default function PetMap({ onSelectLocation, allowPinDrop = false, current
     visibleLocations.forEach(loc => {
       try {
 
-const color = loc.type.startsWith('report')
-  ? getDensityColor(loc.lat, loc.lng)
-  : (TYPE_COLORS as any)[loc.type] ?? '#666'
 
-// الـ my report بس بيأثر على الـ size مش اللون
+
+
 const isMyReport = myReportIds.has(loc.id)
-// const dotSize = isMyReport ? 20 : (color === '#dc2626' || color === '#f97316') ? 18 : 14
+// const color = isMyReport
+//   ? TYPE_COLORS['my-reports']
+//   : (TYPE_COLORS as any)[loc.type] ?? '#666'
+const color = (TYPE_COLORS as any)[loc.type] ?? '#666'
     const isHot   = !isMyReport && loc.type.startsWith('report') && (color === '#dc2626' || color === '#f97316')
     const dotSize = isHot ? 18 : 14
 
@@ -1236,19 +1241,7 @@ const isMyReport = myReportIds.has(loc.id)
             fontSize: 12, lineHeight: 1.8, backdropFilter: 'blur(4px)',
             border: '1px solid #e5e7eb',
           }}>
-            <div style={{ fontWeight: 700, marginBottom: 4, color: '#374151', fontSize: 11 }}>📊 Report Density</div>
-            {[
-              { color: '#22c55e', label: 'Low (1 report)'  },
-              { color: '#facc15', label: 'Moderate (2–3)'  },
-              { color: '#f97316', label: 'High (4–6)'      },
-              { color: '#dc2626', label: 'Critical (7+)'   },
-            ].map(({ color, label }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                <div style={{ width: 12, height: 12, borderRadius: '50%', background: color, border: '2px solid white', boxShadow: '0 1px 4px rgba(0,0,0,.25)', flexShrink: 0 }} />
-                <span style={{ color: '#374151' }}>{label}</span>
-              </div>
-            ))}
-            <div style={{ borderTop: '1px solid #f0f0f0', marginTop: 8, paddingTop: 8, fontWeight: 700, color: '#374151', fontSize: 11, marginBottom: 4 }}>
+            <div style={{ marginTop: 1, paddingTop: 5, fontWeight: 700, color: '#374151', fontSize: 11, marginBottom: 4 }}>
               🔴 Danger Zones
             </div>
             {[
