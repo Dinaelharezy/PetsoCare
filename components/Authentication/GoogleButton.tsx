@@ -1,15 +1,5 @@
-// export default function GoogleButton() {
-// const handleGoogleLogin = () => {
-//   const returnUrl = `${window.location.origin}/auth/google-success`
-//   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google-login?returnUrl=${encodeURIComponent(returnUrl)}`
-// }
 
-//   return (
-//     <button onClick={handleGoogleLogin}>
-//       Continue with Google
-//     </button>
-//   );
-// }
+'use client'
 
 export default function GoogleButton() {
   const handleGoogleLogin = () => {
