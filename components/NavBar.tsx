@@ -118,7 +118,7 @@ export default function NavBar() {
                     </NavDropdown>
                     <NavDropdown.Item as={Link} href="/main/About">About</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} href="/admin/dashboard">Settings</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} href="/main/EditProfile">Settings</NavDropdown.Item>
                     <NavDropdown.Item as={Link} href="/main/Contacts">Contacts</NavDropdown.Item>
                     <NavDropdown.Item
                       onClick={handleLogout}
