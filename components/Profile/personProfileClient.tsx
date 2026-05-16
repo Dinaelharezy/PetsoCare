@@ -15,7 +15,7 @@ import { useCheckDanger } from '../Vaccine/Notification/hook/useCheckDanger'
 import RatingWidget from '../Rating/RatingWidget'
 import { useMyReports } from '../Reports/hooks/useMyReports'
 import MyReportsSection from '../Reports/Myreportssection'
-
+import { useRouter } from 'next/navigation'
 export default function PersonProfileClient() {
   const {
     isLoading,
@@ -142,10 +142,10 @@ function ProfileCard({ userName, userEmail, userImage, userRole, onEditProfile }
         {userRole}
       </span>
       <br />
-      <Button variant="outline-secondary" size="sm" className="px-4 py-2" onClick={onEditProfile}>
+      {/* <Button variant="outline-secondary" size="sm" className="px-4 py-2" onClick={onEditProfile}>
         Edit Profile
-      </Button>
-      <hr style={{ borderColor: 'rgba(0,0,0,0.08)', margin: '1rem 0' }} />
+      </Button> */}
+      <hr style={{ borderColor: 'rgba(0,0,0,0.08)', margin: '0.2rem 0' }} />
       <SmartTagTracker />
     </div>
   )
@@ -349,11 +349,36 @@ function UpcomingVaccines({ vaccines, completedVaccines, loading, onComplete, on
 }
 
 /* ── AccountSettings ─────────────────────────────────────────────────── */
+// function AccountSettings({ onLogout }: { onLogout: () => void }) {
+//   return (
+//     <div className="settings-card">
+//       <h5 className="mb-4 fw-bold specializedFont">Account Settings</h5>
+//       <div className="settings-item">
+//         <div className="d-flex align-items-center">
+//           <GearIcon />
+//           <span className="specializedFont">Settings</span>
+//         </div>
+//         <ChevronIcon />
+//       </div>
+//       <Button className="btn-logout mt-3" onClick={onLogout}>
+//         <LogoutIcon />
+//         Logout
+//       </Button>
+//     </div>
+//   )
+// }
+
 function AccountSettings({ onLogout }: { onLogout: () => void }) {
+  const router = useRouter()
+
   return (
     <div className="settings-card">
       <h5 className="mb-4 fw-bold specializedFont">Account Settings</h5>
-      <div className="settings-item">
+      <div
+        className="settings-item"
+        style={{ cursor: 'pointer' }}
+        onClick={() => router.push('/main/EditProfile')}
+      >
         <div className="d-flex align-items-center">
           <GearIcon />
           <span className="specializedFont">Settings</span>
