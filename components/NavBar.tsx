@@ -55,7 +55,7 @@ export default function NavBar() {
             <Nav className="d-flex align-items-lg-center gap-5">
               <Nav.Link as={Link} href="/main/Home" active={pathname === '/main/Home'}>Home</Nav.Link>
               <Nav.Link as={Link} href="/main/Clinics" active={pathname === '/main/Clinics'}>Clinics</Nav.Link>
-              <Nav.Link as={Link} href="/main/Articles" active={pathname === '/main/Articles'}>Articles</Nav.Link>
+              <Nav.Link as={Link} href="/main/Articles" active={pathname === '/main/Articles'}>Awareness</Nav.Link>
               <Nav.Link as={Link} href="/main/Rabies" active={pathname === '/main/Rabies'}>Diseases</Nav.Link>
               <Nav.Link as={Link} href="/main/VaccineSchedule" active={pathname === '/main/VaccineSchedule'}>Vaccines</Nav.Link>
               <Nav.Link as={Link} href="/main/Map" active={pathname === '/main/Map'}>Map</Nav.Link>
