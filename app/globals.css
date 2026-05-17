@@ -680,7 +680,6 @@ body {
 
 .vet-finder-page {
   min-height: 100vh;
-  background-color: #ffffff;
 }
 
 /* Hero Section */
@@ -2456,7 +2455,6 @@ textarea.form-control {
 .page-header {
   text-align: center;
   padding: 2rem 1rem 1.5rem;
-  background: white;
 }
 
 .page-title {
