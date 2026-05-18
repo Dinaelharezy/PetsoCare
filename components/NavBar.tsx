@@ -66,7 +66,8 @@ export default function NavBar() {
               <div className="navbar-right-icons">
 
                 {/* Theme Toggle */}
-                <button
+                
+                {/* <button
                   onClick={toggleTheme}
                   className="theme-btn"
                   title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
@@ -81,6 +82,9 @@ export default function NavBar() {
                     </svg>
                   )}
                 </button>
+ */}
+
+
 <NotificationBell /> 
                 {/* ✅ Only show profile dropdown when session exists AND status is authenticated */}
                 {status === 'authenticated' && session ? (
