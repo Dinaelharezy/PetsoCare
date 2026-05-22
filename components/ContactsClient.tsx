@@ -187,12 +187,12 @@ export default function ContactsClient() {
       <ContactCard iconBg="#e8f8f0" icon={<HealthIcon />} title="Human health" subtitle="Ministry of Health & Ambulance Authority">
         <CallEntry name="Ministry of Health hotline" sub="Egyptian Ministry of Health and Population" number="105" color="green" />
         <CallEntry name="Egyptian Ambulance Authority" sub="National emergency ambulance" number="123" color="green" />
-        <CallEntry name="Port Said Directorate of Health Affairs" color="green" />
+       
       </ContactCard>
 
       <ContactCard iconBg="#faeeda" icon={<HomeIcon />} title="Veterinary health" subtitle="General Organization for Veterinary Services">
         <CallEntry name="Ministry of Agriculture hotline" sub="Central Admin for Public Health & Slaughterhouses" number="19561" color="amber" />
-        <CallEntry name="Port Said Veterinary Medicine Directorate" color="amber" />
+
       </ContactCard>
 
       <ContactCard iconBg="#e6f1fb" icon={<GlobeIcon />} title="International organizations" subtitle="Zoonotic diseases & infection control">
@@ -252,10 +252,12 @@ export default function ContactsClient() {
         <ContactCard iconBg="#e8f8f0" icon={<HealthIcon />} title="Human health — Port Said" subtitle="Port Said Directorate of Health Affairs">
           <CallEntry name="Fever Hospital — Port Said" sub="Calling 105 transfers to this hospital" number="105" color="green" />
           <CallEntry name="Port Said local ambulance" sub="For bite/scratch from rabies-suspected animal" number="123" color="green" />
+           <CallEntry name="Port Said Directorate of Health Affairs" color="green" />
         </ContactCard>
 
         <ContactCard iconBg="#faeeda" icon={<HomeIcon />} title="Veterinary — Port Said" subtitle="Port Said Veterinary Medicine Directorate">
           <CallEntry name="Port Said Veterinary Center" sub="Local veterinary authority — number being updated" color="amber" updating />
+          <CallEntry name="Port Said Veterinary Medicine Directorate" color="amber" />
         </ContactCard>
 
         <div style={{

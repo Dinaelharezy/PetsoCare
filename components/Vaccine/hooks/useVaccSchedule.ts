@@ -53,15 +53,11 @@ const SCHEDULES: VaccSchedule[] = [
         note: 'Clean and disinfect the wound. Usually no new vaccine course is required, depending on physician evaluation.',
       },
       {
-        day: 0,
-        label: 'After more than 3 months — Day 0',
-        note: 'Clean and disinfect the wound thoroughly. First intramuscular booster dose.',
-      },
-      {
         day: 3,
-        label: 'After more than 3 months — Day 3',
-        note: 'Second intramuscular booster dose. RIG is NOT given in this case.',
+        label: 'After more than 3 months',
+        note: 'Clean and disinfect the wound thoroughly. Two intramuscular vaccine doses: Day  0.   Dose , Day 3.    Dose. Rabies Immunoglobulin (RIG) is not given in this case. ',
       },
+     
     ],
     notes: [
       'RIG is NOT given in this case.',
