@@ -682,6 +682,24 @@ body {
   min-height: 100vh;
 }
 
+
+.source-font {
+  font-size: 0.9rem;
+  /* margin-bottom: 0.5em; */
+}
+/* .square-box{
+  padding: 1rem;
+  background-color: var(--primary-yellow);
+  border-radius: 0.6rem;
+  margin: 1rem 0.5rem;
+} */
+.square-box {
+  padding: 0.8rem;
+
+  border-radius: 0.6rem;
+  margin: 1rem 0.5rem;
+  display: inline-block; /* أو float: left/right */
+}
 /* Hero Section */
 .hero-section {
   position: relative;

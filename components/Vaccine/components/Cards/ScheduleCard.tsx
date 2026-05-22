@@ -26,6 +26,7 @@ export function ScheduleCard({
         borderRadius: 10,
         boxShadow: '0 1px 6px rgba(0,0,0,0.05)',
         overflow: 'hidden',
+      
       }}
     >
       <button

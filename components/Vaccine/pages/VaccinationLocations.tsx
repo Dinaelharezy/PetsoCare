@@ -244,7 +244,11 @@ export default function VaccinationLocations() {
             Call <strong style={{ fontSize: '1.1rem' }}>15344</strong> - General Authority for Healthcare
             <br />
             <span className="text-muted">For inquiries about Family Health Units and vaccination services.</span>
+                <br />
+              <span style={{ fontSize: '0.78rem', color: '#888' }}>Source:
+[14] Port Said Health Affairs Directorate </span>
           </div>
+          
         </div>
       )}
       
@@ -253,7 +257,11 @@ export default function VaccinationLocations() {
           * Contact information for these entities is currently being updated.
           <br />
           For emergency animal bites, contact the nearest veterinary clinic immediately.
+            <span style={{ fontSize: '0.78rem', color: '#888' }}>  Source:
+[13] Port Said Veterinary Medicine
+Directorate </span>
         </p>
+        
       )}
 
     

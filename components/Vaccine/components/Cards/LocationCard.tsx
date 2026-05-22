@@ -204,7 +204,7 @@ export default function LocationCard({
   loc: VaccLocation;
   type: 'animal' | 'human';
 }) {
-  const [copied, setCopied] = useState(false)
+  // const [copied, setCopied] = useState(false)
 
   const accentColor   = type === 'animal' ? '#198754' : '#0d6efd'
   const lightBg       = type === 'animal' ? '#f0fff4'  : '#f0f4ff'
@@ -212,12 +212,12 @@ export default function LocationCard({
   const serviceLabel  = SERVICE_TYPE_LABELS[loc.serviceType] || 'Vaccination Service'
   const phoneNumber   = loc.phone?.replace(/\s/g, '') || ''
 
-  const handleCopyPhone = () => {
-    if (!phoneNumber) return
-    navigator.clipboard.writeText(phoneNumber)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  // const handleCopyPhone = () => {
+  //   if (!phoneNumber) return
+  //   navigator.clipboard.writeText(phoneNumber)
+  //   setCopied(true)
+  //   setTimeout(() => setCopied(false), 2000)
+  // }
 
   const handleMap = () => {
     const encodedAddress = encodeURIComponent(`${loc.address}, ${loc.governorate}`)
@@ -301,7 +301,7 @@ export default function LocationCard({
         </div>
       ) : (
         <div className="d-flex gap-2 mt-3 flex-wrap">
-          {loc.phone && (
+          {/* {loc.phone && (
             <button
               onClick={handleCopyPhone}
               style={{
@@ -322,7 +322,7 @@ export default function LocationCard({
             >
               {copied ? '✅ Copied!' : `📞 ${phoneNumber}`}
             </button>
-          )}
+          )} */}
 
           <button
             onClick={handleMap}

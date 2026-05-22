@@ -146,9 +146,9 @@ export default function VaccinationAreas() {
   )
 })}
             </div>
-            <p className="text-muted small mt-3">
-              * These campaigns have been completed. For active vaccination locations, please check the "Locations" tab.
-            </p>
+              <p style={{ fontSize: '0.88rem', color: '#888', marginTop:'1rem' }}>Source:
+[13] Port Said Veterinary Medicine
+Directorate </p>
           </div>
         ) : (
           <div
@@ -166,6 +166,7 @@ export default function VaccinationAreas() {
             <p className="mb-0 small">
               All campaigns in this governorate are currently active.
             </p>
+            
           </div>
         )
       )}

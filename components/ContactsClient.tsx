@@ -42,7 +42,7 @@ const HealthIcon = () => (
 
 interface CallEntryProps {
   name: string
-  sub: string
+  sub?: string
   number?: string
   color: 'green' | 'amber' | 'blue'
   updating?: boolean
@@ -187,10 +187,12 @@ export default function ContactsClient() {
       <ContactCard iconBg="#e8f8f0" icon={<HealthIcon />} title="Human health" subtitle="Ministry of Health & Ambulance Authority">
         <CallEntry name="Ministry of Health hotline" sub="Egyptian Ministry of Health and Population" number="105" color="green" />
         <CallEntry name="Egyptian Ambulance Authority" sub="National emergency ambulance" number="123" color="green" />
+        <CallEntry name="Port Said Directorate of Health Affairs" color="green" />
       </ContactCard>
 
       <ContactCard iconBg="#faeeda" icon={<HomeIcon />} title="Veterinary health" subtitle="General Organization for Veterinary Services">
         <CallEntry name="Ministry of Agriculture hotline" sub="Central Admin for Public Health & Slaughterhouses" number="19561" color="amber" />
+        <CallEntry name="Port Said Veterinary Medicine Directorate" color="amber" />
       </ContactCard>
 
       <ContactCard iconBg="#e6f1fb" icon={<GlobeIcon />} title="International organizations" subtitle="Zoonotic diseases & infection control">

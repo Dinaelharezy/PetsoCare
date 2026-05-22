@@ -4,21 +4,7 @@ import { useState } from 'react'
 import { VaccSchedule } from '../../../types/VaccSchedule'
 
 const SCHEDULES: VaccSchedule[] = [
-  {
-    id: 'prep-who',
-    title: 'Pre-Exposure (PrEP) — WHO Protocol',
-    subtitle: 'For individuals at risk: veterinarians, lab workers, animal handlers, children in endemic areas, travelers',
-    type: 'human',
-    doses: [
-      { day: 0,  label: 'Day 0',         note: 'First dose' },
-      { day: 7,  label: 'Day 7',         note: 'Second dose' },
-      { day: 28, label: 'Day 21 or 28',  note: 'Third dose' },
-    ],
-    notes: [
-      'Inject into the deltoid muscle for adults; anterolateral thigh for young children.',
-      'Avoid the gluteal region.',
-    ],
-  },
+ 
   {
     id: 'pep-who-5dose',
     title: 'Post-Exposure (PEP) 5-Dose — WHO Protocol',
@@ -54,6 +40,37 @@ const SCHEDULES: VaccSchedule[] = [
       'Booster after Day 90 may be required depending on risk level and antibody testing.',
     ],
   },
+
+{
+    id: 'previously-vaccinated',
+    title: 'If You Were Bitten but Previously Vaccinated',
+    subtitle: 'Guidance for people who already completed a rabies vaccination course.',
+    type: 'human',
+    doses: [
+      {
+        day: 0,
+        label: 'Within last 3 months',
+        note: 'Clean and disinfect the wound. Usually no new vaccine course is required, depending on physician evaluation.',
+      },
+      {
+        day: 0,
+        label: 'After more than 3 months — Day 0',
+        note: 'Clean and disinfect the wound thoroughly. First intramuscular booster dose.',
+      },
+      {
+        day: 3,
+        label: 'After more than 3 months — Day 3',
+        note: 'Second intramuscular booster dose. RIG is NOT given in this case.',
+      },
+    ],
+    notes: [
+      'RIG is NOT given in this case.',
+      'When is a full post-exposure vaccination course (PEP) required again?',
+      'Individuals who previously received vaccination using vaccines of uncertain or unproven efficacy.',
+      'Individuals with immunodeficiency (e.g. HIV/AIDS) where immune memory may not be reliable — according to physician evaluation.',
+    ],
+  },
+
   {
     id: 'pep-egypt-domestic',
     title: 'PEP — Egypt Protocol (Domestic/Observable Animal)',
@@ -143,3 +160,18 @@ export function useVaccSchedule() {
 }
 
 
+//  {
+//     id: 'prep-who',
+//     title: 'Pre-Exposure (PrEP) — WHO Protocol',
+//     subtitle: 'For individuals at risk: veterinarians, lab workers, animal handlers, children in endemic areas, travelers',
+//     type: 'human',
+//     doses: [
+//       { day: 0,  label: 'Day 0',         note: 'First dose' },
+//       { day: 7,  label: 'Day 7',         note: 'Second dose' },
+//       { day: 28, label: 'Day 21 or 28',  note: 'Third dose' },
+//     ],
+//     notes: [
+//       'Inject into the deltoid muscle for adults; anterolateral thigh for young children.',
+//       'Avoid the gluteal region.',
+//     ],
+//   },
