@@ -22,8 +22,8 @@ export function useVaccLocations() {
       const all = await getAllLocations({ isActive: true })
       console.log('All active locations:', all)
 
-      const animals = all.filter(loc => loc.serviceType === ServiceType.Animal)
-      const humans  = all.filter(loc => loc.serviceType === ServiceType.Human)
+      const animals = all.filter(loc => loc.serviceType === ServiceType.Animal &&  (loc as any).status === 'true' )
+      const humans  = all.filter(loc => loc.serviceType === ServiceType.Human &&   (loc as any).status === 'true' )
 
       console.log('Animal locations:', animals)
       console.log('Human locations:', humans)

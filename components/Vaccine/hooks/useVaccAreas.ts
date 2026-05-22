@@ -31,11 +31,20 @@ export function useVaccAreas() {
         console.log('📊 All locations:', allLocations) // للتأكد
         
         // ✅ فلترة: خد بس اللي status = "false" أو isActive = false
+        // const inactiveOnly = allLocations.filter(loc => {
+        //   // بعض APIs بترجع status بدل isActive
+        //   const isInactive = loc.isActive === false || (loc as any).status === "false"
+        //   return isInactive
+        // })
+
         const inactiveOnly = allLocations.filter(loc => {
-          // بعض APIs بترجع status بدل isActive
-          const isInactive = loc.isActive === false || (loc as any).status === "false"
-          return isInactive
-        })
+     const status = (loc as any).status
+        const type = (loc as any).type
+
+  return (
+    (status === 'false' || status === false || loc.isActive === false)
+  )
+})
         
         console.log('✅ Inactive only:', inactiveOnly)
         
