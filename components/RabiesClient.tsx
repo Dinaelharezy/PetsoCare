@@ -1087,7 +1087,6 @@ The patient should start post-exposure prophylaxis (PEP) according to the exposu
                   <li>Vaccinate dogs and cats <strong>annually</strong></li>
                   <li>Re-vaccinate every 1–3 years</li>
                   <li>Recommended vaccination age: 3 months to 1 year</li>
-                  <li>Mandatory muzzling and leashing of dogs</li>
                   <li>Regulatory Measures:
 Vaccination according to legislation and regulations Mandatory muzzling and leashing of dogs</li>
                 </ul>
