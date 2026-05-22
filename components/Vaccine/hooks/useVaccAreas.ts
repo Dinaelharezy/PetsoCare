@@ -4,8 +4,15 @@
 
 import { useState, useEffect } from 'react'
 import { getAllLocations } from '../../../data/api/VaccLocations'
-import { VaccLocation, ServiceType } from '../../../types/VaccLocation'
+import { VaccLocation} from '../../../types/VaccLocation'
 
+function normalizeGovernorate(value: string): string {
+  const clean = value.trim().toLowerCase().replace(/\s/g, '')
+  if (clean === 'portsaid') return 'Port Said'
+  // ✅ capitalize أول حرف بس وباقيه lowercase
+  const lower = value.trim().toLowerCase()
+  return lower.charAt(0).toUpperCase() + lower.slice(1)
+}
 export function useVaccAreas() {
   const [governorates, setGovernorates] = useState<{id: string, name: string}[]>([])
   const [selectedGov, setSelectedGov] = useState<string>('')
@@ -32,17 +39,22 @@ export function useVaccAreas() {
         
         console.log('✅ Inactive only:', inactiveOnly)
         
-        // استخراج المحافظات
-        const unique = Array.from(new Set(inactiveOnly.map(l => l.governorate)))
-          .filter(Boolean)
-          .map(g => ({ id: g, name: g }))
+             const normalizedAreas = inactiveOnly.map(loc => ({
+          ...loc,
+          governorate: normalizeGovernorate(loc.governorate ?? ''),
+        }))
+
+
+       const unique = Array.from(new Set(normalizedAreas.map(l => l.governorate)))
+  .filter(g => g && g.trim().length > 0)  // ✅ شيل الفاضي
+  .map(g => ({ id: g, name: g }))
 
         setGovernorates(unique)
         if (unique.length > 0) {
           setSelectedGov(unique[0].id)
         }
         
-        setAreas(inactiveOnly)
+        setAreas(normalizedAreas)
       } catch (err) {
         console.error(err)
         setError('Failed to load campaign areas.')
