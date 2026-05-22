@@ -127,9 +127,9 @@ const handleSave = async () => {
                   {doseDate && (
                     <div style={{ fontSize: '0.65rem', color: '#888', marginTop: 2 }}>{doseDate}</div>
                   )}
-                  <div style={{ fontSize: '0.62rem', color: '#aaa', marginTop: 2, textAlign: 'center', maxWidth: 88 }}>
+                  {/* <div style={{ fontSize: '0.62rem', color: '#aaa', marginTop: 2, textAlign: 'center', maxWidth: 88 }}>
                     {dose.note}
-                  </div>
+                  </div> */}
                 </div>
 
                 {i < schedule.doses.length - 1 && (

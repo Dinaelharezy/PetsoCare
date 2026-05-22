@@ -576,15 +576,16 @@ export default function RabiesClient() {
                     <p style={{ fontSize: '0.88rem' }}>RNA virus — genus <em>Lyssavirus</em>, family <em>Rhabdoviridae</em>.</p>
                     <hr />
                     <h6 className="fw-bold text-success mb-2">Reservoir Hosts</h6>
-                    <p style={{ fontSize: '0.93rem' }}>
+      
+                    {['Foxes','Wolves','Bats','Dogs','Cats'].map((h) => (
+                      <span key={h} className="badge bg-secondary me-1 mb-2">{h}</span>
+                    ))}
+                      <p style={{ fontSize: '0.93rem' }}>
                 Role of non biting Animals
 Can become infected through bites from rabid animals
 Do not play a major role in rabies epidemiology
 Rabid wildlife may transmit infection to domestic animals or humans Infected pets can transmit rabies to human
                   </p>
-                    {['Foxes','Wolves','Bats','Dogs','Cats'].map((h) => (
-                      <span key={h} className="badge bg-secondary me-1">{h}</span>
-                    ))}
                   </div>
                 </div>
                 <div className="col-md-5">
@@ -937,11 +938,11 @@ Wound suturing is preferably delayed, and if necessary, RIG should be administer
                   <div className="col-md-6">
   <div className="p-3 rounded" style={{ background: '#f0f4fd', border: '1px solid #c5cae9' }}>
     <h6 className="fw-bold mb-2" style={{ color: '#3949ab' }}>
-      <i className="bi bi-droplet-fill me-1"></i> Administered once to previously unvaccinated individuals with Category III exposure ( head, neck, face, hands, genitals )
+      <i className="bi bi-droplet-fill me-1"></i> Rabies Immunoglobulin (RIG)
     </h6>
 
     <p style={{ fontSize: '0.82rem', color: '#555' }} className="mb-2">
-   
+  Administered once to previously unvaccinated individuals with Category III exposure ( head, neck, face, hands, genitals )
 • Administer on Day 0 with PEP vaccine
 • Can be given up to Day 7 if missed initially
 • Critical for wound management in Category III exposures
@@ -1088,16 +1089,27 @@ The patient should start post-exposure prophylaxis (PEP) according to the exposu
                   <li>Recommended vaccination age: 3 months to 1 year</li>
                   <li>Mandatory muzzling and leashing of dogs</li>
                   <li>Regulatory Measures:
-Vaccination according to legislation and regulations Mandatory muzzling and leashing of dogs
-What to do if a pet is bitten by a rabid animal?
--If the pet was not previously vaccinated:
-The infected dog should be humanely euthanized.
-The exposed pet should be quarantined for 6 months to monitor for signs of rabies.
-- If the pet was vaccinated and is within the expected immunity period:
-Administer a booster dose.
-The exposed pet should be quarantined for 60 days.</li>
+Vaccination according to legislation and regulations Mandatory muzzling and leashing of dogs</li>
                 </ul>
-              
+              <div style={{ background: '#fff8e1', border: '1px solid #ffe082', borderRadius: 10, padding: '16px 20px', marginBottom: 16 }}>
+  <div style={{ fontWeight: 700, marginBottom: 8 }}>🐾 What if your pet is bitten by a suspected rabid animal?</div>
+  <div style={{ fontSize: '0.85rem', color: '#555' }}>
+    <div style={{ marginBottom: 8 }}>
+      <strong>🔴 If the pet was NOT previously vaccinated:</strong>
+      <ul style={{ marginTop: 4, marginBottom: 0 }}>
+        <li>The infected animal should be humanely euthanized.</li>
+        <li>The exposed pet should be quarantined for <strong>6 months</strong> to monitor for signs of rabies.</li>
+      </ul>
+    </div>
+    <div>
+      <strong>🟢 If the pet was vaccinated and is within the expected immunity period:</strong>
+      <ul style={{ marginTop: 4, marginBottom: 0 }}>
+        <li>Administer a <strong>booster dose</strong>.</li>
+        <li>The exposed pet should be quarantined for <strong>60 days</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
               
               </Collapsible>
 
@@ -1129,6 +1141,17 @@ The exposed pet should be quarantined for 60 days.</li>
                       <li>Vaccines must be inactivated or recombinant and officially approved</li>
                     </ul>
                   </div>
+                  <div style={{ background: '#d1f4fd', border: '1px solid #b2dfdb', borderRadius: 10,maxWidth: '480px', padding: '16px 30px', marginBottom: 20 }}>
+  <div style={{ fontWeight: 700, marginBottom: 8 }}>🛡️ General Guidelines to Prevent Rabies</div>
+  <ul style={{ margin: 0, paddingLeft: 20, fontSize: '0.9rem', color: '#555' }}>
+    <li>Regular vaccination of pets (dogs and cats).</li>
+    <li>Vaccinate stray and pet animals against rabies periodically.</li>
+    <li>Avoid contact with wild or sick animals.</li>
+    <li>Avoid suspected rabid animals.</li>
+    <li>Wear gloves and protect skin when handling suspected animals.</li>
+    <li>Educate children not to play with unknown animals.</li>
+  </ul>
+</div>
                   <div className="col-md-5">
                     <FeaturedImg src="/vacc.png" alt="International vaccine" caption="International Pet Travel Requirements" />
                   </div>

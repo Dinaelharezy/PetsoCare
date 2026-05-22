@@ -59,12 +59,7 @@ const SCHEDULES: VaccSchedule[] = [
       },
      
     ],
-    notes: [
-      'RIG is NOT given in this case.',
-      'When is a full post-exposure vaccination course (PEP) required again?',
-      'Individuals who previously received vaccination using vaccines of uncertain or unproven efficacy.',
-      'Individuals with immunodeficiency (e.g. HIV/AIDS) where immune memory may not be reliable — according to physician evaluation.',
-    ],
+    
   },
 
   {

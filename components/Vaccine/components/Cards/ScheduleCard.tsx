@@ -260,6 +260,27 @@ export function ScheduleCard({
               </ul>
             </div>
           )}
+
+          
+          {schedule.id === 'previously-vaccinated' && (
+  <div style={{
+    background: '#fcfccc',
+    border: '1px solid #fff263',
+    borderRadius: 8,
+    padding: '12px 16px',
+    marginTop: 12,
+    fontSize: '0.83rem',
+    color: '#555',
+  }}>
+    <strong style={{ color: '#dc3545', display: 'block', marginBottom: 6 }}>
+      ⚠️ When is a full PEP course required again?
+    </strong>
+    <ul style={{ margin: 0, paddingLeft: 18 }}>
+      <li>Individuals who previously received vaccination using vaccines of <strong>uncertain efficacy</strong>.</li>
+      <li>Individuals with <strong>immunodeficiency</strong> such as (e.g. HIV/AIDS) patients, where immune memory may not be (According to physician evaluation)</li>
+    </ul>
+  </div>
+)}
         </div>
       )}
     </div>
