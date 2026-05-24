@@ -572,19 +572,21 @@ export default function RabiesClient() {
                     <h6 className="fw-bold text-success ">Causative Agent
                       
                     </h6>
-                    <span className="text-muted source-font" style={{ fontSize: '0.78rem', color: '#888' }}> (WHO, 2018)[6] </span>
-                    <p style={{ fontSize: '0.88rem' }}>RNA virus — genus <em>Lyssavirus</em>, family <em>Rhabdoviridae</em>.</p>
+                  
+                    <p style={{ fontSize: '0.88rem' }}>RNA virus — genus <em>Lyssavirus</em>, family <em>Rhabdoviridae</em>.   <span className="text-muted source-font" style={{ fontSize: '0.78rem', color: '#888' }}> (WHO, 2018)[6] </span></p>
                     <hr />
                     <h6 className="fw-bold text-success mb-2">Reservoir Hosts</h6>
       
                     {['Foxes','Wolves','Bats','Dogs','Cats'].map((h) => (
                       <span key={h} className="badge bg-secondary me-1 mb-2">{h}</span>
-                    ))}
+                    ))
+                    }
                       <p style={{ fontSize: '0.93rem' }}>
                 Role of non biting Animals
 Can become infected through bites from rabid animals
 Do not play a major role in rabies epidemiology
 Rabid wildlife may transmit infection to domestic animals or humans Infected pets can transmit rabies to human
+
                   </p>
                   </div>
                 </div>
@@ -1082,7 +1084,7 @@ The patient should start post-exposure prophylaxis (PEP) according to the exposu
 
 </Collapsible>
 
-              <Collapsible title="3 — Urban Rabies Control" color="#16a085">
+              <Collapsible title="3 — Rabies Control in Urban Areas" color="#16a085">
                 <ul style={{ fontSize: '0.9rem' }}>
                   <li>Vaccinate dogs and cats <strong>annually</strong></li>
                   <li>Re-vaccinate every 1–3 years</li>
@@ -1112,7 +1114,7 @@ Vaccination according to legislation and regulations Mandatory muzzling and leas
               
               </Collapsible>
 
-              <Collapsible title="4 — Wildlife Rabies Control" color="#2980b9">
+              <Collapsible title="4 — Rabies Control in Wildlife" color="#2980b9">
                 <div className="row g-3 align-items-center">
                   <div className="col-md-7">
                     <ul style={{ fontSize: '0.9rem' }}>
@@ -1163,23 +1165,41 @@ Vaccination according to legislation and regulations Mandatory muzzling and leas
 
               <div className="mt-4 p-3 rounded" style={{ background: 'linear-gradient(135deg,#eefaf3,#e8f4fd)', border: '1px solid #b2dfdb' }}>
                 <h6 className="fw-bold text-success mb-2">
-                  <i className="bi bi-globe me-2"></i>Rabies &amp; Egypt Vision 2030 — One Health Approach
+                  <i className="bi bi-globe me-2"></i>Rabies in the Context of Egypt Vision 2030
                 </h6>
                 <p style={{ fontSize: '0.88rem', marginBottom: '0.5rem',marginLeft:'0.75rem' }}>
-                 Implementing the One Health Approach WHO, FAO, and OIE launched a global initiative to eliminate human rabies deaths by 2030.
+                 Egypt Vision 2030 Focuses on: Strengthening preventive healthcare systems Reducing disease incidence
+Achieving universal health coverage Supporting sustainable development
+                </p>
+                <p style={{ fontSize: '0.88rem', marginBottom: '0.5rem',marginLeft:'0.75rem' }}>
+                 Rabies control is achieved with these goals by: Supporting vaccination programs
+Reducing economic burden on healthcare
+Integrating health, agriculture, and environment sectors Promoting the One Health approach
+                </p>
+                <p style={{ fontSize: '0.88rem', marginBottom: '0.5rem',marginLeft:'0.75rem' }}>
+                 Rabies control is achieved with these goals by: Supporting vaccination programs
+Reducing economic burden on healthcare
+Integrating health, agriculture, and environment sectors Promoting the One Health approach
+                </p>
+                <p style={{ fontSize: '0.88rem', marginBottom: '0.5rem',marginLeft:'0.75rem' }}>
+Implementing the One Health Approach
+WHO, FAO, and OIE launched a global initiative to eliminate human rabies deaths by 2030.               
+ <span style={{ fontSize: '0.8rem',marginLeft:'0.75rem' }}>
+             (WHO, 2010)[5]
+                  </span>
                 </p>
                 <div className="row g-2">
                   
-                  {ONE_HEALTH_ITEMS.map((item, i) => (
+                  {/* {ONE_HEALTH_ITEMS.map((item, i) => (
                     <div className="col-md-6" key={i}>
                       <div className="d-flex align-items-center gap-2" style={{ fontSize: '0.87rem' }}>
                         <i className="bi bi-check-circle-fill text-success"></i> {item}
                       </div>
                     </div>
-                  ))}
-                   <span style={{ fontSize: '0.8rem',marginLeft:'0.75rem' }}>
+                  ))} */}
+                   {/* <span style={{ fontSize: '0.8rem',marginLeft:'0.75rem' }}>
              (WHO, 2010)[5]
-                  </span>
+                  </span> */}
                 </div>
               </div>
 
