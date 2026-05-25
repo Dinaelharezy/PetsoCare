@@ -730,8 +730,8 @@ export default function VideoManagementClient() {
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteConfirm} onHide={cancelDelete} centered>
         <Modal.Header closeButton className="border-0 pb-0">
-          <Modal.Title className="text-danger">
-            <i className="bi bi-exclamation-octagon-fill me-2" />
+          <Modal.Title className="text-danger mb-3">
+            <i className="bi bi-exclamation-octagon-fill me-2 " />
             Delete Video
           </Modal.Title>
         </Modal.Header>

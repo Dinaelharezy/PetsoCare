@@ -445,8 +445,8 @@ export default function DashboardVaccineLocations() {
       {/* ── Delete Confirmation Modal ── */}
       <Modal show={showDeleteConfirm} onHide={cancelDelete} centered>
         <Modal.Header closeButton className="border-0 pb-0">
-          <Modal.Title className="text-danger">
-            <i className="bi bi-exclamation-octagon-fill me-2" />
+          <Modal.Title className="text-danger mb-3">
+            <i className="bi bi-exclamation-octagon-fill me-2 mb-3 pb-3" />
             Delete Location
           </Modal.Title>
         </Modal.Header>

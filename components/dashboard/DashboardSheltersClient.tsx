@@ -293,7 +293,7 @@ export default function DashboardSheltersClient() {
 
       {/* ── Delete Confirm Modal ── */}
       <Modal show={showDeleteConfirm} onHide={cancelDelete} centered>
-        <Modal.Header closeButton className="border-0 pb-0">
+        <Modal.Header closeButton className="border-0 pb-3">
           <Modal.Title className="text-danger">
             🗑️ Delete Shelter
           </Modal.Title>
@@ -303,7 +303,7 @@ export default function DashboardSheltersClient() {
           <div className="text-center py-3">
             <div className="mb-3" style={{ fontSize: '4rem' }}>🏚️</div>
             <h5>Are you absolutely sure?</h5>
-            <p className="text-muted mb-0">
+            <p className="text-muted mb-4 ">
               This action <strong>cannot be undone</strong>. This will permanently delete
               <strong className="d-block mt-2">
                 {deletingId && shelters.find(s => s.id === deletingId)?.name}

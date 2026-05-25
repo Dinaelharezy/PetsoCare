@@ -379,7 +379,7 @@ export default function ClinicManagementClient() {
       {/* Delete Modal */}
       <Modal show={showDeleteConfirm} onHide={cancelDelete} centered>
         <Modal.Header closeButton className="border-0 pb-0">
-          <Modal.Title className="text-danger fw-bold">🗑️ Delete Clinic</Modal.Title>
+          <Modal.Title className="text-danger fw-bold mb-3">🗑️ Delete Clinic</Modal.Title>
         </Modal.Header>
         <Modal.Body className="pt-0 text-center py-4">
           <div style={{ fontSize: 64, marginBottom: 12 }}>🏥</div>

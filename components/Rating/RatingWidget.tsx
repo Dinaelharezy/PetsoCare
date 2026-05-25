@@ -34,7 +34,7 @@ export default function RatingWidget({ fullWidth = false }: { fullWidth?: boolea
       <div style={cardStyle}>
         <div style={styles.successIcon}>🎉</div>
         <div style={styles.successTitle}>Thanks for your feedback!</div>
-        <div style={styles.successSub}>Your rating helps us improve BetsoCare.</div>
+        <div style={styles.successSub}>Your rating helps us improve PetsoCare.</div>
       </div>
     )
   }
@@ -45,7 +45,7 @@ export default function RatingWidget({ fullWidth = false }: { fullWidth?: boolea
         <span style={styles.icon}>⭐</span>
         <div>
           <div style={styles.title}>Rate Your Experience</div>
-          <div style={styles.subtitle}>How was BetsoCare for you?</div>
+          <div style={styles.subtitle}>How was PetsoCare for you?</div>
         </div>
       </div>
 

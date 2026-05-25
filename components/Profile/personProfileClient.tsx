@@ -98,6 +98,7 @@ export default function PersonProfileClient() {
           />
           
           <AccountSettings onLogout={handleLogout} />
+             <RatingWidget />
         </Col>
       </Row>
 
@@ -116,7 +117,7 @@ export default function PersonProfileClient() {
         submitting={submitting}
       />
 
-      <RatingWidget />
+      {/* <RatingWidget /> */}
     </Container>
   )
 }
