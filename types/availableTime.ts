@@ -1,7 +1,7 @@
 export interface AvailableTime {
   ClinicId: string
-    date: string        // "2024-01-15" أو حسب الـ backend
-    time: string        // "10:00 AM"
+    date: string      
+    time: string      
     CustomerName: string
     Phone: string
 

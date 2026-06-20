@@ -62,8 +62,8 @@ import "./globals.css";
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import Providers from '../components/Providers'  // ✅ استخدم Providers بدل SessionProvider
-import Chatbot from '../components/chatbot';
 import 'leaflet/dist/leaflet.css'
+import ChatBot  from '../components/Chatbot/Chatbot';
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Providers>       {/* ✅ Client Component بيلف كل حاجة */}
           <NavBar />
           {children}
-          <Chatbot />
+        <ChatBot />
           <Footer />
         </Providers>
       </body>

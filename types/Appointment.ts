@@ -5,8 +5,13 @@ export interface Appointment {
   phone: string             // ✅ بدل patientPhone
   date: string
   time: string
+  clinicId: number 
   status: 'Pending' | 'Approved' | 'Rejected' | 'Cancelled'
   notes?: string
+  price: number
+   rejectReason?: string
+  createdAt: string
+  userId: string
 }
 
 export interface AdminAppointment {

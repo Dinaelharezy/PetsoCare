@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation'
 import { clinicsApi } from '../../../data/api/Clinic'
 import { Clinic } from '../../../types/Clinic'
 import { Appointment } from '../../../types/Appointment'
-import { getSession } from 'next-auth/react'
-const getClinicId = (): string => '15'
+
+
 
 export function useDashboard() {
   const router = useRouter()
@@ -27,13 +27,30 @@ const [clinicId, setClinicId] = useState<number | null>(null)
   useEffect(() => { loadAppointments() }, [])
 
   // ── Load ─────────────────────────────────────────────────────────────────
+// const loadAppointments = async () => {
+//   try {
+//     setLoading(true)
+//     const session = await getSession()
+//     const data = await clinicsApi.getAppointments()
+//     setAppointments(data)
+//     // جيب الـ clinicId من أول appointment
+//     if (data.length > 0 && data[0].clinicId) {
+//       setClinicId(data[0].clinicId)
+//     }
+//   } catch (err) {
+//     console.error('Failed to load appointments:', err)
+//   } finally {
+//     setLoading(false)
+//   }
+// }
+// hooks/useDashboard.ts
 const loadAppointments = async () => {
   try {
     setLoading(true)
-    const session = await getSession()
     const data = await clinicsApi.getAppointments()
     setAppointments(data)
-    // جيب الـ clinicId من أول appointment
+    
+    // ✅ دلوقتي شغالة زي Flutter بالظبط
     if (data.length > 0 && data[0].clinicId) {
       setClinicId(data[0].clinicId)
     }
@@ -92,30 +109,7 @@ const loadAppointments = async () => {
   }
 
   // ── Settings ──────────────────────────────────────────────────────────────
-  // const handleOpenSettings = async () => {
-  //   setShowSettings(true)
-  //   setSettingsLoading(true)
-  //   try {
-  //     const all = await clinicsApi.getAll()
-  //     const clinic = all.find(c => c.id === Number(getClinicId()))
-  //     if (clinic) {
-  //       setSettings({
-  //         name:         clinic.name         || '',
-  //         address:      clinic.address      || '',
-  //         governorate:  clinic.governorate  || '',
-  //         phone:        clinic.phone        || '',
-  //         facebookPage: clinic.facebookPage || '',
-  //         bookingPrice: clinic.bookingPrice,
-  //         workingDays:  clinic.workingDays  || '',
-  //         workingHours: clinic.workingHours || '',
-  //       })
-  //     }
-  //   } catch (err) {
-  //     console.error('Failed to load clinic settings:', err)
-  //   } finally {
-  //     setSettingsLoading(false)
-  //   }
-  // }
+
 const handleOpenSettings = async () => {
   setShowSettings(true)
   setSettingsLoading(true)
@@ -129,43 +123,7 @@ const handleOpenSettings = async () => {
 }
 
 
-  // const handleSettingsSave = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   try {
-  //     await clinicsApi.updateSettings(getClinicId(), {
-  //       name:         settings.name,
-  //       address:      settings.address,
-  //       governorate:  settings.governorate,
-  //       phone:        settings.phone,
-  //       facebookPage: settings.facebookPage,
-  //       bookingPrice: settings.bookingPrice,
-  //       workingDays:  settings.workingDays,
-  //       workingHours: settings.workingHours,
-  //     })
 
-  //     const updatedAll = await clinicsApi.getAll()
-  //     const updatedClinic = updatedAll.find(c => c.id === Number(getClinicId()))
-  //     if (updatedClinic) {
-  //       setSettings({
-  //         name:         updatedClinic.name         || '',
-  //         address:      updatedClinic.address      || '',
-  //         governorate:  updatedClinic.governorate  || '',
-  //         phone:        updatedClinic.phone        || '',
-  //         facebookPage: updatedClinic.facebookPage || '',
-  //         bookingPrice: updatedClinic.bookingPrice,
-  //         workingDays:  updatedClinic.workingDays  || '',
-  //         workingHours: updatedClinic.workingHours || '',
-  //       })
-  //     }
-
-  //     showToast('Settings saved!', 'success')
-  //     setShowSettings(false)
-  //     window.dispatchEvent(new CustomEvent('clinicsUpdated'))
-  //     router.refresh()
-  //   } catch {
-  //     showToast('Failed to save settings.', 'danger')
-  //   }
-  // }
 const handleSettingsSave = async (e: React.FormEvent) => {
   e.preventDefault()
   if (!clinicId) return

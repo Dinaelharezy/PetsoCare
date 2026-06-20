@@ -3,9 +3,9 @@
 'use client'
 
 import { Container, Row, Col } from 'react-bootstrap'
-import SearchBar from './SearchBar'
-import CategoryFilters from './CategoryFilters'
-import ArticleCard from './ArticleCard'
+import SearchBar from './components/SearchBar'
+import CategoryFilters from './components/CategoryFilters'
+import ArticleCard from './components/ArticleCard'
 import Pagination from '../Pagination'
 import { useArticles } from './hooks/useArticles'
 import LoadingSpin from '../LoadingSpin'
@@ -23,9 +23,9 @@ export default function ArticlesClient() {
     filteredArticles,
     currentArticles
   } = useArticles()
-
-  if (loading) return <LoadingSpin />
 const router = useRouter()
+  if (loading) return <LoadingSpin />
+
   return (
     <>
       <Container className='mb-4'>

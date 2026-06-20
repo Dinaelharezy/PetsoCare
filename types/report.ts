@@ -11,19 +11,7 @@ export type ReportType =
   | "DangerousAnimal"
   | "Complaint";
 
-// export interface Report {
-//   id: number;
-//   type: ReportType;
-//   status: ReportStatus;
-//   name: string;
-//   phone: string;
-//   governorate: string;
-//   district: string;
-//   adminResponse?: string;
-//   details: any;
-//   latitude?: number;   
-//   longitude?: number;
-// }
+
 
 export interface Report {
   id:                     number

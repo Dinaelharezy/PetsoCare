@@ -13,7 +13,7 @@ interface ProfileData {
 
 interface ProfileStore {
   profileData: ProfileData | null
-  lastFetchedFor: string | null   // email أو userId اللي اتعملتلها fetch
+  lastFetchedFor: string | null   
   setProfile: (data: ProfileData, userId: string) => void
   clearProfile: () => void
 }

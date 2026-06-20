@@ -1,4 +1,4 @@
-import ArticleManagementClient from "@/components/dashboard/ArticleManagementClient";
+import ArticleManagementClient from "@/components/dashboard/pages/ArticleManagementClient";
 
 export default function ArticleManagementPage   () {
   return (

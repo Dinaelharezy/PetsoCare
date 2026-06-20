@@ -3,7 +3,6 @@
 
 import { Container, Row, Col, Form, Card } from 'react-bootstrap'
 import { useState, useEffect, useCallback } from 'react'
-import Chatbot from '@/components/chatbot'
 import { Slide } from '@/types/Slide'
 import Link from 'next/link'
 import { Clinic } from '../types/Clinic'
@@ -397,8 +396,6 @@ export default function HomePage() {
           ))}
         </Row>
       </Container>
-
-      <Chatbot />
     </div>
   )
 }

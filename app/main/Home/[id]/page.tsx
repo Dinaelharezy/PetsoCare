@@ -1,4 +1,4 @@
-import ClinicProfileClient from "@/components/Clinics/ClinicProfileClient"
+import ClinicProfileClient from "@/components/Clinics/pages/ClinicProfileClient"
 export default function ClinicProfile() {
 
 return (

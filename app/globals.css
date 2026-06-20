@@ -66,7 +66,8 @@ body {
   height: 3rem;
   width: auto;
   object-fit: contain;
-  margin: 5rem 1.4rem
+  margin: 5rem 1.4rem;
+ 
 }
 
 
@@ -580,18 +581,14 @@ body {
 }
 
 .btn-logout {
-  background-color: var(--primary-red);
-  border: none;
-  color: white;
+  background-color: var(--white) !important;
+  border: white !important;
+  color: red !important;
   font-weight: 600;
   padding: 0.75rem;
   border-radius: 15px;
   width: 100%;
   transition: background-color 0.3s;
-}
-
-.btn-logout:hover {
-  background-color: #c0392b;
 }
 
 .vaccine-card {

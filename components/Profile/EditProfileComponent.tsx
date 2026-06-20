@@ -113,7 +113,7 @@ export default function EditProfileClient() {
 
   <div className="d-flex justify-content-end mt-2">
     <button
-      style={{ backgroundColor: '#8ae68d' }}
+      style={{ backgroundColor: 'rgb(199, 242, 167) ' }}
       className="btn btn-sm px-3 fw-semibold"
       disabled={saving || !phone}
       onClick={handleChangePhone}
@@ -243,7 +243,7 @@ export default function EditProfileClient() {
             </div>
 
             <div className="d-flex justify-content-end">
-              <button style={{ backgroundColor: '#8ae68d' }} className="btn px-4 fw-semibold"
+              <button style={{ backgroundColor: 'rgb(199, 242, 167) ' }} className="btn px-4 fw-semibold"
                 disabled={saving || !currentPassword || !newPassword || newPassword !== confirmPassword}
                 onClick={handleChangePassword}>
                 {saving ? 'Updating...' : 'Update Password'}
@@ -272,7 +272,7 @@ export default function EditProfileClient() {
           <button className="btn btn-light border px-4" onClick={handleCancel} disabled={saving}>
             Cancel
           </button>
-          <button style={{ backgroundColor: '#8ae68d' }} className="btn px-4 fw-semibold"
+          <button style={{ backgroundColor: 'rgb(199, 242, 167) ' }} className="btn px-4 fw-semibold"
             disabled={saving} onClick={handleSaveAll}>
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
