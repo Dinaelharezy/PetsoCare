@@ -135,7 +135,7 @@ export default function AddVaccineModal({ show, onClose, onSubmit, submitting }:
   }
 
   return (
-    <Modal show={show} onHide={onClose} centered size="sm">
+    <Modal show={show} onHide={onClose} centered size="lg">
       <Modal.Header closeButton>
         <Modal.Title className="fw-bold">Add Vaccine</Modal.Title>
       </Modal.Header>
