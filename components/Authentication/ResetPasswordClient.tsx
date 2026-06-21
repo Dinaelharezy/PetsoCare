@@ -56,7 +56,12 @@ export default function ResetPasswordClient() {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': 'true',
           },
-          body: JSON.stringify({ token, email, password, confirmPassword }),
+          // body: JSON.stringify({ token, email, password, confirmPassword }),
+          body: JSON.stringify({
+  token,
+  newPassword: password,
+  confirmPassword,
+}),
         }
       )
 

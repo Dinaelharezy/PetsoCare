@@ -18,7 +18,7 @@ export default auth((req) => {
   // Public pages
   if (pathname.startsWith("/login") || pathname.startsWith("/main") ||  pathname.startsWith("/forgot-password") ||
   pathname.startsWith("/SignUpCompletion") ||  pathname.startsWith("/auth") ||    
-  pathname.startsWith("/verify-email") )  {
+  pathname.startsWith("/verify-email")  || pathname.startsWith("/reset-password") )  {
     return NextResponse.next()
   }
 
