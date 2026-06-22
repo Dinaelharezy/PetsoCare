@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.petsocare_graduation_project",
+      "sha256_cert_fingerprints": [
+        "B4:BA:A1:58:16:42:0D:85:90:FE:08:1E:7E:7F:C3:F3:B3:BB:77:84:7C:B1:31:69:C8:A8:8F:09:73:E3:94:50"
+      ]
+    }
+  }
+]
